@@ -1,5 +1,7 @@
 # B2B Smart Ordering System – Admin Dashboard
 
+[![Flutter CI](https://github.com/ibrahem137/b2b-smart-ordering-admin-dashboard/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/ibrahem137/b2b-smart-ordering-admin-dashboard/actions/workflows/flutter_ci.yml)
+
 A Flutter-based admin dashboard for a B2B smart ordering platform designed for supermarkets and suppliers.
 
 The dashboard provides centralized management for suppliers, categories, products, supplier offers, purchase orders, sales, and business analytics.
