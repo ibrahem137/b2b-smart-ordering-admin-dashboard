@@ -73,3 +73,60 @@ lib/
 │   └── settings/
 │
 └── main.dart
+```
+
+## Screenshots
+
+### Admin Login
+
+<p align="center">
+  <img src="docs/screenshots/login.jpg" width="800" alt="Admin Login">
+</p>
+
+### Dashboard
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/dashboard_dark.jpg" alt="Dashboard Dark Mode"> | <img src="docs/screenshots/dashboard_light.jpg" alt="Dashboard Light Mode"> |
+
+### Suppliers Management
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/suppliers_dark.jpg" alt="Suppliers Dark Mode"> | <img src="docs/screenshots/suppliers_light.jpg" alt="Suppliers Light Mode"> |
+
+### Add Supplier
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/add_supplier_dark.jpg" alt="Add Supplier Dark Mode"> | <img src="docs/screenshots/add_supplier_light.jpg" alt="Add Supplier Light Mode"> |
+
+### Categories Management
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/categories_dark.jpg" alt="Categories Dark Mode"> | <img src="docs/screenshots/categories_light.jpg" alt="Categories Light Mode"> |
+
+### Master Products
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/master_products_dark.jpg" alt="Master Products Dark Mode"> | <img src="docs/screenshots/master_products_light.jpg" alt="Master Products Light Mode"> |
+
+### Supplier Products
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/supplier_products_dark.jpg" alt="Supplier Products Dark Mode"> | <img src="docs/screenshots/supplier_products_light.jpg" alt="Supplier Products Light Mode"> |
+
+### Purchase Orders
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/orders_dark.jpg" alt="Purchase Orders Dark Mode"> | <img src="docs/screenshots/orders_light.jpg" alt="Purchase Orders Light Mode"> |
+
+### Sales Management
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/sales_dark.jpg" alt="Sales Dark Mode"> | <img src="docs/screenshots/sales_light.jpg" alt="Sales Light Mode"> |
