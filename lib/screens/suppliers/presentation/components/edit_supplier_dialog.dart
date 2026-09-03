@@ -13,18 +13,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EditSupplierDialog extends StatefulWidget {
   final SupplierModel supplier;
 
-  const EditSupplierDialog({
-    super.key,
-    required this.supplier,
-  });
+  const EditSupplierDialog({super.key, required this.supplier});
 
   @override
-  State<EditSupplierDialog> createState() =>
-      _EditSupplierDialogState();
+  State<EditSupplierDialog> createState() => _EditSupplierDialogState();
 }
 
-class _EditSupplierDialogState
-    extends State<EditSupplierDialog> {
+class _EditSupplierDialogState extends State<EditSupplierDialog> {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _nameController;
@@ -45,10 +40,7 @@ class _EditSupplierDialogState
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<
-          SupplierCategoriesCubit,
-          SupplierCategoriesState
-        >(
+        BlocListener<SupplierCategoriesCubit, SupplierCategoriesState>(
           listener: (context, state) {
             if (state is SupplierCategoriesSuccess) {
               if (!_supplierCategoriesLoaded) {
@@ -73,28 +65,20 @@ class _EditSupplierDialogState
           },
         ),
 
-        BlocListener<
-          UpdateSupplierCubit,
-          SupplierActionState
-        >(
+        BlocListener<UpdateSupplierCubit, SupplierActionState>(
           listener: (context, state) {
             if (state is SupplierActionSuccess) {
-              debugPrint(
-                'SUPPLIER INFO UPDATED SUCCESSFULLY',
-              );
+              debugPrint('SUPPLIER INFO UPDATED SUCCESSFULLY');
 
               debugPrint(
                 'SYNCING EDITED CATEGORIES: '
                 '$_selectedCategoryIds',
               );
 
-              context
-                  .read<UpdateSupplierCategoriesCubit>()
-                  .updateCategories(
-                    supplierId: widget.supplier.id,
-                    categoryIds: _selectedCategoryIds
-                        .toList(),
-                  );
+              context.read<UpdateSupplierCategoriesCubit>().updateCategories(
+                supplierId: widget.supplier.id,
+                categoryIds: _selectedCategoryIds.toList(),
+              );
             }
 
             if (state is SupplierActionFailure) {
@@ -108,15 +92,10 @@ class _EditSupplierDialogState
           },
         ),
 
-        BlocListener<
-          UpdateSupplierCategoriesCubit,
-          SupplierActionState
-        >(
+        BlocListener<UpdateSupplierCategoriesCubit, SupplierActionState>(
           listener: (context, state) {
             if (state is SupplierActionSuccess) {
-              debugPrint(
-                'SUPPLIER CATEGORIES UPDATED SUCCESSFULLY',
-              );
+              debugPrint('SUPPLIER CATEGORIES UPDATED SUCCESSFULLY');
 
               Navigator.pop(context, true);
             }
@@ -132,106 +111,85 @@ class _EditSupplierDialogState
           },
         ),
       ],
-      child:
-          BlocBuilder<
-            UpdateSupplierCubit,
+      child: BlocBuilder<UpdateSupplierCubit, SupplierActionState>(
+        builder: (context, updateState) {
+          return BlocBuilder<
+            UpdateSupplierCategoriesCubit,
             SupplierActionState
           >(
-            builder: (context, updateState) {
-              return BlocBuilder<
-                UpdateSupplierCategoriesCubit,
-                SupplierActionState
-              >(
-                builder: (context, categoriesUpdateState) {
-                  final isUpdating =
-                      updateState
-                          is SupplierActionLoading ||
-                      categoriesUpdateState
-                          is SupplierActionLoading;
+            builder: (context, categoriesUpdateState) {
+              final isUpdating =
+                  updateState is SupplierActionLoading ||
+                  categoriesUpdateState is SupplierActionLoading;
 
-                  return Dialog(
-                    backgroundColor: colors.surface,
-                    clipBehavior: Clip.antiAlias,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        16,
-                      ),
-                      side: BorderSide(
-                        color: colors.outlineVariant,
-                      ),
-                    ),
-                    child: SizedBox(
-                      width: 650,
-                      child: SingleChildScrollView(
-                        padding: const EdgeInsets.all(28),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                            children: [
-                              _buildHeader(),
+              return Dialog(
+                backgroundColor: colors.surface,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: BorderSide(color: colors.outlineVariant),
+                ),
+                child: SizedBox(
+                  width: 650,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(28),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildHeader(),
 
-                              const SizedBox(height: 30),
+                          const SizedBox(height: 30),
 
-                              _buildNameField(),
+                          _buildNameField(),
 
-                              const SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
-                              _buildEmailField(),
+                          _buildEmailField(),
 
-                              const SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
-                              _buildPhoneField(),
+                          _buildPhoneField(),
 
-                              const SizedBox(height: 20),
+                          const SizedBox(height: 20),
 
-                              _buildAddressField(),
+                          _buildAddressField(),
 
-                              const SizedBox(height: 28),
+                          const SizedBox(height: 28),
 
-                              _buildCategories(),
+                          _buildCategories(),
 
-                              if (_showCategoryError)
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(
-                                        top: 10,
-                                      ),
-                                  child: Text(
-                                    'suppliers.validation.category_required'
-                                        .tr(),
-                                    style: TextStyle(
-                                      color: colors.error,
-                                      fontSize: 12,
-                                      fontWeight:
-                                          FontWeight.w500,
-                                    ),
-                                  ),
+                          if (_showCategoryError)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(
+                                'suppliers.validation.category_required'.tr(),
+                                style: TextStyle(
+                                  color: colors.error,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
                                 ),
-
-                              const SizedBox(height: 24),
-
-                              _buildStatusSection(
-                                isUpdating,
                               ),
+                            ),
 
-                              const SizedBox(height: 30),
+                          const SizedBox(height: 24),
 
-                              _buildActions(
-                                context,
-                                isUpdating,
-                              ),
-                            ],
-                          ),
-                        ),
+                          _buildStatusSection(isUpdating),
+
+                          const SizedBox(height: 30),
+
+                          _buildActions(context, isUpdating),
+                        ],
                       ),
                     ),
-                  );
-                },
+                  ),
+                ),
               );
             },
-          ),
+          );
+        },
+      ),
     );
   }
 
@@ -249,17 +207,11 @@ class _EditSupplierDialogState
   void initState() {
     super.initState();
 
-    _nameController = TextEditingController(
-      text: widget.supplier.name,
-    );
+    _nameController = TextEditingController(text: widget.supplier.name);
 
-    _emailController = TextEditingController(
-      text: widget.supplier.email ?? '',
-    );
+    _emailController = TextEditingController(text: widget.supplier.email ?? '');
 
-    _phoneController = TextEditingController(
-      text: widget.supplier.phone ?? '',
-    );
+    _phoneController = TextEditingController(text: widget.supplier.phone ?? '');
 
     _addressController = TextEditingController(
       text: widget.supplier.address ?? '',
@@ -272,10 +224,7 @@ class _EditSupplierDialogState
   // Actions
   // ============================================================
 
-  Widget _buildActions(
-    BuildContext context,
-    bool isUpdating,
-  ) {
+  Widget _buildActions(BuildContext context, bool isUpdating) {
     final colors = Theme.of(context).colorScheme;
 
     return Row(
@@ -297,9 +246,7 @@ class _EditSupplierDialogState
             ),
             child: Text(
               'common.cancel'.tr(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -374,31 +321,24 @@ class _EditSupplierDialogState
 
         const SizedBox(height: 12),
 
-        BlocBuilder<
-          SupplierCategoriesCubit,
-          SupplierCategoriesState
-        >(
+        BlocBuilder<SupplierCategoriesCubit, SupplierCategoriesState>(
           builder: (context, supplierCategoriesState) {
-            if (supplierCategoriesState
-                is SupplierCategoriesLoading) {
+            if (supplierCategoriesState is SupplierCategoriesLoading) {
               return const Padding(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+                child: Center(child: CircularProgressIndicator()),
               );
             }
 
-            if (supplierCategoriesState
-                is SupplierCategoriesFailure) {
+            if (supplierCategoriesState is SupplierCategoriesFailure) {
               return Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     supplierCategoriesState.message,
-                    style: theme.textTheme.bodySmall
-                        ?.copyWith(color: colors.error),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colors.error,
+                    ),
                   ),
 
                   const SizedBox(height: 6),
@@ -407,9 +347,7 @@ class _EditSupplierDialogState
                     onPressed: () {
                       context
                           .read<SupplierCategoriesCubit>()
-                          .getSupplierCategories(
-                            widget.supplier.id,
-                          );
+                          .getSupplierCategories(widget.supplier.id);
                     },
                     icon: const Icon(Icons.refresh),
                     label: Text('common.retry'.tr()),
@@ -418,40 +356,31 @@ class _EditSupplierDialogState
               );
             }
 
-            return BlocBuilder<
-              CategoriesCubit,
-              CategoriesState
-            >(
+            return BlocBuilder<CategoriesCubit, CategoriesState>(
               builder: (context, categoriesState) {
                 if (categoriesState is CategoriesLoading) {
                   return const Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 16,
-                    ),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(child: CircularProgressIndicator()),
                   );
                 }
 
                 if (categoriesState is CategoriesFailure) {
                   return Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         categoriesState.message,
-                        style: theme.textTheme.bodySmall
-                            ?.copyWith(color: colors.error),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colors.error,
+                        ),
                       ),
 
                       const SizedBox(height: 6),
 
                       TextButton.icon(
                         onPressed: () {
-                          context
-                              .read<CategoriesCubit>()
-                              .getCategories();
+                          context.read<CategoriesCubit>().getCategories();
                         },
                         icon: const Icon(Icons.refresh),
                         label: Text('common.retry'.tr()),
@@ -464,63 +393,48 @@ class _EditSupplierDialogState
                   if (categoriesState.categories.isEmpty) {
                     return Text(
                       'suppliers.categories.empty'.tr(),
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(
-                            color: colors.onSurfaceVariant,
-                          ),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                     );
                   }
 
                   return Wrap(
                     spacing: 10,
                     runSpacing: 10,
-                    children: categoriesState.categories
-                        .map((category) {
-                          final selected =
-                              _selectedCategoryIds.contains(
-                                category.id,
-                              );
+                    children: categoriesState.categories.map((category) {
+                      final selected = _selectedCategoryIds.contains(
+                        category.id,
+                      );
 
-                          return FilterChip(
-                            label: Text(category.name),
-                            selected: selected,
-                            showCheckmark: false,
-                            selectedColor: colors.primary
-                                .withValues(alpha: .12),
-                            backgroundColor: colors
-                                .surfaceContainerHighest,
-                            side: BorderSide(
-                              color: selected
-                                  ? colors.primary
-                                  : colors.outlineVariant,
-                            ),
-                            labelStyle: theme
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: selected
-                                      ? colors.primary
-                                      : colors.onSurface,
-                                  fontWeight:
-                                      FontWeight.w600,
-                                ),
-                            onSelected: (value) {
-                              setState(() {
-                                if (value) {
-                                  _selectedCategoryIds.add(
-                                    category.id,
-                                  );
-                                } else {
-                                  _selectedCategoryIds
-                                      .remove(category.id);
-                                }
+                      return FilterChip(
+                        label: Text(category.name),
+                        selected: selected,
+                        showCheckmark: false,
+                        selectedColor: colors.primary.withValues(alpha: .12),
+                        backgroundColor: colors.surfaceContainerHighest,
+                        side: BorderSide(
+                          color: selected
+                              ? colors.primary
+                              : colors.outlineVariant,
+                        ),
+                        labelStyle: theme.textTheme.bodyMedium?.copyWith(
+                          color: selected ? colors.primary : colors.onSurface,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        onSelected: (value) {
+                          setState(() {
+                            if (value) {
+                              _selectedCategoryIds.add(category.id);
+                            } else {
+                              _selectedCategoryIds.remove(category.id);
+                            }
 
-                                _showCategoryError = false;
-                              });
-                            },
-                          );
-                        })
-                        .toList(),
+                            _showCategoryError = false;
+                          });
+                        },
+                      );
+                    }).toList(),
                   );
                 }
 
@@ -579,11 +493,7 @@ class _EditSupplierDialogState
             color: colors.primary.withValues(alpha: .12),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(
-            Icons.edit_outlined,
-            color: colors.primary,
-            size: 24,
-          ),
+          child: Icon(Icons.edit_outlined, color: colors.primary, size: 24),
         ),
 
         const SizedBox(width: 16),
@@ -594,11 +504,10 @@ class _EditSupplierDialogState
             children: [
               Text(
                 'suppliers.edit_dialog.title'.tr(),
-                style: theme.textTheme.headlineSmall
-                    ?.copyWith(
-                      color: colors.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  color: colors.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               const SizedBox(height: 4),
@@ -665,10 +574,7 @@ class _EditSupplierDialogState
     final colors = theme.colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 12,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: colors.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
@@ -682,25 +588,21 @@ class _EditSupplierDialogState
               children: [
                 Text(
                   'suppliers.status.active_title'.tr(),
-                  style: theme.textTheme.bodyLarge
-                      ?.copyWith(
-                        color: colors.onSurface,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: colors.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
 
                 const SizedBox(height: 4),
 
                 Text(
                   _isActive
-                      ? 'suppliers.status.active_description'
-                            .tr()
-                      : 'suppliers.status.inactive_description'
-                            .tr(),
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(
-                        color: colors.onSurfaceVariant,
-                      ),
+                      ? 'suppliers.status.active_description'.tr()
+                      : 'suppliers.status.inactive_description'.tr(),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colors.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
@@ -739,25 +641,16 @@ class _EditSupplierDialogState
     required String label,
     required IconData icon,
   }) {
-    return InputDecoration(
-      labelText: label,
-      prefixIcon: Icon(icon),
-    );
+    return InputDecoration(labelText: label, prefixIcon: Icon(icon));
   }
 
-  void _showErrorSnackBar(
-    BuildContext context,
-    String message,
-  ) {
+  void _showErrorSnackBar(BuildContext context, String message) {
     final colors = Theme.of(context).colorScheme;
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: colors.error,
-        content: Text(
-          message,
-          style: TextStyle(color: colors.onError),
-        ),
+        content: Text(message, style: TextStyle(color: colors.onError)),
       ),
     );
   }

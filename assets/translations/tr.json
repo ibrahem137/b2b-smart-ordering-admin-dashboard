@@ -15,10 +15,10 @@
   },
   "common": {
     "page_not_found": "Sayfa Bulunamadı",
-"notifications": "Bildirimler",
-"admin": "Yönetici",
-"profile": "Profil",
-"search_placeholder": "Ara...",
+    "notifications": "Bildirimler",
+    "admin": "Yönetici",
+    "profile": "Profil",
+    "search_placeholder": "Ara...",
     "search": "Ara",
     "add": "Ekle",
     "edit": "Düzenle",
@@ -149,6 +149,7 @@
     "no_sales_data": "Satış verisi yok."
   },
   "master_products": {
+    "select_category_validation": "Lütfen bir kategori seçin",
     "title": "Ana Ürünler",
     "subtitle": "Ana ürün kataloğunu yönetin",
     "add_product": "Ürün Ekle",
@@ -186,7 +187,13 @@
     "table_status": "Durum",
     "table_supplier": "Tedarikçi",
     "total": "Toplam",
-    "unavailable": "Mevcut Değil"
+    "unavailable": "Mevcut Değil",
+    "search_products": "Ürün ara...",
+    "product_name_required": "Ürün adı zorunludur",
+    "select_supplier": "Tedarikçi seçin",
+    "select_supplier_validation": "Lütfen bir tedarikçi seçin",
+    "select_supplier_first": "Önce bir tedarikçi seçin",
+    "select_supplier_first_validation": "Lütfen önce bir tedarikçi seçin"
   },
   "supplier_products": {
     "title": "Tedarikçi Ürünleri",
@@ -251,7 +258,8 @@
       "save_changes": "Değişiklikleri Kaydet"
     },
     "unknown_product": "Bilinmeyen Ürün",
-    "unknown_supplier": "Bilinmeyen Tedarikçi"
+    "unknown_supplier": "Bilinmeyen Tedarikçi",
+    "search_hint": "Tedarikçi ürünlerinde ara..."
   },
   "orders": {
     "title": "Siparişler",
@@ -303,6 +311,10 @@
     "no_sales_found": "Satış bulunamadı"
   },
   "suppliers": {
+    "missing_supplier_id": "Tedarikçi kimliği eksik",
+    "search_country": "Ülke ara",
+    "inactive_description": "Bu tedarikçi pasif ve siparişler için kullanılamaz.",
+    "invalid_phone": "Geçerli bir telefon numarası girin",
     "title": "Tedarikçi Yönetimi",
     "subtitle": "Tedarikçi bilgilerini ve ilişkilerini yönetin",
     "add_supplier": "Tedarikçi Ekle",
@@ -325,10 +337,13 @@
     },
     "fields": {
       "name": "Ad",
-      "phone": "Telefon"
+      "phone": "Telefon",
+      "search_country": "Ülke ara"
     },
     "status": {
-      "active_title": "Aktif"
+      "active_title": "Aktif",
+      "active_description": "Bu tedarikçi aktif ve siparişler için kullanılabilir.",
+      "inactive_description": "Bu tedarikçi pasif ve siparişler için kullanılamaz."
     },
     "categories": {
       "empty": "Kategori yok."
@@ -342,7 +357,12 @@
     "validation": {
       "email_required": "E-posta zorunludur",
       "invalid_email": "Geçerli bir e-posta girin",
-      "name_required": "Ad zorunludur"
+      "name_required": "Ad zorunludur",
+      "category_required": "Lütfen en az bir kategori seçin",
+      "invalid_phone": "Geçerli bir telefon numarası girin"
+    },
+    "errors": {
+      "missing_supplier_id": "Tedarikçi kimliği eksik"
     }
   }
 }

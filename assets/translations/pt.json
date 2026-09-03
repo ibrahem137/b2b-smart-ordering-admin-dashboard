@@ -15,10 +15,10 @@
   },
   "common": {
     "page_not_found": "Página não encontrada",
-"notifications": "Notificações",
-"admin": "Administrador",
-"profile": "Perfil",
-"search_placeholder": "Pesquisar...",
+    "notifications": "Notificações",
+    "admin": "Administrador",
+    "profile": "Perfil",
+    "search_placeholder": "Pesquisar...",
     "search": "Pesquisar",
     "add": "Adicionar",
     "edit": "Editar",
@@ -149,6 +149,7 @@
     "no_sales_data": "Nenhum dado de vendas disponível."
   },
   "master_products": {
+    "select_category_validation": "Selecione uma categoria",
     "title": "Produtos Principais",
     "subtitle": "Gerencie o catálogo principal de produtos",
     "add_product": "Adicionar Produto",
@@ -186,7 +187,13 @@
     "table_status": "Status",
     "table_supplier": "Fornecedor",
     "total": "Total",
-    "unavailable": "Indisponível"
+    "unavailable": "Indisponível",
+    "search_products": "Pesquisar produtos...",
+    "product_name_required": "O nome do produto é obrigatório",
+    "select_supplier": "Selecionar fornecedor",
+    "select_supplier_validation": "Selecione um fornecedor",
+    "select_supplier_first": "Selecione primeiro um fornecedor",
+    "select_supplier_first_validation": "Selecione primeiro um fornecedor"
   },
   "supplier_products": {
     "title": "Produtos dos Fornecedores",
@@ -251,7 +258,8 @@
       "save_changes": "Salvar alterações"
     },
     "unknown_product": "Produto desconhecido",
-    "unknown_supplier": "Fornecedor desconhecido"
+    "unknown_supplier": "Fornecedor desconhecido",
+    "search_hint": "Pesquisar produtos de fornecedores..."
   },
   "orders": {
     "title": "Pedidos",
@@ -303,6 +311,10 @@
     "no_sales_found": "Nenhuma venda encontrada"
   },
   "suppliers": {
+    "missing_supplier_id": "O ID do fornecedor está ausente",
+    "search_country": "Pesquisar país",
+    "inactive_description": "Este fornecedor está inativo e indisponível para pedidos.",
+    "invalid_phone": "Digite um número de telefone válido",
     "title": "Gestão de Fornecedores",
     "subtitle": "Gerencie informações e relacionamentos com fornecedores",
     "add_supplier": "Adicionar Fornecedor",
@@ -325,10 +337,13 @@
     },
     "fields": {
       "name": "Nome",
-      "phone": "Telefone"
+      "phone": "Telefone",
+      "search_country": "Pesquisar país"
     },
     "status": {
-      "active_title": "Ativo"
+      "active_title": "Ativo",
+      "active_description": "Este fornecedor está ativo e disponível para pedidos.",
+      "inactive_description": "Este fornecedor está inativo e indisponível para pedidos."
     },
     "categories": {
       "empty": "Nenhuma categoria disponível."
@@ -342,7 +357,12 @@
     "validation": {
       "email_required": "O e-mail é obrigatório",
       "invalid_email": "Digite um e-mail válido",
-      "name_required": "O nome é obrigatório"
+      "name_required": "O nome é obrigatório",
+      "category_required": "Selecione pelo menos uma categoria",
+      "invalid_phone": "Digite um número de telefone válido"
+    },
+    "errors": {
+      "missing_supplier_id": "O ID do fornecedor está ausente"
     }
   }
 }

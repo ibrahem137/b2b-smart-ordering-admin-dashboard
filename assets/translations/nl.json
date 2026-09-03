@@ -15,10 +15,10 @@
   },
   "common": {
     "page_not_found": "Pagina niet gevonden",
-"notifications": "Meldingen",
-"admin": "Beheerder",
-"profile": "Profiel",
-"search_placeholder": "Zoeken...",
+    "notifications": "Meldingen",
+    "admin": "Beheerder",
+    "profile": "Profiel",
+    "search_placeholder": "Zoeken...",
     "search": "Zoeken",
     "add": "Toevoegen",
     "edit": "Bewerken",
@@ -149,6 +149,7 @@
     "no_sales_data": "Geen verkoopgegevens beschikbaar."
   },
   "master_products": {
+    "select_category_validation": "Selecteer een categorie",
     "title": "Hoofdproducten",
     "subtitle": "Beheer de hoofdproductcatalogus",
     "add_product": "Product toevoegen",
@@ -186,7 +187,13 @@
     "table_status": "Status",
     "table_supplier": "Leverancier",
     "total": "Totaal",
-    "unavailable": "Niet beschikbaar"
+    "unavailable": "Niet beschikbaar",
+    "search_products": "Producten zoeken...",
+    "product_name_required": "Productnaam is verplicht",
+    "select_supplier": "Selecteer leverancier",
+    "select_supplier_validation": "Selecteer een leverancier",
+    "select_supplier_first": "Selecteer eerst een leverancier",
+    "select_supplier_first_validation": "Selecteer eerst een leverancier"
   },
   "supplier_products": {
     "title": "Leveranciersproducten",
@@ -251,7 +258,8 @@
       "save_changes": "Wijzigingen opslaan"
     },
     "unknown_product": "Onbekend product",
-    "unknown_supplier": "Onbekende leverancier"
+    "unknown_supplier": "Onbekende leverancier",
+    "search_hint": "Leveranciersproducten zoeken..."
   },
   "orders": {
     "title": "Bestellingen",
@@ -303,6 +311,10 @@
     "no_sales_found": "Geen verkopen gevonden"
   },
   "suppliers": {
+    "missing_supplier_id": "Leveranciers-ID ontbreekt",
+    "search_country": "Land zoeken",
+    "inactive_description": "Deze leverancier is inactief en niet beschikbaar voor bestellingen.",
+    "invalid_phone": "Voer een geldig telefoonnummer in",
     "title": "Leveranciersbeheer",
     "subtitle": "Beheer leveranciersinformatie en relaties",
     "add_supplier": "Leverancier toevoegen",
@@ -325,10 +337,13 @@
     },
     "fields": {
       "name": "Naam",
-      "phone": "Telefoon"
+      "phone": "Telefoon",
+      "search_country": "Land zoeken"
     },
     "status": {
-      "active_title": "Actief"
+      "active_title": "Actief",
+      "active_description": "Deze leverancier is actief en beschikbaar voor bestellingen.",
+      "inactive_description": "Deze leverancier is inactief en niet beschikbaar voor bestellingen."
     },
     "categories": {
       "empty": "Geen categorieën beschikbaar."
@@ -342,7 +357,12 @@
     "validation": {
       "email_required": "E-mail is verplicht",
       "invalid_email": "Voer een geldig e-mailadres in",
-      "name_required": "Naam is verplicht"
+      "name_required": "Naam is verplicht",
+      "category_required": "Selecteer minimaal één categorie",
+      "invalid_phone": "Voer een geldig telefoonnummer in"
+    },
+    "errors": {
+      "missing_supplier_id": "Leveranciers-ID ontbreekt"
     }
   }
 }

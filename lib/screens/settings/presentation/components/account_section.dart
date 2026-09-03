@@ -13,7 +13,7 @@ class AccountSection extends StatelessWidget {
 
     final admin = context.read<SettingsCubit>().admin;
 
-    final name = admin?.name ?? 'admin'.tr();
+    final name = admin?.name ?? 'common.admin'.tr();
     final email = admin?.email ?? '—';
 
     return Container(
@@ -80,7 +80,7 @@ class AccountSection extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    'admin'.tr(),
+                    'common.admin'.tr(),
                     style: theme.textTheme.bodySmall
                         ?.copyWith(
                           color: colors.onPrimaryContainer,

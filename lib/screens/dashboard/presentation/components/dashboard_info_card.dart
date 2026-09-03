@@ -35,7 +35,7 @@ class _DashboardInfoCardState extends State<DashboardInfoCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: colors.surface,
           borderRadius: BorderRadius.circular(14),
@@ -46,18 +46,20 @@ class _DashboardInfoCardState extends State<DashboardInfoCard> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              widget.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: colors.onSurfaceVariant,
-                fontWeight: FontWeight.w500,
+            Flexible(
+              child: Text(
+                widget.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colors.onSurfaceVariant,
+                  fontWeight: FontWeight.w500,
+                  height: 1.2,
+                ),
               ),
             ),
-            const SizedBox(height: 16),
+            const Spacer(),
             Row(
               children: [
                 Expanded(
@@ -73,13 +75,13 @@ class _DashboardInfoCardState extends State<DashboardInfoCard> {
                 ),
                 const SizedBox(width: 12),
                 Container(
-                  width: 42,
-                  height: 42,
+                  width: 40,
+                  height: 40,
                   decoration: BoxDecoration(
                     color: widget.avatarColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Icon(widget.icon, color: widget.iconColor, size: 22),
+                  child: Icon(widget.icon, color: widget.iconColor, size: 21),
                 ),
               ],
             ),

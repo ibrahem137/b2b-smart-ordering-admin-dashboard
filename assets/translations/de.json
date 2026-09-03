@@ -15,10 +15,10 @@
   },
   "common": {
     "page_not_found": "Seite nicht gefunden",
-"notifications": "Benachrichtigungen",
-"admin": "Administrator",
-"profile": "Profil",
-"search_placeholder": "Suchen...",
+    "notifications": "Benachrichtigungen",
+    "admin": "Administrator",
+    "profile": "Profil",
+    "search_placeholder": "Suchen...",
     "search": "Suchen",
     "add": "Hinzufügen",
     "edit": "Bearbeiten",
@@ -149,6 +149,7 @@
     "no_sales_data": "Keine Verkaufsdaten verfügbar."
   },
   "master_products": {
+    "select_category_validation": "Bitte wählen Sie eine Kategorie aus",
     "title": "Hauptprodukte",
     "subtitle": "Hauptproduktkatalog verwalten",
     "add_product": "Produkt hinzufügen",
@@ -186,7 +187,13 @@
     "table_status": "Status",
     "table_supplier": "Lieferant",
     "total": "Gesamt",
-    "unavailable": "Nicht verfügbar"
+    "unavailable": "Nicht verfügbar",
+    "search_products": "Produkte suchen...",
+    "product_name_required": "Produktname ist erforderlich",
+    "select_supplier": "Lieferanten auswählen",
+    "select_supplier_validation": "Bitte wählen Sie einen Lieferanten aus",
+    "select_supplier_first": "Wählen Sie zuerst einen Lieferanten aus",
+    "select_supplier_first_validation": "Bitte wählen Sie zuerst einen Lieferanten aus"
   },
   "supplier_products": {
     "title": "Lieferantenprodukte",
@@ -251,7 +258,8 @@
       "save_changes": "Änderungen speichern"
     },
     "unknown_product": "Unbekanntes Produkt",
-    "unknown_supplier": "Unbekannter Lieferant"
+    "unknown_supplier": "Unbekannter Lieferant",
+    "search_hint": "Lieferantenprodukte suchen..."
   },
   "orders": {
     "title": "Bestellungen",
@@ -303,6 +311,10 @@
     "no_sales_found": "Keine Verkäufe gefunden"
   },
   "suppliers": {
+    "missing_supplier_id": "Die Lieferanten-ID fehlt",
+    "search_country": "Land suchen",
+    "inactive_description": "Dieser Lieferant ist inaktiv und für Bestellungen nicht verfügbar.",
+    "invalid_phone": "Geben Sie eine gültige Telefonnummer ein",
     "title": "Lieferantenverwaltung",
     "subtitle": "Lieferanteninformationen und Beziehungen verwalten",
     "add_supplier": "Lieferant hinzufügen",
@@ -325,10 +337,13 @@
     },
     "fields": {
       "name": "Name",
-      "phone": "Telefon"
+      "phone": "Telefon",
+      "search_country": "Land suchen"
     },
     "status": {
-      "active_title": "Aktiv"
+      "active_title": "Aktiv",
+      "active_description": "Dieser Lieferant ist aktiv und für Bestellungen verfügbar.",
+      "inactive_description": "Dieser Lieferant ist inaktiv und für Bestellungen nicht verfügbar."
     },
     "categories": {
       "empty": "Keine Kategorien verfügbar."
@@ -342,7 +357,12 @@
     "validation": {
       "email_required": "E-Mail ist erforderlich",
       "invalid_email": "Geben Sie eine gültige E-Mail-Adresse ein",
-      "name_required": "Name ist erforderlich"
+      "name_required": "Name ist erforderlich",
+      "category_required": "Bitte wählen Sie mindestens eine Kategorie aus",
+      "invalid_phone": "Geben Sie eine gültige Telefonnummer ein"
+    },
+    "errors": {
+      "missing_supplier_id": "Die Lieferanten-ID fehlt"
     }
   }
 }
