@@ -147,7 +147,7 @@ class _ProfileButton extends StatelessWidget {
                     CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'admin'.tr(),
+                    'common.admin'.tr(),
                     style: Theme.of(context)
                         .textTheme
                         .labelLarge,

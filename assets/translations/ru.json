@@ -15,10 +15,10 @@
   },
   "common": {
     "page_not_found": "Страница не найдена",
-"notifications": "Уведомления",
-"admin": "Администратор",
-"profile": "Профиль",
-"search_placeholder": "Поиск...",
+    "notifications": "Уведомления",
+    "admin": "Администратор",
+    "profile": "Профиль",
+    "search_placeholder": "Поиск...",
     "search": "Поиск",
     "add": "Добавить",
     "edit": "Редактировать",
@@ -149,6 +149,7 @@
     "no_sales_data": "Нет данных о продажах."
   },
   "master_products": {
+    "select_category_validation": "Пожалуйста, выберите категорию",
     "title": "Основные товары",
     "subtitle": "Управление основным каталогом товаров",
     "add_product": "Добавить товар",
@@ -186,7 +187,13 @@
     "table_status": "Статус",
     "table_supplier": "Поставщик",
     "total": "Итого",
-    "unavailable": "Недоступен"
+    "unavailable": "Недоступен",
+    "search_products": "Поиск товаров...",
+    "product_name_required": "Название товара обязательно",
+    "select_supplier": "Выберите поставщика",
+    "select_supplier_validation": "Пожалуйста, выберите поставщика",
+    "select_supplier_first": "Сначала выберите поставщика",
+    "select_supplier_first_validation": "Пожалуйста, сначала выберите поставщика"
   },
   "supplier_products": {
     "title": "Товары поставщиков",
@@ -251,7 +258,8 @@
       "save_changes": "Сохранить изменения"
     },
     "unknown_product": "Неизвестный товар",
-    "unknown_supplier": "Неизвестный поставщик"
+    "unknown_supplier": "Неизвестный поставщик",
+    "search_hint": "Поиск товаров поставщиков..."
   },
   "orders": {
     "title": "Заказы",
@@ -303,6 +311,10 @@
     "no_sales_found": "Продажи не найдены"
   },
   "suppliers": {
+    "missing_supplier_id": "Идентификатор поставщика отсутствует",
+    "search_country": "Поиск страны",
+    "inactive_description": "Этот поставщик неактивен и недоступен для заказов.",
+    "invalid_phone": "Введите корректный номер телефона",
     "title": "Управление поставщиками",
     "subtitle": "Управляйте информацией о поставщиках и отношениями",
     "add_supplier": "Добавить поставщика",
@@ -325,10 +337,13 @@
     },
     "fields": {
       "name": "Название",
-      "phone": "Телефон"
+      "phone": "Телефон",
+      "search_country": "Поиск страны"
     },
     "status": {
-      "active_title": "Активен"
+      "active_title": "Активен",
+      "active_description": "Этот поставщик активен и доступен для заказов.",
+      "inactive_description": "Этот поставщик неактивен и недоступен для заказов."
     },
     "categories": {
       "empty": "Нет доступных категорий."
@@ -342,7 +357,12 @@
     "validation": {
       "email_required": "Эл. почта обязательна",
       "invalid_email": "Введите корректный адрес эл. почты",
-      "name_required": "Название обязательно"
+      "name_required": "Название обязательно",
+      "category_required": "Выберите хотя бы одну категорию",
+      "invalid_phone": "Введите корректный номер телефона"
+    },
+    "errors": {
+      "missing_supplier_id": "Идентификатор поставщика отсутствует"
     }
   }
 }

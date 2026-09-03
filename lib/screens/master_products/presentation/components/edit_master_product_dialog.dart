@@ -13,18 +13,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EditMasterProductDialog extends StatefulWidget {
   final MasterProductModel product;
 
-  const EditMasterProductDialog({
-    super.key,
-    required this.product,
-  });
+  const EditMasterProductDialog({super.key, required this.product});
 
   @override
   State<EditMasterProductDialog> createState() =>
       _EditMasterProductDialogState();
 }
 
-class _EditMasterProductDialogState
-    extends State<EditMasterProductDialog> {
+class _EditMasterProductDialogState extends State<EditMasterProductDialog> {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _nameController;
@@ -40,10 +36,7 @@ class _EditMasterProductDialogState
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    return BlocConsumer<
-      UpdateProductCubit,
-      ProductActionState
-    >(
+    return BlocConsumer<UpdateProductCubit, ProductActionState>(
       listener: (context, state) {
         if (state is ProductActionSuccess) {
           Navigator.pop(context, true);
@@ -78,8 +71,7 @@ class _EditMasterProductDialogState
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildHeader(context),
                     const SizedBox(height: 30),
@@ -126,17 +118,13 @@ class _EditMasterProductDialogState
   void initState() {
     super.initState();
 
-    _nameController = TextEditingController(
-      text: widget.product.name,
-    );
+    _nameController = TextEditingController(text: widget.product.name);
 
     _descriptionController = TextEditingController(
       text: widget.product.description ?? '',
     );
 
-    _buyPriceController = TextEditingController(
-      text: widget.product.buyPrice,
-    );
+    _buyPriceController = TextEditingController(text: widget.product.buyPrice);
 
     _stockController = TextEditingController(
       text: widget.product.stockQuantity.toString(),
@@ -147,10 +135,7 @@ class _EditMasterProductDialogState
     selectedStatus = widget.product.status;
   }
 
-  Widget _buildActions(
-    BuildContext context,
-    bool isLoading,
-  ) {
+  Widget _buildActions(BuildContext context, bool isLoading) {
     final colors = Theme.of(context).colorScheme;
 
     return Row(
@@ -188,13 +173,8 @@ class _EditMasterProductDialogState
   Widget _buildBuyPrice() {
     return TextFormField(
       controller: _buyPriceController,
-      keyboardType: const TextInputType.numberWithOptions(
-        decimal: true,
-      ),
-      decoration: _decoration(
-        context,
-        'master_products.buy_price'.tr(),
-      ),
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      decoration: _decoration(context, 'master_products.buy_price'.tr()),
       validator: (value) {
         final price = double.tryParse(value ?? '');
 
@@ -208,50 +188,36 @@ class _EditMasterProductDialogState
   }
 
   Widget _buildCategory() {
-    return BlocBuilder<
-      SupplierCategoriesCubit,
-      SupplierCategoriesState
-    >(
+    return BlocBuilder<SupplierCategoriesCubit, SupplierCategoriesState>(
       builder: (context, supplierState) {
         if (supplierState is SupplierCategoriesLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (supplierState is SupplierCategoriesFailure) {
           return Text(
             supplierState.message,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.error,
-            ),
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
           );
         }
 
         if (supplierState is SupplierCategoriesSuccess) {
-          return BlocBuilder<
-            CategoriesCubit,
-            CategoriesState
-          >(
+          return BlocBuilder<CategoriesCubit, CategoriesState>(
             builder: (context, categoriesState) {
               if (categoriesState is CategoriesSuccess) {
                 final allowed = categoriesState.categories
                     .where(
-                      (category) => supplierState
-                          .categoryIds
-                          .contains(category.id),
+                      (category) =>
+                          supplierState.categoryIds.contains(category.id),
                     )
                     .toList();
 
                 final categoryExists = allowed.any(
-                  (category) =>
-                      category.id == selectedCategoryId,
+                  (category) => category.id == selectedCategoryId,
                 );
 
                 return DropdownButtonFormField<int>(
-                  initialValue: categoryExists
-                      ? selectedCategoryId
-                      : null,
+                  initialValue: categoryExists ? selectedCategoryId : null,
                   decoration: _decoration(
                     context,
                     'master_products.category'.tr(),
@@ -278,8 +244,7 @@ class _EditMasterProductDialogState
                   },
                   validator: (value) {
                     if (value == null) {
-                      return 'master_products.select_category_validation'
-                          .tr();
+                      return 'master_products.select_category_validation'.tr();
                     }
 
                     return null;
@@ -290,11 +255,7 @@ class _EditMasterProductDialogState
               if (categoriesState is CategoriesFailure) {
                 return Text(
                   categoriesState.message,
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .error,
-                  ),
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
                 );
               }
 
@@ -312,10 +273,7 @@ class _EditMasterProductDialogState
     return TextFormField(
       controller: _descriptionController,
       maxLines: 3,
-      decoration: _decoration(
-        context,
-        'master_products.description'.tr(),
-      ),
+      decoration: _decoration(context, 'master_products.description'.tr()),
     );
   }
 
@@ -328,10 +286,7 @@ class _EditMasterProductDialogState
         CircleAvatar(
           radius: 24,
           backgroundColor: colors.primaryContainer,
-          child: Icon(
-            Icons.edit_outlined,
-            color: colors.onPrimaryContainer,
-          ),
+          child: Icon(Icons.edit_outlined, color: colors.onPrimaryContainer),
         ),
         const SizedBox(width: 16),
         Text(
@@ -348,10 +303,7 @@ class _EditMasterProductDialogState
   Widget _buildName() {
     return TextFormField(
       controller: _nameController,
-      decoration: _decoration(
-        context,
-        'master_products.product_name'.tr(),
-      ),
+      decoration: _decoration(context, 'master_products.product_name'.tr()),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return 'master_products.required'.tr();
@@ -365,13 +317,8 @@ class _EditMasterProductDialogState
   Widget _buildStatus() {
     return DropdownButtonFormField<String>(
       initialValue: selectedStatus,
-      decoration: _decoration(
-        context,
-        'master_products.status'.tr(),
-      ),
-      dropdownColor: Theme.of(context)
-          .colorScheme
-          .surfaceContainerHigh,
+      decoration: _decoration(context, 'master_products.status'.tr()),
+      dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
       items: [
         DropdownMenuItem(
           value: 'available',
@@ -402,10 +349,7 @@ class _EditMasterProductDialogState
     return TextFormField(
       controller: _stockController,
       keyboardType: TextInputType.number,
-      decoration: _decoration(
-        context,
-        'master_products.stock_quantity'.tr(),
-      ),
+      decoration: _decoration(context, 'master_products.stock_quantity'.tr()),
       validator: (value) {
         final stock = int.tryParse(value ?? '');
 
@@ -422,17 +366,13 @@ class _EditMasterProductDialogState
     return BlocBuilder<SuppliersCubit, SuppliersState>(
       builder: (context, state) {
         if (state is SuppliersLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (state is SuppliersFailure) {
           return Text(
             state.message,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.error,
-            ),
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
           );
         }
 
@@ -442,16 +382,9 @@ class _EditMasterProductDialogState
           );
 
           return DropdownButtonFormField<int>(
-            initialValue: supplierExists
-                ? selectedSupplierId
-                : null,
-            decoration: _decoration(
-              context,
-              'master_products.supplier'.tr(),
-            ),
-            dropdownColor: Theme.of(context)
-                .colorScheme
-                .surfaceContainerHigh,
+            initialValue: supplierExists ? selectedSupplierId : null,
+            decoration: _decoration(context, 'master_products.supplier'.tr()),
+            dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
             items: state.suppliers
                 .map(
                   (supplier) => DropdownMenuItem<int>(
@@ -470,14 +403,13 @@ class _EditMasterProductDialogState
                 selectedCategoryId = -1;
               });
 
-              context
-                  .read<SupplierCategoriesCubit>()
-                  .getSupplierCategories(value);
+              context.read<SupplierCategoriesCubit>().getSupplierCategories(
+                value,
+              );
             },
             validator: (value) {
               if (value == null) {
-                return 'master_products.select_supplier_validation'
-                    .tr();
+                return 'master_products.select_supplier_validation'.tr();
               }
 
               return null;
@@ -490,31 +422,21 @@ class _EditMasterProductDialogState
     );
   }
 
-  InputDecoration _decoration(
-    BuildContext context,
-    String label,
-  ) {
+  InputDecoration _decoration(BuildContext context, String label) {
     final colors = Theme.of(context).colorScheme;
 
     return InputDecoration(
       labelText: label,
       filled: true,
       fillColor: colors.surfaceContainerLowest,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(
-          color: colors.outlineVariant,
-        ),
+        borderSide: BorderSide(color: colors.outlineVariant),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(
-          color: colors.primary,
-          width: 1.5,
-        ),
+        borderSide: BorderSide(color: colors.primary, width: 1.5),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
@@ -522,10 +444,7 @@ class _EditMasterProductDialogState
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(
-          color: colors.error,
-          width: 1.5,
-        ),
+        borderSide: BorderSide(color: colors.error, width: 1.5),
       ),
     );
   }

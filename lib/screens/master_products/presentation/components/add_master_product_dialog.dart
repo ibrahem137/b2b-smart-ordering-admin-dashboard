@@ -13,12 +13,10 @@ class AddMasterProductDialog extends StatefulWidget {
   const AddMasterProductDialog({super.key});
 
   @override
-  State<AddMasterProductDialog> createState() =>
-      _AddMasterProductDialogState();
+  State<AddMasterProductDialog> createState() => _AddMasterProductDialogState();
 }
 
-class _AddMasterProductDialogState
-    extends State<AddMasterProductDialog> {
+class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
   final _formKey = GlobalKey<FormState>();
 
   final _nameController = TextEditingController();
@@ -35,10 +33,7 @@ class _AddMasterProductDialogState
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    return BlocConsumer<
-      CreateProductCubit,
-      ProductActionState
-    >(
+    return BlocConsumer<CreateProductCubit, ProductActionState>(
       listener: (context, state) {
         if (state is ProductActionSuccess) {
           Navigator.pop(context, true);
@@ -73,8 +68,7 @@ class _AddMasterProductDialogState
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildHeader(context),
                     const SizedBox(height: 30),
@@ -130,10 +124,7 @@ class _AddMasterProductDialogState
     super.dispose();
   }
 
-  Widget _buildActions(
-    BuildContext context,
-    bool isLoading,
-  ) {
+  Widget _buildActions(BuildContext context, bool isLoading) {
     final colors = Theme.of(context).colorScheme;
 
     return Row(
@@ -173,9 +164,7 @@ class _AddMasterProductDialogState
   Widget _buildBuyPrice() {
     return TextFormField(
       controller: _buyPriceController,
-      keyboardType: const TextInputType.numberWithOptions(
-        decimal: true,
-      ),
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
       textInputAction: TextInputAction.next,
       decoration: _decoration(
         context,
@@ -206,15 +195,13 @@ class _AddMasterProductDialogState
         decoration: _decoration(
           context,
           'master_products.category'.tr(),
-          hintText: 'master_products.select_supplier_first'
-              .tr(),
+          hintText: 'master_products.select_supplier_first'.tr(),
         ),
         items: const [],
         onChanged: null,
         validator: (_) {
           if (selectedSupplierId == null) {
-            return 'master_products.select_supplier_first_validation'
-                .tr();
+            return 'master_products.select_supplier_first_validation'.tr();
           }
 
           return null;
@@ -222,16 +209,10 @@ class _AddMasterProductDialogState
       );
     }
 
-    return BlocBuilder<
-      SupplierCategoriesCubit,
-      SupplierCategoriesState
-    >(
+    return BlocBuilder<SupplierCategoriesCubit, SupplierCategoriesState>(
       builder: (context, supplierState) {
         if (supplierState is SupplierCategoriesLoading) {
-          return _buildLoadingField(
-            context,
-            'master_products.category'.tr(),
-          );
+          return _buildLoadingField(context, 'master_products.category'.tr());
         }
 
         if (supplierState is SupplierCategoriesFailure) {
@@ -243,10 +224,7 @@ class _AddMasterProductDialogState
         }
 
         if (supplierState is SupplierCategoriesSuccess) {
-          return BlocBuilder<
-            CategoriesCubit,
-            CategoriesState
-          >(
+          return BlocBuilder<CategoriesCubit, CategoriesState>(
             builder: (context, categoriesState) {
               if (categoriesState is CategoriesLoading) {
                 return _buildLoadingField(
@@ -264,35 +242,27 @@ class _AddMasterProductDialogState
               }
 
               if (categoriesState is CategoriesSuccess) {
-                final allowedCategories = categoriesState
-                    .categories
-                    .where((category) {
-                      return supplierState.categoryIds
-                          .contains(category.id);
-                    })
-                    .toList();
+                final allowedCategories = categoriesState.categories.where((
+                  category,
+                ) {
+                  return supplierState.categoryIds.contains(category.id);
+                }).toList();
 
                 if (allowedCategories.isEmpty) {
                   return _buildEmptyCategoryField(context);
                 }
 
-                final categoryExists = allowedCategories
-                    .any(
-                      (category) =>
-                          category.id == selectedCategoryId,
-                    );
+                final categoryExists = allowedCategories.any(
+                  (category) => category.id == selectedCategoryId,
+                );
 
                 return DropdownButtonFormField<int>(
-                  initialValue: categoryExists
-                      ? selectedCategoryId
-                      : null,
+                  initialValue: categoryExists ? selectedCategoryId : null,
                   isExpanded: true,
                   decoration: _decoration(
                     context,
                     'master_products.category'.tr(),
-                    hintText:
-                        'master_products.select_category'
-                            .tr(),
+                    hintText: 'master_products.select_category'.tr(),
                   ),
                   dropdownColor: Theme.of(context)
                       .colorScheme
@@ -318,8 +288,7 @@ class _AddMasterProductDialogState
                   },
                   validator: (value) {
                     if (value == null) {
-                      return 'master_products.select_category_validation'
-                          .tr();
+                      return 'master_products.select_category_validation'.tr();
                     }
 
                     return null;
@@ -353,24 +322,15 @@ class _AddMasterProductDialogState
     final colors = Theme.of(context).colorScheme;
 
     return InputDecorator(
-      decoration: _decoration(
-        context,
-        'master_products.category'.tr(),
-      ),
+      decoration: _decoration(context, 'master_products.category'.tr()),
       child: Row(
         children: [
-          Icon(
-            Icons.info_outline,
-            size: 18,
-            color: colors.onSurfaceVariant,
-          ),
+          Icon(Icons.info_outline, size: 18, color: colors.onSurfaceVariant),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               'master_products.no_supplier_categories'.tr(),
-              style: TextStyle(
-                color: colors.onSurfaceVariant,
-              ),
+              style: TextStyle(color: colors.onSurfaceVariant),
             ),
           ),
         ],
@@ -394,17 +354,10 @@ class _AddMasterProductDialogState
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 18,
-            color: colors.error,
-          ),
+          Icon(Icons.error_outline, size: 18, color: colors.error),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(
-              message,
-              style: TextStyle(color: colors.error),
-            ),
+            child: Text(message, style: TextStyle(color: colors.error)),
           ),
         ],
       ),
@@ -420,10 +373,7 @@ class _AddMasterProductDialogState
         CircleAvatar(
           radius: 24,
           backgroundColor: colors.primaryContainer,
-          child: Icon(
-            Icons.add_box_outlined,
-            color: colors.onPrimaryContainer,
-          ),
+          child: Icon(Icons.add_box_outlined, color: colors.onPrimaryContainer),
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -432,11 +382,10 @@ class _AddMasterProductDialogState
             children: [
               Text(
                 'master_products.add_product'.tr(),
-                style: theme.textTheme.headlineSmall
-                    ?.copyWith(
-                      color: colors.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  color: colors.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
@@ -453,19 +402,13 @@ class _AddMasterProductDialogState
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
-            Icons.close,
-            color: colors.onSurfaceVariant,
-          ),
+          icon: Icon(Icons.close, color: colors.onSurfaceVariant),
         ),
       ],
     );
   }
 
-  Widget _buildLoadingField(
-    BuildContext context,
-    String label,
-  ) {
+  Widget _buildLoadingField(BuildContext context, String label) {
     final colors = Theme.of(context).colorScheme;
 
     return InputDecorator(
@@ -483,9 +426,7 @@ class _AddMasterProductDialogState
           const SizedBox(width: 12),
           Text(
             'common.loading'.tr(),
-            style: TextStyle(
-              color: colors.onSurfaceVariant,
-            ),
+            style: TextStyle(color: colors.onSurfaceVariant),
           ),
         ],
       ),
@@ -503,8 +444,7 @@ class _AddMasterProductDialogState
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'master_products.product_name_required'
-              .tr();
+          return 'master_products.product_name_required'.tr();
         }
 
         return null;
@@ -516,13 +456,8 @@ class _AddMasterProductDialogState
     return DropdownButtonFormField<String>(
       initialValue: selectedStatus,
       isExpanded: true,
-      decoration: _decoration(
-        context,
-        'master_products.status'.tr(),
-      ),
-      dropdownColor: Theme.of(context)
-          .colorScheme
-          .surfaceContainerHigh,
+      decoration: _decoration(context, 'master_products.status'.tr()),
+      dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
       items: [
         DropdownMenuItem<String>(
           value: 'available',
@@ -579,10 +514,7 @@ class _AddMasterProductDialogState
     return BlocBuilder<SuppliersCubit, SuppliersState>(
       builder: (context, state) {
         if (state is SuppliersLoading) {
-          return _buildLoadingField(
-            context,
-            'master_products.supplier'.tr(),
-          );
+          return _buildLoadingField(context, 'master_products.supplier'.tr());
         }
 
         if (state is SuppliersFailure) {
@@ -600,12 +532,9 @@ class _AddMasterProductDialogState
             decoration: _decoration(
               context,
               'master_products.supplier'.tr(),
-              hintText: 'master_products.select_supplier'
-                  .tr(),
+              hintText: 'master_products.select_supplier'.tr(),
             ),
-            dropdownColor: Theme.of(context)
-                .colorScheme
-                .surfaceContainerHigh,
+            dropdownColor: Theme.of(context).colorScheme.surfaceContainerHigh,
             items: state.suppliers.map((supplier) {
               return DropdownMenuItem<int>(
                 value: supplier.id,
@@ -626,14 +555,13 @@ class _AddMasterProductDialogState
                 selectedCategoryId = null;
               });
 
-              context
-                  .read<SupplierCategoriesCubit>()
-                  .getSupplierCategories(value);
+              context.read<SupplierCategoriesCubit>().getSupplierCategories(
+                value,
+              );
             },
             validator: (value) {
               if (value == null) {
-                return 'master_products.select_supplier_validation'
-                    .tr();
+                return 'master_products.select_supplier_validation'.tr();
               }
 
               return null;
@@ -658,21 +586,14 @@ class _AddMasterProductDialogState
       hintText: hintText,
       filled: true,
       fillColor: colors.surfaceContainerLowest,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(
-          color: colors.outlineVariant,
-        ),
+        borderSide: BorderSide(color: colors.outlineVariant),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(
-          color: colors.primary,
-          width: 1.5,
-        ),
+        borderSide: BorderSide(color: colors.primary, width: 1.5),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
@@ -680,10 +601,7 @@ class _AddMasterProductDialogState
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(
-          color: colors.error,
-          width: 1.5,
-        ),
+        borderSide: BorderSide(color: colors.error, width: 1.5),
       ),
     );
   }
@@ -693,8 +611,7 @@ class _AddMasterProductDialogState
       return;
     }
 
-    if (selectedSupplierId == null ||
-        selectedCategoryId == null) {
+    if (selectedSupplierId == null || selectedCategoryId == null) {
       return;
     }
 
@@ -703,12 +620,8 @@ class _AddMasterProductDialogState
       categoryId: selectedCategoryId!,
       name: _nameController.text.trim(),
       description: _descriptionController.text.trim(),
-      buyPrice: double.parse(
-        _buyPriceController.text.trim(),
-      ),
-      stockQuantity: int.parse(
-        _stockController.text.trim(),
-      ),
+      buyPrice: double.parse(_buyPriceController.text.trim()),
+      stockQuantity: int.parse(_stockController.text.trim()),
       status: selectedStatus,
     );
   }

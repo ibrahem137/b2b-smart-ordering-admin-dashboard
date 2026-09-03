@@ -15,10 +15,10 @@
   },
   "common": {
     "page_not_found": "Page Not Found",
-"notifications": "Notifications",
-"admin": "Admin",
-"profile": "Profile",
-"search_placeholder": "Search...",
+    "notifications": "Notifications",
+    "admin": "Admin",
+    "profile": "Profile",
+    "search_placeholder": "Search...",
     "search": "Search",
     "add": "Add",
     "edit": "Edit",
@@ -40,7 +40,6 @@
     "phone": "Phone",
     "address": "Address",
     "total": "Total"
-    
   },
   "settings": {
     "title": "Settings",
@@ -150,6 +149,7 @@
     "no_sales_data": "No sales data available."
   },
   "master_products": {
+    "select_category_validation": "Please select a category",
     "title": "Master Products",
     "subtitle": "Manage the master product catalog",
     "add_product": "Add Product",
@@ -187,7 +187,13 @@
     "table_status": "Status",
     "table_supplier": "Supplier",
     "total": "Total",
-    "unavailable": "Unavailable"
+    "unavailable": "Unavailable",
+    "search_products": "Search products...",
+    "product_name_required": "Product name is required",
+    "select_supplier": "Select supplier",
+    "select_supplier_validation": "Please select a supplier",
+    "select_supplier_first": "Select a supplier first",
+    "select_supplier_first_validation": "Please select a supplier first"
   },
   "supplier_products": {
     "title": "Supplier Products",
@@ -252,7 +258,8 @@
       "save_changes": "Save Changes"
     },
     "unknown_product": "Unknown Product",
-    "unknown_supplier": "Unknown Supplier"
+    "unknown_supplier": "Unknown Supplier",
+    "search_hint": "Search supplier products..."
   },
   "orders": {
     "title": "Orders",
@@ -304,6 +311,10 @@
     "no_sales_found": "No sales found"
   },
   "suppliers": {
+    "missing_supplier_id": "Supplier ID is missing",
+    "search_country": "Search country",
+    "inactive_description": "This supplier is inactive and unavailable for orders.",
+    "invalid_phone": "Enter a valid phone number",
     "title": "Suppliers Management",
     "subtitle": "Manage supplier information and relationships",
     "add_supplier": "Add Supplier",
@@ -326,10 +337,13 @@
     },
     "fields": {
       "name": "Name",
-      "phone": "Phone"
+      "phone": "Phone",
+      "search_country": "Search country"
     },
     "status": {
-      "active_title": "Active"
+      "active_title": "Active",
+      "active_description": "This supplier is active and available for orders.",
+      "inactive_description": "This supplier is inactive and unavailable for orders."
     },
     "categories": {
       "empty": "No categories available."
@@ -343,7 +357,12 @@
     "validation": {
       "email_required": "Email is required",
       "invalid_email": "Enter a valid email",
-      "name_required": "Name is required"
+      "name_required": "Name is required",
+      "category_required": "Please select at least one category",
+      "invalid_phone": "Enter a valid phone number"
+    },
+    "errors": {
+      "missing_supplier_id": "Supplier ID is missing"
     }
   }
 }

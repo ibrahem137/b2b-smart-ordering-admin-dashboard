@@ -18,12 +18,7 @@ class SupplierProductsToolbar extends StatelessWidget {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
-    const filters = [
-      'all',
-      'available',
-      'unavailable',
-      'archived',
-    ];
+    const filters = ['all', 'available', 'unavailable', 'archived'];
 
     return Row(
       children: [
@@ -34,39 +29,25 @@ class SupplierProductsToolbar extends StatelessWidget {
               color: colors.onSurface,
             ),
             decoration: InputDecoration(
-              hintText: 'supplier_products.search_hint'
-                  .tr(),
-              hintStyle: theme.textTheme.bodyMedium
-                  ?.copyWith(
-                    color: colors.onSurfaceVariant,
-                  ),
-              prefixIcon: Icon(
-                Icons.search,
+              hintText: 'supplier_products.search_hint'.tr(),
+              hintStyle: theme.textTheme.bodyMedium?.copyWith(
                 color: colors.onSurfaceVariant,
               ),
+              prefixIcon: Icon(Icons.search, color: colors.onSurfaceVariant),
               filled: true,
               fillColor: colors.surface,
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 16,
-              ),
+              contentPadding: const EdgeInsets.symmetric(vertical: 16),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: colors.outlineVariant,
-                ),
+                borderSide: BorderSide(color: colors.outlineVariant),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: colors.outlineVariant,
-                ),
+                borderSide: BorderSide(color: colors.outlineVariant),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: colors.primary,
-                  width: 1.5,
-                ),
+                borderSide: BorderSide(color: colors.primary, width: 1.5),
               ),
             ),
           ),
@@ -88,16 +69,12 @@ class SupplierProductsToolbar extends StatelessWidget {
               },
               showCheckmark: false,
               selectedColor: colors.primary,
-              backgroundColor:
-                  colors.surfaceContainerHighest,
+              backgroundColor: colors.surfaceContainerHighest,
               side: BorderSide.none,
-              labelStyle: theme.textTheme.bodyMedium
-                  ?.copyWith(
-                    color: selected
-                        ? colors.onPrimary
-                        : colors.onSurfaceVariant,
-                    fontWeight: FontWeight.w600,
-                  ),
+              labelStyle: theme.textTheme.bodyMedium?.copyWith(
+                color: selected ? colors.onPrimary : colors.onSurfaceVariant,
+                fontWeight: FontWeight.w600,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),

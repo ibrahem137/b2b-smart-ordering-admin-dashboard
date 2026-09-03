@@ -91,7 +91,7 @@ class DashboardInfoCards extends StatelessWidget {
               .map(
                 (card) => SizedBox(
                   width: cardWidth,
-                  height: 145,
+                  height: 155,
                   child: card,
                 ),
               )

@@ -15,10 +15,10 @@
   },
   "common": {
     "page_not_found": "Página no encontrada",
-"notifications": "Notificaciones",
-"admin": "Administrador",
-"profile": "Perfil",
-"search_placeholder": "Buscar...",
+    "notifications": "Notificaciones",
+    "admin": "Administrador",
+    "profile": "Perfil",
+    "search_placeholder": "Buscar...",
     "search": "Buscar",
     "add": "Agregar",
     "edit": "Editar",
@@ -149,6 +149,7 @@
     "no_sales_data": "No hay datos de ventas disponibles."
   },
   "master_products": {
+    "select_category_validation": "Selecciona una categoría",
     "title": "Productos principales",
     "subtitle": "Gestiona el catálogo maestro de productos",
     "add_product": "Agregar producto",
@@ -186,7 +187,13 @@
     "table_status": "Estado",
     "table_supplier": "Proveedor",
     "total": "Total",
-    "unavailable": "No disponible"
+    "unavailable": "No disponible",
+    "search_products": "Buscar productos...",
+    "product_name_required": "El nombre del producto es obligatorio",
+    "select_supplier": "Seleccionar proveedor",
+    "select_supplier_validation": "Selecciona un proveedor",
+    "select_supplier_first": "Selecciona primero un proveedor",
+    "select_supplier_first_validation": "Selecciona primero un proveedor"
   },
   "supplier_products": {
     "title": "Productos de proveedores",
@@ -251,7 +258,8 @@
       "save_changes": "Guardar cambios"
     },
     "unknown_product": "Producto desconocido",
-    "unknown_supplier": "Proveedor desconocido"
+    "unknown_supplier": "Proveedor desconocido",
+    "search_hint": "Buscar productos de proveedores..."
   },
   "orders": {
     "title": "Pedidos",
@@ -303,6 +311,10 @@
     "no_sales_found": "No se encontraron ventas"
   },
   "suppliers": {
+    "missing_supplier_id": "Falta el ID del proveedor",
+    "search_country": "Buscar país",
+    "inactive_description": "Este proveedor está inactivo y no está disponible para pedidos.",
+    "invalid_phone": "Introduce un número de teléfono válido",
     "title": "Gestión de proveedores",
     "subtitle": "Gestiona la información y las relaciones con proveedores",
     "add_supplier": "Agregar proveedor",
@@ -325,10 +337,13 @@
     },
     "fields": {
       "name": "Nombre",
-      "phone": "Teléfono"
+      "phone": "Teléfono",
+      "search_country": "Buscar país"
     },
     "status": {
-      "active_title": "Activo"
+      "active_title": "Activo",
+      "active_description": "Este proveedor está activo y disponible para pedidos.",
+      "inactive_description": "Este proveedor está inactivo y no está disponible para pedidos."
     },
     "categories": {
       "empty": "No hay categorías disponibles."
@@ -342,7 +357,12 @@
     "validation": {
       "email_required": "El correo electrónico es obligatorio",
       "invalid_email": "Introduce un correo electrónico válido",
-      "name_required": "El nombre es obligatorio"
+      "name_required": "El nombre es obligatorio",
+      "category_required": "Selecciona al menos una categoría",
+      "invalid_phone": "Introduce un número de teléfono válido"
+    },
+    "errors": {
+      "missing_supplier_id": "Falta el ID del proveedor"
     }
   }
 }
