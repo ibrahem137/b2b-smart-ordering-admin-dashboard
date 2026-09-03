@@ -14,6 +14,7 @@ import 'package:dashboard/screens/master_products/presentation/cubit/products_st
 import 'package:dashboard/screens/master_products/presentation/cubit/update_product_cubit.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/supplier_categories_cubit.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/suppliers_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,7 +40,10 @@ class _DeleteProductDialog extends StatelessWidget {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
-    return BlocConsumer<DeleteProductCubit, ProductActionState>(
+    return BlocConsumer<
+      DeleteProductCubit,
+      ProductActionState
+    >(
       listener: (context, state) {
         if (state is ProductActionSuccess) {
           Navigator.pop(context, true);
@@ -73,7 +77,9 @@ class _DeleteProductDialog extends StatelessWidget {
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: colors.error.withValues(alpha: .10),
+                  color: colors.error.withValues(
+                    alpha: .10,
+                  ),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -85,17 +91,20 @@ class _DeleteProductDialog extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'Delete Product',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  'master_products.delete_product'.tr(),
+                  style: theme.textTheme.titleLarge
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
             ],
           ),
           content: Text(
-            'Are you sure you want to delete "${product.name}"?',
+            'master_products.delete_confirmation'.tr(
+              args: [product.name],
+            ),
             style: theme.textTheme.bodyMedium?.copyWith(
               color: colors.onSurfaceVariant,
             ),
@@ -107,15 +116,15 @@ class _DeleteProductDialog extends StatelessWidget {
                   : () {
                       Navigator.pop(context);
                     },
-              child: const Text('Cancel'),
+              child: Text('common.cancel'.tr()),
             ),
             FilledButton(
               onPressed: isLoading
                   ? null
                   : () {
-                      context.read<DeleteProductCubit>().deleteProduct(
-                        product.id,
-                      );
+                      context
+                          .read<DeleteProductCubit>()
+                          .deleteProduct(product.id);
                     },
               style: FilledButton.styleFrom(
                 backgroundColor: colors.error,
@@ -130,7 +139,7 @@ class _DeleteProductDialog extends StatelessWidget {
                         color: colors.onError,
                       ),
                     )
-                  : const Text('Delete'),
+                  : Text('common.delete'.tr()),
             ),
           ],
         );
@@ -160,23 +169,21 @@ class _MasterProductsView extends StatelessWidget {
                     await _openAddProduct(context);
                   },
                 ),
-
                 const SizedBox(height: 24),
-
                 MasterProductsToolbar(
                   totalProducts: state is ProductsSuccess
                       ? state.products.length
                       : 0,
                   onSearch: (value) {
-                    context.read<ProductsCubit>().getProducts(
-                      search: value.trim(),
-                    );
+                    context
+                        .read<ProductsCubit>()
+                        .getProducts(search: value.trim());
                   },
                 ),
-
                 const SizedBox(height: 24),
-
-                Expanded(child: _buildContent(context, state)),
+                Expanded(
+                  child: _buildContent(context, state),
+                ),
               ],
             );
           },
@@ -185,12 +192,19 @@ class _MasterProductsView extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, ProductsState state) {
+  Widget _buildContent(
+    BuildContext context,
+    ProductsState state,
+  ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
     if (state is ProductsLoading) {
-      return Center(child: CircularProgressIndicator(color: colors.primary));
+      return Center(
+        child: CircularProgressIndicator(
+          color: colors.primary,
+        ),
+      );
     }
 
     if (state is ProductsFailure) {
@@ -205,22 +219,23 @@ class _MasterProductsView extends StatelessWidget {
                 color: colors.error.withValues(alpha: .10),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.error_outline, color: colors.error, size: 34),
+              child: Icon(
+                Icons.error_outline,
+                color: colors.error,
+                size: 34,
+              ),
             ),
-
             const SizedBox(height: 16),
-
             Text(
-              'Unable to load products',
+              'master_products.unable_to_load_products'
+                  .tr(),
               textAlign: TextAlign.center,
               style: theme.textTheme.titleMedium?.copyWith(
                 color: colors.onSurface,
                 fontWeight: FontWeight.w600,
               ),
             ),
-
             const SizedBox(height: 6),
-
             Text(
               state.message,
               textAlign: TextAlign.center,
@@ -228,15 +243,13 @@ class _MasterProductsView extends StatelessWidget {
                 color: colors.onSurfaceVariant,
               ),
             ),
-
             const SizedBox(height: 20),
-
             FilledButton.icon(
               onPressed: () {
                 context.read<ProductsCubit>().getProducts();
               },
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: Text('common.retry'.tr()),
             ),
           ],
         ),
@@ -260,7 +273,9 @@ class _MasterProductsView extends StatelessWidget {
             builder: (_) {
               return BlocProvider<DeleteProductCubit>(
                 create: (_) => getIt<DeleteProductCubit>(),
-                child: _DeleteProductDialog(product: product),
+                child: _DeleteProductDialog(
+                  product: product,
+                ),
               );
             },
           );
@@ -296,21 +311,18 @@ class _MasterProductsView extends StatelessWidget {
               size: 36,
             ),
           ),
-
           const SizedBox(height: 16),
-
           Text(
-            'No products found',
+            'master_products.no_products_found'.tr(),
             style: theme.textTheme.titleMedium?.copyWith(
               color: colors.onSurface,
               fontWeight: FontWeight.w600,
             ),
           ),
-
           const SizedBox(height: 6),
-
           Text(
-            'Products will appear here once they are added.',
+            'master_products.products_empty_description'
+                .tr(),
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: colors.onSurfaceVariant,
@@ -332,13 +344,16 @@ class _MasterProductsView extends StatelessWidget {
               create: (_) => getIt<CreateProductCubit>(),
             ),
             BlocProvider<SuppliersCubit>(
-              create: (_) => getIt<SuppliersCubit>()..getSuppliers(),
+              create: (_) =>
+                  getIt<SuppliersCubit>()..getSuppliers(),
             ),
             BlocProvider<SupplierCategoriesCubit>(
-              create: (_) => getIt<SupplierCategoriesCubit>(),
+              create: (_) =>
+                  getIt<SupplierCategoriesCubit>(),
             ),
             BlocProvider<CategoriesCubit>(
-              create: (_) => getIt<CategoriesCubit>()..getCategories(),
+              create: (_) =>
+                  getIt<CategoriesCubit>()..getCategories(),
             ),
           ],
           child: const AddMasterProductDialog(),
@@ -365,15 +380,19 @@ class _MasterProductsView extends StatelessWidget {
               create: (_) => getIt<UpdateProductCubit>(),
             ),
             BlocProvider<SuppliersCubit>(
-              create: (_) => getIt<SuppliersCubit>()..getSuppliers(),
+              create: (_) =>
+                  getIt<SuppliersCubit>()..getSuppliers(),
             ),
             BlocProvider<SupplierCategoriesCubit>(
               create: (_) =>
                   getIt<SupplierCategoriesCubit>()
-                    ..getSupplierCategories(product.supplierId),
+                    ..getSupplierCategories(
+                      product.supplierId,
+                    ),
             ),
             BlocProvider<CategoriesCubit>(
-              create: (_) => getIt<CategoriesCubit>()..getCategories(),
+              create: (_) =>
+                  getIt<CategoriesCubit>()..getCategories(),
             ),
           ],
           child: EditMasterProductDialog(product: product),

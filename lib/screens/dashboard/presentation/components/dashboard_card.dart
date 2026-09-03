@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DashboardCard extends StatelessWidget {
@@ -36,16 +37,26 @@ class DashboardCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: Theme.of(context).textTheme.titleMedium
-                      ?.copyWith(fontWeight: FontWeight.w700),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
                 ),
               ),
-              if (trailing != null) ...[trailing!, const SizedBox(width: 4)],
+              if (trailing != null) ...[
+                trailing!,
+                const SizedBox(width: 4),
+              ],
               if (onRefresh != null)
                 IconButton(
-                  tooltip: 'Refresh',
+                  tooltip: 'common.refresh'.tr(),
                   onPressed: onRefresh,
-                  icon: Icon(Icons.refresh, color: colors.primary),
+                  icon: Icon(
+                    Icons.refresh,
+                    color: colors.primary,
+                  ),
                 ),
             ],
           ),

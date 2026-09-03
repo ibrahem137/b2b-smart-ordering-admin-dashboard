@@ -1,4 +1,5 @@
 import 'package:dashboard/core/theme/extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SaleStatusChip extends StatelessWidget {
@@ -10,23 +11,37 @@ class SaleStatusChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
 
     final normalized = status.toLowerCase();
 
-    final color = _statusColor(normalized, colors, dashboardColors);
+    final color = _statusColor(
+      normalized,
+      colors,
+      dashboardColors,
+    );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 6,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: .12),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: color.withValues(alpha: .25)),
+        border: Border.all(
+          color: color.withValues(alpha: .25),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(_statusIcon(normalized), size: 14, color: color),
+          Icon(
+            _statusIcon(normalized),
+            size: 14,
+            color: color,
+          ),
           const SizedBox(width: 6),
           Text(
             _statusLabel(normalized),
@@ -86,19 +101,19 @@ class SaleStatusChip extends StatelessWidget {
   String _statusLabel(String status) {
     switch (status) {
       case 'paid':
-        return 'Paid';
+        return 'sales.paid'.tr();
 
       case 'cancelled':
-        return 'Cancelled';
+        return 'sales.cancelled'.tr();
 
       case 'refunded':
-        return 'Refunded';
+        return 'sales.refunded'.tr();
 
       case 'draft':
-        return 'Draft';
+        return 'sales.draft'.tr();
 
       case 'pending':
-        return 'Pending';
+        return 'sales.pending'.tr();
 
       default:
         return status;

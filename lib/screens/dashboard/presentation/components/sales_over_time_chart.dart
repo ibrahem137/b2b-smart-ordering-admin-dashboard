@@ -1,4 +1,5 @@
 import 'package:dashboard/screens/dashboard/data/models/sales_trend_response.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class SalesOverTimeChart extends StatelessWidget {
     if (data.isEmpty) {
       return Center(
         child: Text(
-          'No sales data available.',
+          'dashboard.no_sales_data'.tr(),
           style: theme.textTheme.bodyMedium?.copyWith(
             color: colors.onSurfaceVariant,
           ),
@@ -24,7 +25,6 @@ class SalesOverTimeChart extends StatelessWidget {
     }
 
     final spots = <FlSpot>[];
-
     var maxY = 0.0;
 
     for (var i = 0; i < data.length; i++) {
@@ -37,7 +37,9 @@ class SalesOverTimeChart extends StatelessWidget {
       spots.add(FlSpot(i.toDouble(), total));
     }
 
-    final chartMaxY = maxY <= 0 ? 10.0 : (maxY * 1.25).ceilToDouble();
+    final chartMaxY = maxY <= 0
+        ? 10.0
+        : (maxY * 1.25).ceilToDouble();
 
     return LineChart(
       LineChartData(
@@ -45,18 +47,18 @@ class SalesOverTimeChart extends StatelessWidget {
         maxX: (data.length - 1).toDouble(),
         minY: 0,
         maxY: chartMaxY,
-
         borderData: FlBorderData(show: false),
-
         gridData: FlGridData(
           show: true,
           drawVerticalLine: false,
           horizontalInterval: _gridInterval(chartMaxY),
           getDrawingHorizontalLine: (_) {
-            return FlLine(color: colors.outlineVariant, strokeWidth: 1);
+            return FlLine(
+              color: colors.outlineVariant,
+              strokeWidth: 1,
+            );
           },
         ),
-
         titlesData: FlTitlesData(
           topTitles: const AxisTitles(
             sideTitles: SideTitles(showTitles: false),
@@ -64,7 +66,6 @@ class SalesOverTimeChart extends StatelessWidget {
           rightTitles: const AxisTitles(
             sideTitles: SideTitles(showTitles: false),
           ),
-
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -75,15 +76,15 @@ class SalesOverTimeChart extends StatelessWidget {
                   meta: meta,
                   child: Text(
                     value.toStringAsFixed(0),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: colors.onSurfaceVariant,
-                    ),
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(
+                          color: colors.onSurfaceVariant,
+                        ),
                   ),
                 );
               },
             ),
           ),
-
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -103,17 +104,17 @@ class SalesOverTimeChart extends StatelessWidget {
                   space: 8,
                   child: Text(
                     month,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: colors.onSurfaceVariant,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(
+                          color: colors.onSurfaceVariant,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                 );
               },
             ),
           ),
         ),
-
         lineTouchData: LineTouchData(
           enabled: true,
           touchTooltipData: LineTouchTooltipData(
@@ -127,15 +128,15 @@ class SalesOverTimeChart extends StatelessWidget {
                 }
 
                 final item = data[index];
-
-                final total = double.tryParse(item.total) ?? 0.0;
-
-                final profit = double.tryParse(item.profit) ?? 0.0;
+                final total =
+                    double.tryParse(item.total) ?? 0.0;
+                final profit =
+                    double.tryParse(item.profit) ?? 0.0;
 
                 return LineTooltipItem(
                   '${item.month}\n'
-                  'Sales: \$${total.toStringAsFixed(2)}\n'
-                  'Profit: \$${profit.toStringAsFixed(2)}',
+                  '${'dashboard.sales'.tr()}: \$${total.toStringAsFixed(2)}\n'
+                  '${'dashboard.profit'.tr()}: \$${profit.toStringAsFixed(2)}',
                   TextStyle(
                     color: colors.onInverseSurface,
                     fontWeight: FontWeight.w600,
@@ -145,26 +146,24 @@ class SalesOverTimeChart extends StatelessWidget {
             },
           ),
         ),
-
         lineBarsData: [
           LineChartBarData(
             spots: spots,
             isCurved: true,
             color: colors.primary,
             barWidth: 3,
-
             dotData: FlDotData(
               show: true,
-              getDotPainter: (spot, percent, barData, index) {
-                return FlDotCirclePainter(
-                  radius: 4,
-                  color: colors.primary,
-                  strokeWidth: 2,
-                  strokeColor: colors.surface,
-                );
-              },
+              getDotPainter:
+                  (spot, percent, barData, index) {
+                    return FlDotCirclePainter(
+                      radius: 4,
+                      color: colors.primary,
+                      strokeWidth: 2,
+                      strokeColor: colors.surface,
+                    );
+                  },
             ),
-
             belowBarData: BarAreaData(
               show: true,
               gradient: LinearGradient(
@@ -183,25 +182,11 @@ class SalesOverTimeChart extends StatelessWidget {
   }
 
   double _gridInterval(double maxY) {
-    if (maxY <= 10) {
-      return 2;
-    }
-
-    if (maxY <= 50) {
-      return 10;
-    }
-
-    if (maxY <= 100) {
-      return 20;
-    }
-
-    if (maxY <= 500) {
-      return 100;
-    }
-
-    if (maxY <= 1000) {
-      return 200;
-    }
+    if (maxY <= 10) return 2;
+    if (maxY <= 50) return 10;
+    if (maxY <= 100) return 20;
+    if (maxY <= 500) return 100;
+    if (maxY <= 1000) return 200;
 
     return 1000;
   }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SalesHeader extends StatelessWidget {
@@ -15,15 +16,16 @@ class SalesHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Sales Management',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: colors.onSurface,
-                  fontWeight: FontWeight.bold,
-                ),
+                'sales.title'.tr(),
+                style: theme.textTheme.headlineSmall
+                    ?.copyWith(
+                      color: colors.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Monitor and analyze sales transactions',
+                'sales.subtitle'.tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colors.onSurfaceVariant,
                 ),

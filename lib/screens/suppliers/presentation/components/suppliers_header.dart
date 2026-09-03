@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SuppliersHeader extends StatelessWidget {
@@ -18,15 +19,16 @@ class SuppliersHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Suppliers Management',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colors.onSurface,
-                ),
+                'suppliers.title'.tr(),
+                style: theme.textTheme.headlineSmall
+                    ?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colors.onSurface,
+                    ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Manage supplier information and relationships',
+                'suppliers.subtitle'.tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colors.onSurfaceVariant,
                 ),
@@ -37,11 +39,14 @@ class SuppliersHeader extends StatelessWidget {
         FilledButton.icon(
           onPressed: onAddSupplier,
           icon: const Icon(Icons.add, size: 18),
-          label: const Text('Add Supplier'),
+          label: Text('suppliers.add_supplier'.tr()),
           style: FilledButton.styleFrom(
             backgroundColor: colors.primary,
             foregroundColor: colors.onPrimary,
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 18,
+              vertical: 18,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

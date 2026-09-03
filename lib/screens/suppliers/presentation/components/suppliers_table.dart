@@ -1,5 +1,6 @@
 import 'package:dashboard/screens/suppliers/data/models/supplier_model.dart';
 import 'package:dashboard/screens/suppliers/presentation/components/supplier_row.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SuppliersTable extends StatelessWidget {
@@ -16,8 +17,7 @@ class SuppliersTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colors = theme.colorScheme;
+    final colors = Theme.of(context).colorScheme;
 
     return Container(
       width: double.infinity,
@@ -32,7 +32,11 @@ class SuppliersTable extends StatelessWidget {
           : Column(
               children: [
                 _buildHeader(context),
-                Divider(height: 1, thickness: 1, color: colors.outlineVariant),
+                Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: colors.outlineVariant,
+                ),
                 Expanded(
                   child: ListView.separated(
                     itemCount: suppliers.length,
@@ -80,7 +84,7 @@ class SuppliersTable extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'No suppliers found',
+              'suppliers.no_suppliers'.tr(),
               style: theme.textTheme.titleMedium?.copyWith(
                 color: colors.onSurface,
                 fontWeight: FontWeight.w600,
@@ -88,7 +92,7 @@ class SuppliersTable extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              'Suppliers will appear here once they are added.',
+              'suppliers.no_suppliers_description'.tr(),
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: colors.onSurfaceVariant,
@@ -110,19 +114,52 @@ class SuppliersTable extends StatelessWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 16,
+      ),
       color: colors.surfaceContainerLow,
       child: Row(
         children: [
-          Expanded(flex: 3, child: Text('Supplier', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Phone', style: headerStyle)),
-          Expanded(flex: 3, child: Text('Email', style: headerStyle)),
-          Expanded(flex: 3, child: Text('Address', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Status', style: headerStyle)),
+          Expanded(
+            flex: 3,
+            child: Text(
+              'suppliers.supplier'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'common.phone'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              'common.email'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              'common.address'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'common.status'.tr(),
+              style: headerStyle,
+            ),
+          ),
           SizedBox(
             width: 100,
             child: Text(
-              'Actions',
+              'common.actions'.tr(),
               textAlign: TextAlign.center,
               style: headerStyle,
             ),

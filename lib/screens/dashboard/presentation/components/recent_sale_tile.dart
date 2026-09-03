@@ -1,7 +1,7 @@
 import 'package:dashboard/core/theme/extensions.dart';
 import 'package:dashboard/screens/sales/data/models/sale_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class RecentSaleTile extends StatelessWidget {
   final SaleModel sale;
@@ -12,13 +12,15 @@ class RecentSaleTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
 
     final amount = double.tryParse(sale.total) ?? 0.0;
-
     final profit = double.tryParse(sale.profit) ?? 0.0;
 
-    final profitColor = profit >= 0 ? dashboardColors.success : colors.error;
+    final profitColor = profit >= 0
+        ? dashboardColors.success
+        : colors.error;
 
     return Container(
       padding: const EdgeInsets.all(18),
@@ -35,45 +37,43 @@ class RecentSaleTile extends StatelessWidget {
               children: [
                 Text(
                   'SALE-${sale.id.toString().padLeft(4, '0')}',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
-
                 const SizedBox(height: 5),
-
                 Text(
-                  sale.store?.name ?? 'Unknown Store',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  sale.store?.name ??
+                      'dashboard.unknown_store'.tr(),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
-
                 const SizedBox(height: 4),
-
                 Text(
-                  sale.customer?.name ?? 'Unknown Customer',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colors.onSurfaceVariant,
-                  ),
+                  sale.customer?.name ??
+                      'dashboard.unknown_customer'.tr(),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                 ),
-
                 const SizedBox(height: 12),
-
                 Text(
                   _formatDate(sale.createdAt),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colors.onSurfaceVariant,
-                  ),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                 ),
               ],
             ),
           ),
-
           const SizedBox(width: 20),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -84,19 +84,16 @@ class RecentSaleTile extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               const SizedBox(height: 5),
-
               Text(
-                '${profit >= 0 ? '+' : ''}\$${profit.toStringAsFixed(2)} profit',
+                '${profit >= 0 ? '+' : ''}\$${profit.toStringAsFixed(2)} '
+                '${'dashboard.profit'.tr()}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: profitColor,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-
               const SizedBox(height: 8),
-
               _StatusBadge(status: sale.status),
             ],
           ),
@@ -116,7 +113,8 @@ class RecentSaleTile extends StatelessWidget {
       return value;
     }
 
-    return DateFormat('yyyy-MM-dd HH:mm').format(date.toLocal());
+    return DateFormat('yyyy-MM-dd HH:mm')
+        .format(date.toLocal());
   }
 }
 
@@ -129,12 +127,20 @@ class _StatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
 
-    final statusColor = _statusColor(status, colors, dashboardColors);
+    final statusColor = _statusColor(
+      status,
+      colors,
+      dashboardColors,
+    );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 5,
+      ),
       decoration: BoxDecoration(
         color: statusColor.withValues(alpha: .12),
         borderRadius: BorderRadius.circular(20),
@@ -157,15 +163,12 @@ class _StatusBadge extends StatelessWidget {
     switch (status.toLowerCase()) {
       case 'paid':
         return dashboardColors.success;
-
       case 'pending':
       case 'draft':
         return dashboardColors.warning;
-
       case 'refunded':
       case 'cancelled':
         return colors.error;
-
       default:
         return colors.onSurfaceVariant;
     }
@@ -174,15 +177,15 @@ class _StatusBadge extends StatelessWidget {
   String _statusLabel(String status) {
     switch (status.toLowerCase()) {
       case 'paid':
-        return 'Paid';
+        return 'dashboard.paid'.tr();
       case 'pending':
-        return 'Pending';
+        return 'dashboard.pending'.tr();
       case 'draft':
-        return 'Draft';
+        return 'dashboard.draft'.tr();
       case 'refunded':
-        return 'Refunded';
+        return 'dashboard.refunded'.tr();
       case 'cancelled':
-        return 'Cancelled';
+        return 'dashboard.cancelled'.tr();
       default:
         return status;
     }

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class ColorPicker extends StatelessWidget {
@@ -24,7 +25,9 @@ class ColorPicker extends StatelessWidget {
         final isSelected = color == selectedColor;
 
         return Tooltip(
-          message: isSelected ? 'Selected color' : 'Select color',
+          message: isSelected
+              ? 'categories.selected_color'.tr()
+              : 'categories.select_color'.tr(),
           child: InkWell(
             onTap: () => onColorSelected(color),
             customBorder: const CircleBorder(),
@@ -56,7 +59,10 @@ class ColorPicker extends StatelessWidget {
                 scale: isSelected ? 1 : 0,
                 child: Icon(
                   Icons.check,
-                  color: _foregroundColorFor(color, colorScheme),
+                  color: _foregroundColorFor(
+                    color,
+                    colorScheme,
+                  ),
                   size: 22,
                 ),
               ),
@@ -67,8 +73,13 @@ class ColorPicker extends StatelessWidget {
     );
   }
 
-  Color _foregroundColorFor(Color background, ColorScheme colorScheme) {
-    final brightness = ThemeData.estimateBrightnessForColor(background);
+  Color _foregroundColorFor(
+    Color background,
+    ColorScheme colorScheme,
+  ) {
+    final brightness = ThemeData.estimateBrightnessForColor(
+      background,
+    );
 
     return brightness == Brightness.dark
         ? colorScheme.surface

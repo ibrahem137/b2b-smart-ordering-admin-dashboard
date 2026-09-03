@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class CategoryDropdown extends StatelessWidget {
@@ -25,21 +26,28 @@ class CategoryDropdown extends StatelessWidget {
       dropdownColor: colors.surface,
       borderRadius: BorderRadius.circular(8),
       decoration: InputDecoration(
-        hintText: 'Select category',
+        hintText: 'master_products.select_category'.tr(),
         filled: true,
         fillColor: colors.surface,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 18,
         ),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colors.outlineVariant),
+          borderSide: BorderSide(
+            color: colors.outlineVariant,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colors.primary, width: 1.5),
+          borderSide: BorderSide(
+            color: colors.primary,
+            width: 1.5,
+          ),
         ),
       ),
       items: categories

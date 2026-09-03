@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesHeader extends StatelessWidget {
@@ -18,15 +19,16 @@ class CategoriesHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Categories Management',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: colors.onSurface,
-                  fontWeight: FontWeight.bold,
-                ),
+                'categories.title'.tr(),
+                style: theme.textTheme.headlineSmall
+                    ?.copyWith(
+                      color: colors.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
               const SizedBox(height: 4),
               Text(
-                'Organize products into categories',
+                'categories.subtitle'.tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colors.onSurfaceVariant,
                 ),
@@ -37,14 +39,17 @@ class CategoriesHeader extends StatelessWidget {
         FilledButton.icon(
           onPressed: onAddCategory,
           icon: const Icon(Icons.add, size: 18),
-          label: const Text('Add Category'),
+          label: Text('categories.add_category'.tr()),
           style: FilledButton.styleFrom(
             backgroundColor: colors.primary,
             foregroundColor: colors.onPrimary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 18,
+              vertical: 18,
+            ),
           ),
         ),
       ],

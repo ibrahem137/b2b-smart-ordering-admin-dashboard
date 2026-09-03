@@ -1,5 +1,6 @@
 import 'package:dashboard/screens/suppliers/data/models/supplier_model.dart';
 import 'package:dashboard/screens/suppliers/presentation/components/supplier_status_badge.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SupplierRow extends StatelessWidget {
@@ -20,7 +21,10 @@ class SupplierRow extends StatelessWidget {
     final colors = theme.colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 18,
+      ),
       color: colors.surface,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,7 +37,9 @@ class SupplierRow extends StatelessWidget {
                   width: 38,
                   height: 38,
                   decoration: BoxDecoration(
-                    color: colors.primary.withValues(alpha: .10),
+                    color: colors.primary.withValues(
+                      alpha: .10,
+                    ),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
@@ -45,23 +51,27 @@ class SupplierRow extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
                     children: [
                       Text(
                         supplier.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: colors.onSurface,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: theme.textTheme.bodyLarge
+                            ?.copyWith(
+                              color: colors.onSurface,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'ID: ${supplier.id}',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: colors.onSurfaceVariant,
-                        ),
+                        '${'suppliers.id'.tr()}: ${supplier.id}',
+                        style: theme.textTheme.bodySmall
+                            ?.copyWith(
+                              color:
+                                  colors.onSurfaceVariant,
+                            ),
                       ),
                     ],
                   ),
@@ -84,9 +94,8 @@ class SupplierRow extends StatelessWidget {
                     supplier.email ?? '—',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colors.onSurface,
-                    ),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(color: colors.onSurface),
                   ),
                 ),
               ],
@@ -116,7 +125,9 @@ class SupplierRow extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: SupplierStatusBadge(isActive: supplier.isActive),
+            child: SupplierStatusBadge(
+              isActive: supplier.isActive,
+            ),
           ),
           SizedBox(
             width: 90,
@@ -124,7 +135,7 @@ class SupplierRow extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 IconButton(
-                  tooltip: 'Edit',
+                  tooltip: 'common.edit'.tr(),
                   onPressed: onEdit,
                   icon: Icon(
                     Icons.edit_outlined,
@@ -133,7 +144,7 @@ class SupplierRow extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  tooltip: 'Delete',
+                  tooltip: 'common.delete'.tr(),
                   onPressed: onDelete,
                   icon: Icon(
                     Icons.delete_outline,

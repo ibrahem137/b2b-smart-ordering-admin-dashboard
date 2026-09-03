@@ -1,15 +1,20 @@
 import 'dart:typed_data';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class ImageUploadBox extends StatefulWidget {
   final ValueChanged<Uint8List?> onImageSelected;
 
-  const ImageUploadBox({super.key, required this.onImageSelected});
+  const ImageUploadBox({
+    super.key,
+    required this.onImageSelected,
+  });
 
   @override
-  State<ImageUploadBox> createState() => _ImageUploadBoxState();
+  State<ImageUploadBox> createState() =>
+      _ImageUploadBoxState();
 }
 
 class _ImageUploadBoxState extends State<ImageUploadBox> {
@@ -28,7 +33,10 @@ class _ImageUploadBoxState extends State<ImageUploadBox> {
         decoration: BoxDecoration(
           color: colors.surfaceContainerLow,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: colors.outlineVariant, width: 1.5),
+          border: Border.all(
+            color: colors.outlineVariant,
+            width: 1.5,
+          ),
         ),
         child: imageBytes == null
             ? _buildUploadState(context)
@@ -78,7 +86,9 @@ class _ImageUploadBoxState extends State<ImageUploadBox> {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: colors.outlineVariant),
+              border: Border.all(
+                color: colors.outlineVariant,
+              ),
             ),
             clipBehavior: Clip.antiAlias,
             child: Image.memory(
@@ -89,18 +99,19 @@ class _ImageUploadBoxState extends State<ImageUploadBox> {
             ),
           ),
         ),
-
         Positioned(
           top: 10,
           right: 10,
           child: IconButton(
-            tooltip: 'Remove image',
+            tooltip: 'categories.remove_image'.tr(),
             onPressed: removeImage,
             icon: const Icon(Icons.close),
             style: IconButton.styleFrom(
               backgroundColor: colors.surface,
               foregroundColor: colors.onSurface,
-              side: BorderSide(color: colors.outlineVariant),
+              side: BorderSide(
+                color: colors.outlineVariant,
+              ),
             ),
           ),
         ),
@@ -127,21 +138,17 @@ class _ImageUploadBoxState extends State<ImageUploadBox> {
             color: colors.primary,
           ),
         ),
-
         const SizedBox(height: 12),
-
         Text(
-          'Upload Category Image',
+          'categories.upload_category_image'.tr(),
           style: theme.textTheme.bodyLarge?.copyWith(
             color: colors.onSurface,
             fontWeight: FontWeight.w600,
           ),
         ),
-
         const SizedBox(height: 5),
-
         Text(
-          'PNG, JPG up to 2MB',
+          'categories.upload_image_hint'.tr(),
           style: theme.textTheme.bodySmall?.copyWith(
             color: colors.onSurfaceVariant,
           ),

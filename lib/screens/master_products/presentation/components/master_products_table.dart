@@ -1,5 +1,6 @@
 import 'package:dashboard/screens/master_products/data/models/master_product_model.dart';
 import 'package:dashboard/screens/master_products/presentation/components/master_product_row.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class MasterProductsTable extends StatelessWidget {
@@ -29,15 +30,16 @@ class MasterProductsTable extends StatelessWidget {
       child: Column(
         children: [
           _buildHeader(context),
-
           Expanded(
             child: products.isEmpty
                 ? Center(
                     child: Text(
-                      'No products found.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: colors.onSurfaceVariant,
-                      ),
+                      'master_products.no_products_found_period'
+                          .tr(),
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
                     ),
                   )
                 : ListView.separated(
@@ -79,23 +81,61 @@ class MasterProductsTable extends StatelessWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 18,
+      ),
       decoration: BoxDecoration(
         color: colors.surfaceContainerLow,
-        border: Border(bottom: BorderSide(color: colors.outlineVariant)),
+        border: Border(
+          bottom: BorderSide(color: colors.outlineVariant),
+        ),
       ),
       child: Row(
         children: [
-          Expanded(flex: 3, child: Text('Product Name', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Category', style: headerStyle)),
-          Expanded(flex: 3, child: Text('Description', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Supplier', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Status', style: headerStyle)),
+          Expanded(
+            flex: 3,
+            child: Text(
+              'master_products.table_product_name'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'master_products.table_category'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              'master_products.table_description'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'master_products.table_supplier'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'master_products.table_status'.tr(),
+              style: headerStyle,
+            ),
+          ),
           SizedBox(
             width: 90,
             child: Align(
               alignment: Alignment.centerRight,
-              child: Text('Actions', style: headerStyle),
+              child: Text(
+                'common.actions'.tr(),
+                style: headerStyle,
+              ),
             ),
           ),
         ],

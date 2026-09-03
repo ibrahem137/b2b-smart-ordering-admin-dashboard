@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 /// ---------------------------------------------------------------------------
@@ -55,7 +56,11 @@ class DashTopBar extends StatelessWidget {
         height: 76,
         padding: const EdgeInsets.symmetric(horizontal: 24),
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: colorScheme.outlineVariant)),
+          border: Border(
+            bottom: BorderSide(
+              color: colorScheme.outlineVariant,
+            ),
+          ),
         ),
         child: Row(
           children: [
@@ -77,21 +82,31 @@ class DashTopBar extends StatelessWidget {
               const SizedBox(width: 8),
 
             Expanded(
-              child: _TitleSection(title: title, subtitle: subtitle),
+              child: _TitleSection(
+                title: title,
+                subtitle: subtitle,
+              ),
             ),
 
-            if (showSearch) const SizedBox(width: 320, child: _SearchField()),
+            if (showSearch)
+              const SizedBox(
+                width: 320,
+                child: _SearchField(),
+              ),
 
             if (showSearch) const SizedBox(width: 16),
 
             ...actions,
 
-            if (actions.isNotEmpty) const SizedBox(width: 12),
+            if (actions.isNotEmpty)
+              const SizedBox(width: 12),
 
             if (showNotifications)
               IconButton(
-                tooltip: 'Notifications',
-                icon: const Badge(child: Icon(Icons.notifications_none)),
+                tooltip: 'common.notifications'.tr(),
+                icon: const Badge(
+                  child: Icon(Icons.notifications_none),
+                ),
                 onPressed: () {},
               ),
 
@@ -121,17 +136,28 @@ class _ProfileButton extends StatelessWidget {
           onTap: controller.open,
           child: Row(
             children: [
-              const CircleAvatar(radius: 18, child: Icon(Icons.person)),
+              const CircleAvatar(
+                radius: 18,
+                child: Icon(Icons.person),
+              ),
               const SizedBox(width: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Administrator',
-                    style: Theme.of(context).textTheme.labelLarge,
+                    'admin'.tr(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge,
                   ),
-                  Text('Admin', style: Theme.of(context).textTheme.bodySmall),
+                  Text(
+                    'common.admin'.tr(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall,
+                  ),
                 ],
               ),
               const SizedBox(width: 6),
@@ -144,18 +170,18 @@ class _ProfileButton extends StatelessWidget {
         MenuItemButton(
           leadingIcon: const Icon(Icons.person_outline),
           onPressed: () {},
-          child: const Text('Profile'),
+          child: Text('common.profile'.tr()),
         ),
         MenuItemButton(
           leadingIcon: const Icon(Icons.settings_outlined),
           onPressed: () {},
-          child: const Text('Settings'),
+          child: Text('navigation.settings'.tr()),
         ),
         const Divider(height: 1),
         MenuItemButton(
           leadingIcon: const Icon(Icons.logout),
           onPressed: () {},
-          child: const Text('Logout'),
+          child: Text('settings.logout'.tr()),
         ),
       ],
     );
@@ -172,7 +198,7 @@ class _SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SearchBar(
-      hintText: 'Search...',
+      hintText: 'common.search_placeholder'.tr(),
       leading: const Icon(Icons.search),
       onChanged: (_) {},
     );
@@ -195,9 +221,15 @@ class _TitleSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         if (subtitle != null)
-          Text(subtitle!, style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            subtitle!,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
       ],
     );
   }

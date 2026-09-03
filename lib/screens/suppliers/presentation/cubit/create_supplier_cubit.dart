@@ -6,10 +6,12 @@ import 'package:flutter/foundation.dart';
 
 import 'supplier_action_state.dart';
 
-class CreateSupplierCubit extends Cubit<SupplierActionState> {
+class CreateSupplierCubit
+    extends Cubit<SupplierActionState> {
   final SuppliersRepository repository;
 
-  CreateSupplierCubit(this.repository) : super(const SupplierActionInitial());
+  CreateSupplierCubit(this.repository)
+    : super(const SupplierActionInitial());
 
   Future<void> createSupplier({
     required String name,
@@ -41,7 +43,8 @@ class CreateSupplierCubit extends Cubit<SupplierActionState> {
 
           emit(
             SupplierActionSuccess(
-              message: 'Supplier created successfully',
+              message:
+                  'suppliers.messages.created_successfully',
               supplierId: supplierId,
             ),
           );
@@ -57,7 +60,9 @@ class CreateSupplierCubit extends Cubit<SupplierActionState> {
       },
       failure: (error) {
         emit(
-          SupplierActionFailure(error.message ?? 'Failed to create supplier'),
+          SupplierActionFailure(
+            error.message ?? 'Failed to create supplier',
+          ),
         );
       },
     );

@@ -1,35 +1,46 @@
 import 'package:dashboard/core/theme/extensions.dart';
 import 'package:dashboard/screens/sales/data/models/sale_model.dart';
 import 'package:dashboard/screens/sales/presentation/components/sale_status_chip.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class SaleRow extends StatelessWidget {
   final SaleModel sale;
   final VoidCallback? onView;
 
-  const SaleRow({super.key, required this.sale, this.onView});
+  const SaleRow({
+    super.key,
+    required this.sale,
+    this.onView,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
 
     final total = double.tryParse(sale.total) ?? 0.0;
-
-    final totalCost = double.tryParse(sale.totalCost) ?? 0.0;
-
+    final totalCost =
+        double.tryParse(sale.totalCost) ?? 0.0;
     final profit = double.tryParse(sale.profit) ?? 0.0;
+    final paidAmount =
+        double.tryParse(sale.paidAmount) ?? 0.0;
 
-    final paidAmount = double.tryParse(sale.paidAmount) ?? 0.0;
+    final profitPercentage = totalCost > 0
+        ? (profit / totalCost) * 100
+        : 0.0;
 
-    final profitPercentage = totalCost > 0 ? (profit / totalCost) * 100 : 0.0;
-
-    final profitColor = profit >= 0 ? dashboardColors.success : colors.error;
+    final profitColor = profit >= 0
+        ? dashboardColors.success
+        : colors.error;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 18,
+      ),
       color: colors.surface,
       child: Row(
         children: [
@@ -40,19 +51,21 @@ class SaleRow extends StatelessWidget {
               children: [
                 Text(
                   'SALE-${sale.id.toString().padLeft(4, '0')}',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
                 ),
                 const SizedBox(height: 5),
                 Text(
                   _formatDateTime(sale.createdAt),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colors.onSurfaceVariant,
-                    fontSize: 12,
-                  ),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        color: colors.onSurfaceVariant,
+                        fontSize: 12,
+                      ),
                 ),
               ],
             ),
@@ -64,21 +77,24 @@ class SaleRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  sale.store?.name ?? 'Unknown Store',
+                  sale.store?.name ??
+                      'sales.unknown_store'.tr(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'ID: ${sale.storeId}',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colors.onSurfaceVariant,
-                    fontSize: 12,
-                  ),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        color: colors.onSurfaceVariant,
+                        fontSize: 12,
+                      ),
                 ),
               ],
             ),
@@ -90,21 +106,24 @@ class SaleRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  sale.customer?.name ?? 'Unknown Customer',
+                  sale.customer?.name ??
+                      'sales.unknown_customer'.tr(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'ID: ${sale.customerId}',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colors.onSurfaceVariant,
-                    fontSize: 12,
-                  ),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        color: colors.onSurfaceVariant,
+                        fontSize: 12,
+                      ),
                 ),
               ],
             ),
@@ -133,7 +152,10 @@ class SaleRow extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 6,
+              ),
               decoration: BoxDecoration(
                 color: profitColor.withValues(alpha: .12),
                 borderRadius: BorderRadius.circular(30),
@@ -186,7 +208,7 @@ class SaleRow extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                tooltip: 'View',
+                tooltip: 'sales.view'.tr(),
                 onPressed: onView,
                 icon: Icon(
                   Icons.remove_red_eye_outlined,
@@ -226,6 +248,7 @@ class SaleRow extends StatelessWidget {
       return value;
     }
 
-    return DateFormat('yyyy-MM-dd\nHH:mm').format(date.toLocal());
+    return DateFormat('yyyy-MM-dd\nHH:mm')
+        .format(date.toLocal());
   }
 }

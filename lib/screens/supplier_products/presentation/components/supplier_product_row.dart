@@ -1,5 +1,6 @@
 import 'package:dashboard/core/theme/extensions.dart';
 import 'package:dashboard/screens/supplier_products/data/models/supplier_product_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SupplierProductRow extends StatelessWidget {
@@ -18,10 +19,14 @@ class SupplierProductRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 18,
+      ),
       color: colors.surface,
       child: Row(
         children: [
@@ -42,24 +47,30 @@ class SupplierProductRow extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
                     children: [
                       Text(
-                        product.product?.name ?? 'Unknown Product',
+                        product.product?.name ??
+                            'supplier_products.unknown_product'
+                                .tr(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: colors.onSurface,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(
+                              color: colors.onSurface,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'ID: ${product.productId}',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontSize: 12,
-                          color: colors.onSurfaceVariant,
-                        ),
+                        style: theme.textTheme.bodySmall
+                            ?.copyWith(
+                              fontSize: 12,
+                              color:
+                                  colors.onSurfaceVariant,
+                            ),
                       ),
                     ],
                   ),
@@ -75,21 +86,25 @@ class SupplierProductRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  product.supplier?.name ?? 'Unknown Supplier',
+                  product.supplier?.name ??
+                      'supplier_products.unknown_supplier'
+                          .tr(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'ID: ${product.supplierId}',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontSize: 12,
-                    color: colors.onSurfaceVariant,
-                  ),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        fontSize: 12,
+                        color: colors.onSurfaceVariant,
+                      ),
                 ),
               ],
             ),
@@ -132,7 +147,10 @@ class SupplierProductRow extends StatelessWidget {
           ),
 
           /// Status
-          Expanded(flex: 2, child: _StatusBadge(status: product.status)),
+          Expanded(
+            flex: 2,
+            child: _StatusBadge(status: product.status),
+          ),
 
           /// Updated Date
           Expanded(
@@ -153,7 +171,7 @@ class SupplierProductRow extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 IconButton(
-                  tooltip: 'Edit',
+                  tooltip: 'common.edit'.tr(),
                   onPressed: onEdit,
                   icon: Icon(
                     Icons.edit_outlined,
@@ -162,7 +180,7 @@ class SupplierProductRow extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  tooltip: 'Delete',
+                  tooltip: 'common.delete'.tr(),
                   onPressed: onDelete,
                   icon: Icon(
                     Icons.delete_outline,
@@ -204,7 +222,8 @@ class _StatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
 
     final normalized = status.toLowerCase();
 
@@ -214,7 +233,9 @@ class _StatusBadge extends StatelessWidget {
     switch (normalized) {
       case 'available':
         foreground = dashboardColors.success;
-        background = dashboardColors.success.withValues(alpha: .10);
+        background = dashboardColors.success.withValues(
+          alpha: .10,
+        );
         break;
 
       case 'archived':
@@ -235,7 +256,10 @@ class _StatusBadge extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 5,
+        ),
         decoration: BoxDecoration(
           color: background,
           borderRadius: BorderRadius.circular(10),
@@ -269,13 +293,13 @@ class _StatusBadge extends StatelessWidget {
   String _label(String status) {
     switch (status) {
       case 'available':
-        return 'Available';
+        return 'supplier_products.status.available'.tr();
 
       case 'unavailable':
-        return 'Unavailable';
+        return 'supplier_products.status.unavailable'.tr();
 
       case 'archived':
-        return 'Archived';
+        return 'supplier_products.status.archived'.tr();
 
       default:
         return status;

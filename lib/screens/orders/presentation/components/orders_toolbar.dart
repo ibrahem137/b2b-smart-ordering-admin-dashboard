@@ -1,8 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class OrdersToolbar extends StatelessWidget {
   final ValueChanged<String>? onSearch;
+
   final String selectedFilter;
+
   final ValueChanged<String> onFilterChanged;
 
   const OrdersToolbar({
@@ -17,7 +20,13 @@ class OrdersToolbar extends StatelessWidget {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
-    const filters = ['All', 'Draft', 'Submitted', 'Received', 'Cancelled'];
+    const filters = [
+      'all',
+      'draft',
+      'submitted',
+      'received',
+      'cancelled',
+    ];
 
     return Row(
       children: [
@@ -28,25 +37,38 @@ class OrdersToolbar extends StatelessWidget {
               color: colors.onSurface,
             ),
             decoration: InputDecoration(
-              hintText: 'Search orders...',
-              hintStyle: theme.textTheme.bodyMedium?.copyWith(
+              hintText: 'orders.search_orders'.tr(),
+              hintStyle: theme.textTheme.bodyMedium
+                  ?.copyWith(
+                    color: colors.onSurfaceVariant,
+                  ),
+              prefixIcon: Icon(
+                Icons.search,
                 color: colors.onSurfaceVariant,
               ),
-              prefixIcon: Icon(Icons.search, color: colors.onSurfaceVariant),
               filled: true,
               fillColor: colors.surface,
-              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 16,
+              ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: colors.outlineVariant),
+                borderSide: BorderSide(
+                  color: colors.outlineVariant,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: colors.primary, width: 1.5),
+                borderSide: BorderSide(
+                  color: colors.primary,
+                  width: 1.5,
+                ),
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: colors.outlineVariant),
+                borderSide: BorderSide(
+                  color: colors.outlineVariant,
+                ),
               ),
             ),
           ),
@@ -61,21 +83,27 @@ class OrdersToolbar extends StatelessWidget {
             final selected = selectedFilter == filter;
 
             return ChoiceChip(
-              label: Text(filter),
+              label: Text(_filterLabel(filter)),
               selected: selected,
               onSelected: (_) {
                 onFilterChanged(filter);
               },
               showCheckmark: false,
               side: BorderSide(
-                color: selected ? colors.primary : colors.outlineVariant,
+                color: selected
+                    ? colors.primary
+                    : colors.outlineVariant,
               ),
-              backgroundColor: colors.surfaceContainerHighest,
+              backgroundColor:
+                  colors.surfaceContainerHighest,
               selectedColor: colors.primary,
-              labelStyle: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: selected ? colors.onPrimary : colors.onSurfaceVariant,
-              ),
+              labelStyle: theme.textTheme.bodyMedium
+                  ?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: selected
+                        ? colors.onPrimary
+                        : colors.onSurfaceVariant,
+                  ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -84,5 +112,27 @@ class OrdersToolbar extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _filterLabel(String filter) {
+    switch (filter) {
+      case 'all':
+        return 'common.all'.tr();
+
+      case 'draft':
+        return 'orders.draft'.tr();
+
+      case 'submitted':
+        return 'orders.submitted'.tr();
+
+      case 'received':
+        return 'orders.received'.tr();
+
+      case 'cancelled':
+        return 'orders.cancelled'.tr();
+
+      default:
+        return filter;
+    }
   }
 }

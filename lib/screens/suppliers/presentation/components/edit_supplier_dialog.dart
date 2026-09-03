@@ -5,6 +5,7 @@ import 'package:dashboard/screens/suppliers/presentation/cubit/supplier_action_s
 import 'package:dashboard/screens/suppliers/presentation/cubit/supplier_categories_cubit.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/update_supplier_categories_cubit.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/update_suppliers_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,13 +13,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EditSupplierDialog extends StatefulWidget {
   final SupplierModel supplier;
 
-  const EditSupplierDialog({super.key, required this.supplier});
+  const EditSupplierDialog({
+    super.key,
+    required this.supplier,
+  });
 
   @override
-  State<EditSupplierDialog> createState() => _EditSupplierDialogState();
+  State<EditSupplierDialog> createState() =>
+      _EditSupplierDialogState();
 }
 
-class _EditSupplierDialogState extends State<EditSupplierDialog> {
+class _EditSupplierDialogState
+    extends State<EditSupplierDialog> {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _nameController;
@@ -39,7 +45,10 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<SupplierCategoriesCubit, SupplierCategoriesState>(
+        BlocListener<
+          SupplierCategoriesCubit,
+          SupplierCategoriesState
+        >(
           listener: (context, state) {
             if (state is SupplierCategoriesSuccess) {
               if (!_supplierCategoriesLoaded) {
@@ -64,20 +73,28 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
           },
         ),
 
-        BlocListener<UpdateSupplierCubit, SupplierActionState>(
+        BlocListener<
+          UpdateSupplierCubit,
+          SupplierActionState
+        >(
           listener: (context, state) {
             if (state is SupplierActionSuccess) {
-              debugPrint('SUPPLIER INFO UPDATED SUCCESSFULLY');
+              debugPrint(
+                'SUPPLIER INFO UPDATED SUCCESSFULLY',
+              );
 
               debugPrint(
                 'SYNCING EDITED CATEGORIES: '
                 '$_selectedCategoryIds',
               );
 
-              context.read<UpdateSupplierCategoriesCubit>().updateCategories(
-                supplierId: widget.supplier.id,
-                categoryIds: _selectedCategoryIds.toList(),
-              );
+              context
+                  .read<UpdateSupplierCategoriesCubit>()
+                  .updateCategories(
+                    supplierId: widget.supplier.id,
+                    categoryIds: _selectedCategoryIds
+                        .toList(),
+                  );
             }
 
             if (state is SupplierActionFailure) {
@@ -91,10 +108,15 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
           },
         ),
 
-        BlocListener<UpdateSupplierCategoriesCubit, SupplierActionState>(
+        BlocListener<
+          UpdateSupplierCategoriesCubit,
+          SupplierActionState
+        >(
           listener: (context, state) {
             if (state is SupplierActionSuccess) {
-              debugPrint('SUPPLIER CATEGORIES UPDATED SUCCESSFULLY');
+              debugPrint(
+                'SUPPLIER CATEGORIES UPDATED SUCCESSFULLY',
+              );
 
               Navigator.pop(context, true);
             }
@@ -110,85 +132,106 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
           },
         ),
       ],
-      child: BlocBuilder<UpdateSupplierCubit, SupplierActionState>(
-        builder: (context, updateState) {
-          return BlocBuilder<
-            UpdateSupplierCategoriesCubit,
+      child:
+          BlocBuilder<
+            UpdateSupplierCubit,
             SupplierActionState
           >(
-            builder: (context, categoriesUpdateState) {
-              final isUpdating =
-                  updateState is SupplierActionLoading ||
-                  categoriesUpdateState is SupplierActionLoading;
+            builder: (context, updateState) {
+              return BlocBuilder<
+                UpdateSupplierCategoriesCubit,
+                SupplierActionState
+              >(
+                builder: (context, categoriesUpdateState) {
+                  final isUpdating =
+                      updateState
+                          is SupplierActionLoading ||
+                      categoriesUpdateState
+                          is SupplierActionLoading;
 
-              return Dialog(
-                backgroundColor: colors.surface,
-                clipBehavior: Clip.antiAlias,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  side: BorderSide(color: colors.outlineVariant),
-                ),
-                child: SizedBox(
-                  width: 650,
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(28),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildHeader(),
-
-                          const SizedBox(height: 30),
-
-                          _buildNameField(),
-
-                          const SizedBox(height: 20),
-
-                          _buildEmailField(),
-
-                          const SizedBox(height: 20),
-
-                          _buildPhoneField(),
-
-                          const SizedBox(height: 20),
-
-                          _buildAddressField(),
-
-                          const SizedBox(height: 28),
-
-                          _buildCategories(),
-
-                          if (_showCategoryError)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text(
-                                'Please select at least one category.',
-                                style: TextStyle(
-                                  color: colors.error,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-
-                          const SizedBox(height: 24),
-
-                          _buildStatusSection(isUpdating),
-
-                          const SizedBox(height: 30),
-
-                          _buildActions(context, isUpdating),
-                        ],
+                  return Dialog(
+                    backgroundColor: colors.surface,
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        16,
+                      ),
+                      side: BorderSide(
+                        color: colors.outlineVariant,
                       ),
                     ),
-                  ),
-                ),
+                    child: SizedBox(
+                      width: 650,
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(28),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              _buildHeader(),
+
+                              const SizedBox(height: 30),
+
+                              _buildNameField(),
+
+                              const SizedBox(height: 20),
+
+                              _buildEmailField(),
+
+                              const SizedBox(height: 20),
+
+                              _buildPhoneField(),
+
+                              const SizedBox(height: 20),
+
+                              _buildAddressField(),
+
+                              const SizedBox(height: 28),
+
+                              _buildCategories(),
+
+                              if (_showCategoryError)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(
+                                        top: 10,
+                                      ),
+                                  child: Text(
+                                    'suppliers.validation.category_required'
+                                        .tr(),
+                                    style: TextStyle(
+                                      color: colors.error,
+                                      fontSize: 12,
+                                      fontWeight:
+                                          FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+
+                              const SizedBox(height: 24),
+
+                              _buildStatusSection(
+                                isUpdating,
+                              ),
+
+                              const SizedBox(height: 30),
+
+                              _buildActions(
+                                context,
+                                isUpdating,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               );
             },
-          );
-        },
-      ),
+          ),
     );
   }
 
@@ -206,11 +249,17 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
   void initState() {
     super.initState();
 
-    _nameController = TextEditingController(text: widget.supplier.name);
+    _nameController = TextEditingController(
+      text: widget.supplier.name,
+    );
 
-    _emailController = TextEditingController(text: widget.supplier.email ?? '');
+    _emailController = TextEditingController(
+      text: widget.supplier.email ?? '',
+    );
 
-    _phoneController = TextEditingController(text: widget.supplier.phone ?? '');
+    _phoneController = TextEditingController(
+      text: widget.supplier.phone ?? '',
+    );
 
     _addressController = TextEditingController(
       text: widget.supplier.address ?? '',
@@ -219,7 +268,14 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
     _isActive = widget.supplier.isActive;
   }
 
-  Widget _buildActions(BuildContext context, bool isUpdating) {
+  // ============================================================
+  // Actions
+  // ============================================================
+
+  Widget _buildActions(
+    BuildContext context,
+    bool isUpdating,
+  ) {
     final colors = Theme.of(context).colorScheme;
 
     return Row(
@@ -239,9 +295,11 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            child: Text(
+              'common.cancel'.tr(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -269,23 +327,35 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
                     ),
                   )
                 : const Icon(Icons.save_outlined),
-            label: Text(isUpdating ? 'Saving...' : 'Save Changes'),
+            label: Text(
+              isUpdating
+                  ? 'suppliers.actions.saving'.tr()
+                  : 'suppliers.actions.save_changes'.tr(),
+            ),
           ),
         ),
       ],
     );
   }
 
+  // ============================================================
+  // Address
+  // ============================================================
+
   Widget _buildAddressField() {
     return TextFormField(
       controller: _addressController,
       textInputAction: TextInputAction.done,
       decoration: _inputDecoration(
-        label: 'Address',
+        label: 'common.address'.tr(),
         icon: Icons.location_on_outlined,
       ),
     );
   }
+
+  // ============================================================
+  // Categories
+  // ============================================================
 
   Widget _buildCategories() {
     final theme = Theme.of(context);
@@ -295,7 +365,7 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Categories',
+          'navigation.categories'.tr(),
           style: theme.textTheme.bodyLarge?.copyWith(
             color: colors.onSurface,
             fontWeight: FontWeight.w600,
@@ -304,65 +374,87 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
 
         const SizedBox(height: 12),
 
-        BlocBuilder<SupplierCategoriesCubit, SupplierCategoriesState>(
+        BlocBuilder<
+          SupplierCategoriesCubit,
+          SupplierCategoriesState
+        >(
           builder: (context, supplierCategoriesState) {
-            if (supplierCategoriesState is SupplierCategoriesLoading) {
+            if (supplierCategoriesState
+                is SupplierCategoriesLoading) {
               return const Padding(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                child: Center(child: CircularProgressIndicator()),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             }
 
-            if (supplierCategoriesState is SupplierCategoriesFailure) {
+            if (supplierCategoriesState
+                is SupplierCategoriesFailure) {
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
                 children: [
                   Text(
                     supplierCategoriesState.message,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: colors.error,
-                    ),
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(color: colors.error),
                   ),
+
                   const SizedBox(height: 6),
+
                   TextButton.icon(
                     onPressed: () {
                       context
                           .read<SupplierCategoriesCubit>()
-                          .getSupplierCategories(widget.supplier.id);
+                          .getSupplierCategories(
+                            widget.supplier.id,
+                          );
                     },
                     icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
+                    label: Text('common.retry'.tr()),
                   ),
                 ],
               );
             }
 
-            return BlocBuilder<CategoriesCubit, CategoriesState>(
+            return BlocBuilder<
+              CategoriesCubit,
+              CategoriesState
+            >(
               builder: (context, categoriesState) {
                 if (categoriesState is CategoriesLoading) {
                   return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Center(child: CircularProgressIndicator()),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16,
+                    ),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
                 }
 
                 if (categoriesState is CategoriesFailure) {
                   return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
                     children: [
                       Text(
                         categoriesState.message,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: colors.error,
-                        ),
+                        style: theme.textTheme.bodySmall
+                            ?.copyWith(color: colors.error),
                       ),
+
                       const SizedBox(height: 6),
+
                       TextButton.icon(
                         onPressed: () {
-                          context.read<CategoriesCubit>().getCategories();
+                          context
+                              .read<CategoriesCubit>()
+                              .getCategories();
                         },
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Retry'),
+                        label: Text('common.retry'.tr()),
                       ),
                     ],
                   );
@@ -371,49 +463,64 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
                 if (categoriesState is CategoriesSuccess) {
                   if (categoriesState.categories.isEmpty) {
                     return Text(
-                      'No categories available.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: colors.onSurfaceVariant,
-                      ),
+                      'suppliers.categories.empty'.tr(),
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
                     );
                   }
 
                   return Wrap(
                     spacing: 10,
                     runSpacing: 10,
-                    children: categoriesState.categories.map((category) {
-                      final selected = _selectedCategoryIds.contains(
-                        category.id,
-                      );
+                    children: categoriesState.categories
+                        .map((category) {
+                          final selected =
+                              _selectedCategoryIds.contains(
+                                category.id,
+                              );
 
-                      return FilterChip(
-                        label: Text(category.name),
-                        selected: selected,
-                        showCheckmark: false,
-                        selectedColor: colors.primary.withValues(alpha: .12),
-                        backgroundColor: colors.surfaceContainerHighest,
-                        side: BorderSide(
-                          color: selected
-                              ? colors.primary
-                              : colors.outlineVariant,
-                        ),
-                        labelStyle: theme.textTheme.bodyMedium?.copyWith(
-                          color: selected ? colors.primary : colors.onSurface,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        onSelected: (value) {
-                          setState(() {
-                            if (value) {
-                              _selectedCategoryIds.add(category.id);
-                            } else {
-                              _selectedCategoryIds.remove(category.id);
-                            }
+                          return FilterChip(
+                            label: Text(category.name),
+                            selected: selected,
+                            showCheckmark: false,
+                            selectedColor: colors.primary
+                                .withValues(alpha: .12),
+                            backgroundColor: colors
+                                .surfaceContainerHighest,
+                            side: BorderSide(
+                              color: selected
+                                  ? colors.primary
+                                  : colors.outlineVariant,
+                            ),
+                            labelStyle: theme
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: selected
+                                      ? colors.primary
+                                      : colors.onSurface,
+                                  fontWeight:
+                                      FontWeight.w600,
+                                ),
+                            onSelected: (value) {
+                              setState(() {
+                                if (value) {
+                                  _selectedCategoryIds.add(
+                                    category.id,
+                                  );
+                                } else {
+                                  _selectedCategoryIds
+                                      .remove(category.id);
+                                }
 
-                            _showCategoryError = false;
-                          });
-                        },
-                      );
-                    }).toList(),
+                                _showCategoryError = false;
+                              });
+                            },
+                          );
+                        })
+                        .toList(),
                   );
                 }
 
@@ -426,12 +533,19 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
     );
   }
 
+  // ============================================================
+  // Email
+  // ============================================================
+
   Widget _buildEmailField() {
     return TextFormField(
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
-      decoration: _inputDecoration(label: 'Email', icon: Icons.email_outlined),
+      decoration: _inputDecoration(
+        label: 'common.email'.tr(),
+        icon: Icons.email_outlined,
+      ),
       validator: (value) {
         final email = value?.trim() ?? '';
 
@@ -440,13 +554,17 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
         }
 
         if (!EmailValidator.validate(email)) {
-          return 'Please enter a valid email address';
+          return 'suppliers.validation.invalid_email'.tr();
         }
 
         return null;
       },
     );
   }
+
+  // ============================================================
+  // Header
+  // ============================================================
 
   Widget _buildHeader() {
     final theme = Theme.of(context);
@@ -461,7 +579,11 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
             color: colors.primary.withValues(alpha: .12),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(Icons.edit_outlined, color: colors.primary, size: 24),
+          child: Icon(
+            Icons.edit_outlined,
+            color: colors.primary,
+            size: 24,
+          ),
         ),
 
         const SizedBox(width: 16),
@@ -471,17 +593,20 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Edit Supplier',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: colors.onSurface,
-                  fontWeight: FontWeight.bold,
-                ),
+                'suppliers.edit_dialog.title'.tr(),
+                style: theme.textTheme.headlineSmall
+                    ?.copyWith(
+                      color: colors.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
 
               const SizedBox(height: 4),
 
               Text(
-                'Update ${widget.supplier.name}.',
+                'suppliers.edit_dialog.subtitle'.tr(
+                  namedArgs: {'name': widget.supplier.name},
+                ),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colors.onSurfaceVariant,
                 ),
@@ -493,17 +618,21 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
     );
   }
 
+  // ============================================================
+  // Name
+  // ============================================================
+
   Widget _buildNameField() {
     return TextFormField(
       controller: _nameController,
       textInputAction: TextInputAction.next,
       decoration: _inputDecoration(
-        label: 'Supplier Name',
+        label: 'suppliers.fields.name'.tr(),
         icon: Icons.person_outline,
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Supplier name is required';
+          return 'suppliers.validation.name_required'.tr();
         }
 
         return null;
@@ -511,24 +640,35 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
     );
   }
 
+  // ============================================================
+  // Phone
+  // ============================================================
+
   Widget _buildPhoneField() {
     return TextFormField(
       controller: _phoneController,
       keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.next,
       decoration: _inputDecoration(
-        label: 'Phone Number',
+        label: 'suppliers.fields.phone'.tr(),
         icon: Icons.phone_outlined,
       ),
     );
   }
+
+  // ============================================================
+  // Status
+  // ============================================================
 
   Widget _buildStatusSection(bool isUpdating) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 12,
+      ),
       decoration: BoxDecoration(
         color: colors.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
@@ -541,20 +681,26 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Supplier Active',
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  'suppliers.status.active_title'.tr(),
+                  style: theme.textTheme.bodyLarge
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
                 ),
+
                 const SizedBox(height: 4),
+
                 Text(
                   _isActive
-                      ? 'Supplier can receive orders'
-                      : 'Supplier is disabled',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colors.onSurfaceVariant,
-                  ),
+                      ? 'suppliers.status.active_description'
+                            .tr()
+                      : 'suppliers.status.inactive_description'
+                            .tr(),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                 ),
               ],
             ),
@@ -575,29 +721,50 @@ class _EditSupplierDialogState extends State<EditSupplierDialog> {
     );
   }
 
+  // ============================================================
+  // Helpers
+  // ============================================================
+
   String? _emptyToNull(String value) {
     final trimmed = value.trim();
 
     return trimmed.isEmpty ? null : trimmed;
   }
 
+  // ============================================================
+  // Input Decoration
+  // ============================================================
+
   InputDecoration _inputDecoration({
     required String label,
     required IconData icon,
   }) {
-    return InputDecoration(labelText: label, prefixIcon: Icon(icon));
+    return InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon),
+    );
   }
 
-  void _showErrorSnackBar(BuildContext context, String message) {
+  void _showErrorSnackBar(
+    BuildContext context,
+    String message,
+  ) {
     final colors = Theme.of(context).colorScheme;
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: colors.error,
-        content: Text(message, style: TextStyle(color: colors.onError)),
+        content: Text(
+          message,
+          style: TextStyle(color: colors.onError),
+        ),
       ),
     );
   }
+
+  // ============================================================
+  // Update Supplier
+  // ============================================================
 
   void _updateSupplier() {
     final valid = _formKey.currentState!.validate();

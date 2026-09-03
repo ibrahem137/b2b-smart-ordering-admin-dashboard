@@ -1,12 +1,18 @@
 import 'package:dashboard/screens/orders/data/models/order_model.dart';
 import 'package:dashboard/screens/orders/presentation/components/order_row.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class OrdersTable extends StatelessWidget {
   final List<OrderModel> orders;
+
   final void Function(OrderModel order)? onView;
 
-  const OrdersTable({super.key, required this.orders, this.onView});
+  const OrdersTable({
+    super.key,
+    required this.orders,
+    this.onView,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +33,11 @@ class OrdersTable extends StatelessWidget {
             child: orders.isEmpty
                 ? Center(
                     child: Text(
-                      'No orders found.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: colors.onSurfaceVariant,
-                      ),
+                      'orders.no_orders_found_period'.tr(),
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
                     ),
                   )
                 : ListView.separated(
@@ -69,26 +76,79 @@ class OrdersTable extends StatelessWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 18,
+      ),
       decoration: BoxDecoration(
         color: colors.surfaceContainerLow,
-        border: Border(bottom: BorderSide(color: colors.outlineVariant)),
+        border: Border(
+          bottom: BorderSide(color: colors.outlineVariant),
+        ),
       ),
       child: Row(
         children: [
-          Expanded(flex: 2, child: Text('Order', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Store', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Supplier', style: headerStyle)),
-          Expanded(child: Text('Total Buy', style: headerStyle)),
-          Expanded(child: Text('Total Sell', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Status', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Notes', style: headerStyle)),
-          Expanded(child: Text('Date', style: headerStyle)),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'orders.order'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'orders.store'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'orders.supplier'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              'orders.total_buy'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              'orders.total_sell'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'common.status'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'orders.notes'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              'common.date'.tr(),
+              style: headerStyle,
+            ),
+          ),
           SizedBox(
             width: 70,
             child: Align(
               alignment: Alignment.centerRight,
-              child: Text('Actions', style: headerStyle),
+              child: Text(
+                'common.actions'.tr(),
+                style: headerStyle,
+              ),
             ),
           ),
         ],

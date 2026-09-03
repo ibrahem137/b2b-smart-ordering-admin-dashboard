@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SalesToolbar extends StatelessWidget {
@@ -21,37 +22,57 @@ class SalesToolbar extends StatelessWidget {
                 color: colors.onSurface,
               ),
               decoration: InputDecoration(
-                hintText: 'Search sales...',
-                hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                hintText: 'sales.search_sales'.tr(),
+                hintStyle: theme.textTheme.bodyMedium
+                    ?.copyWith(
+                      color: colors.onSurfaceVariant,
+                    ),
+                prefixIcon: Icon(
+                  Icons.search,
                   color: colors.onSurfaceVariant,
                 ),
-                prefixIcon: Icon(Icons.search, color: colors.onSurfaceVariant),
                 filled: true,
                 fillColor: colors.surface,
-                contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 14,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: colors.outlineVariant),
+                  borderSide: BorderSide(
+                    color: colors.outlineVariant,
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: colors.outlineVariant),
+                  borderSide: BorderSide(
+                    color: colors.outlineVariant,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: colors.primary, width: 1.5),
+                  borderSide: BorderSide(
+                    color: colors.primary,
+                    width: 1.5,
+                  ),
                 ),
               ),
             ),
           ),
         ),
+
         const SizedBox(width: 20),
+
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 18,
+            vertical: 12,
+          ),
           decoration: BoxDecoration(
             color: colors.surface,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: colors.outlineVariant),
+            border: Border.all(
+              color: colors.outlineVariant,
+            ),
           ),
           child: Row(
             children: [
@@ -62,7 +83,7 @@ class SalesToolbar extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                'This Month',
+                'sales.this_month'.tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: colors.onSurface,

@@ -14,6 +14,7 @@ import 'package:dashboard/screens/sales/presentation/cubit/sales_state.dart';
 import 'package:dashboard/screens/supplier_products/data/models/supplier_product_model.dart';
 import 'package:dashboard/screens/supplier_products/presentation/cubit/supplier_products_cubit.dart';
 import 'package:dashboard/screens/supplier_products/presentation/cubit/supplier_products_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +26,8 @@ class DashboardScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<DashboardCubit>(
-          create: (_) => getIt<DashboardCubit>()..getDashboard(),
+          create: (_) =>
+              getIt<DashboardCubit>()..getDashboard(),
         ),
         BlocProvider<OrdersCubit>(
           create: (_) => getIt<OrdersCubit>()..getOrders(),
@@ -34,7 +36,9 @@ class DashboardScreen extends StatelessWidget {
           create: (_) => getIt<SalesCubit>()..getSales(),
         ),
         BlocProvider<SupplierProductsCubit>(
-          create: (_) => getIt<SupplierProductsCubit>()..getSupplierProducts(),
+          create: (_) =>
+              getIt<SupplierProductsCubit>()
+                ..getSupplierProducts(),
         ),
       ],
       child: const _DashboardView(),
@@ -55,7 +59,9 @@ class _DashboardView extends StatelessWidget {
         builder: (context, state) {
           if (state is DashboardLoading) {
             return Center(
-              child: CircularProgressIndicator(color: colors.primary),
+              child: CircularProgressIndicator(
+                color: colors.primary,
+              ),
             );
           }
 
@@ -68,7 +74,9 @@ class _DashboardView extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
-                  DashboardInfoCards(overview: state.overview),
+                  DashboardInfoCards(
+                    overview: state.overview,
+                  ),
 
                   const SizedBox(height: 24),
 
@@ -76,7 +84,9 @@ class _DashboardView extends StatelessWidget {
                     overview: state.overview,
                     salesTrend: state.salesTrend,
                     onRefresh: () {
-                      context.read<DashboardCubit>().getDashboard();
+                      context
+                          .read<DashboardCubit>()
+                          .getDashboard();
                     },
                   ),
 
@@ -86,7 +96,9 @@ class _DashboardView extends StatelessWidget {
                     topStores: state.topStores,
                     lowStock: state.lowStock,
                     onRefresh: () {
-                      context.read<DashboardCubit>().getDashboard();
+                      context
+                          .read<DashboardCubit>()
+                          .getDashboard();
                     },
                   ),
 
@@ -108,7 +120,10 @@ class _DashboardView extends StatelessWidget {
     );
   }
 
-  Widget _buildDashboardFailure(BuildContext context, DashboardFailure state) {
+  Widget _buildDashboardFailure(
+    BuildContext context,
+    DashboardFailure state,
+  ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -118,7 +133,11 @@ class _DashboardView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.error_outline, color: colors.error, size: 42),
+            Icon(
+              Icons.error_outline,
+              color: colors.error,
+              size: 42,
+            ),
 
             const SizedBox(height: 12),
 
@@ -137,7 +156,7 @@ class _DashboardView extends StatelessWidget {
                 _refreshAll(context);
               },
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: Text('common.retry'.tr()),
             ),
           ],
         ),
@@ -155,7 +174,9 @@ class _DashboardView extends StatelessWidget {
           return SizedBox(
             height: 300,
             child: Center(
-              child: CircularProgressIndicator(color: colors.primary),
+              child: CircularProgressIndicator(
+                color: colors.primary,
+              ),
             ),
           );
         }
@@ -167,26 +188,33 @@ class _DashboardView extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.error_outline, color: colors.error, size: 36),
+                  Icon(
+                    Icons.error_outline,
+                    color: colors.error,
+                    size: 36,
+                  ),
 
                   const SizedBox(height: 10),
 
                   Text(
                     state.message,
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colors.onSurfaceVariant,
-                    ),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(
+                          color: colors.onSurfaceVariant,
+                        ),
                   ),
 
                   const SizedBox(height: 12),
 
                   TextButton.icon(
                     onPressed: () {
-                      context.read<OrdersCubit>().getOrders();
+                      context
+                          .read<OrdersCubit>()
+                          .getOrders();
                     },
                     icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
+                    label: Text('common.retry'.tr()),
                   ),
                 ],
               ),
@@ -195,7 +223,9 @@ class _DashboardView extends StatelessWidget {
         }
 
         if (state is OrdersSuccess) {
-          final recentOrders = state.orders.take(5).toList();
+          final recentOrders = state.orders
+              .take(5)
+              .toList();
 
           return SizedBox(
             height: 520,
@@ -216,7 +246,10 @@ class _DashboardView extends StatelessWidget {
   Widget _buildSalesSection() {
     return BlocBuilder<SalesCubit, SalesState>(
       builder: (context, salesState) {
-        return BlocBuilder<SupplierProductsCubit, SupplierProductsState>(
+        return BlocBuilder<
+          SupplierProductsCubit,
+          SupplierProductsState
+        >(
           builder: (context, productsState) {
             final colors = Theme.of(context).colorScheme;
 
@@ -225,7 +258,9 @@ class _DashboardView extends StatelessWidget {
               return SizedBox(
                 height: 400,
                 child: Center(
-                  child: CircularProgressIndicator(color: colors.primary),
+                  child: CircularProgressIndicator(
+                    color: colors.primary,
+                  ),
                 ),
               );
             }
@@ -234,7 +269,8 @@ class _DashboardView extends StatelessWidget {
                 ? salesState.sales
                 : <SaleModel>[];
 
-            final products = productsState is SupplierProductsSuccess
+            final products =
+                productsState is SupplierProductsSuccess
                 ? productsState.supplierProducts
                 : <SupplierProductModel>[];
 
@@ -245,7 +281,9 @@ class _DashboardView extends StatelessWidget {
                 context.read<SalesCubit>().getSales();
               },
               onRefreshSupplierProducts: () {
-                context.read<SupplierProductsCubit>().getSupplierProducts();
+                context
+                    .read<SupplierProductsCubit>()
+                    .getSupplierProducts();
               },
             );
           },
@@ -261,6 +299,8 @@ class _DashboardView extends StatelessWidget {
 
     context.read<SalesCubit>().getSales();
 
-    context.read<SupplierProductsCubit>().getSupplierProducts();
+    context
+        .read<SupplierProductsCubit>()
+        .getSupplierProducts();
   }
 }

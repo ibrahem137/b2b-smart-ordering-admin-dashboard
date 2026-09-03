@@ -18,18 +18,23 @@ class CategoriesGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final crossAxisCount = _getCrossAxisCount(constraints.maxWidth);
+        final crossAxisCount = _getCrossAxisCount(
+          constraints.maxWidth,
+        );
 
         return GridView.builder(
           itemCount: categories.length,
           padding: EdgeInsets.zero,
           physics: const BouncingScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 24,
-            mainAxisSpacing: 24,
-            mainAxisExtent: _getCardHeight(constraints.maxWidth),
-          ),
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 24,
+                mainAxisSpacing: 24,
+                mainAxisExtent: _getCardHeight(
+                  constraints.maxWidth,
+                ),
+              ),
           itemBuilder: (context, index) {
             final category = categories[index];
 

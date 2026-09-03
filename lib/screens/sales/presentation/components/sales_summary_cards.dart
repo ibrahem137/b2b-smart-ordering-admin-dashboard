@@ -1,4 +1,5 @@
 import 'package:dashboard/core/theme/extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SalesSummaryCards extends StatelessWidget {
@@ -17,7 +18,8 @@ class SalesSummaryCards extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
 
     final profitColor = totalProfit >= 0
         ? dashboardColors.success
@@ -27,27 +29,33 @@ class SalesSummaryCards extends StatelessWidget {
       children: [
         Expanded(
           child: _SummaryCard(
-            title: 'Total Revenue',
+            title: 'sales.total_revenue'.tr(),
             value: '\$${totalRevenue.toStringAsFixed(2)}',
             icon: Icons.trending_up_rounded,
             iconColor: dashboardColors.success,
           ),
         ),
+
         const SizedBox(width: 20),
+
         Expanded(
           child: _SummaryCard(
-            title: 'Total Sales',
+            title: 'sales.total_sales'.tr(),
             value: totalSales.toString(),
             icon: Icons.inventory_2_outlined,
             iconColor: colors.primary,
           ),
         ),
+
         const SizedBox(width: 20),
+
         Expanded(
           child: _SummaryCard(
-            title: 'Total Profit',
+            title: 'sales.total_profit'.tr(),
             value: '\$${totalProfit.toStringAsFixed(2)}',
-            icon: totalProfit >= 0 ? Icons.trending_up : Icons.trending_down,
+            icon: totalProfit >= 0
+                ? Icons.trending_up
+                : Icons.trending_down,
             iconColor: profitColor,
           ),
         ),
@@ -92,28 +100,34 @@ class _SummaryCard extends StatelessWidget {
             ),
             child: Icon(icon, color: iconColor, size: 28),
           ),
+
           const SizedBox(width: 16),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontSize: 14,
-                    color: colors.onSurfaceVariant,
-                  ),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        fontSize: 14,
+                        color: colors.onSurfaceVariant,
+                      ),
                 ),
+
                 const SizedBox(height: 6),
+
                 Text(
                   value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: iconColor,
-                  ),
+                  style: theme.textTheme.headlineSmall
+                      ?.copyWith(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: iconColor,
+                      ),
                 ),
               ],
             ),

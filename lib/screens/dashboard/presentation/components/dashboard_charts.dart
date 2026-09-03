@@ -3,6 +3,7 @@ import 'package:dashboard/screens/dashboard/data/models/sales_trend_response.dar
 import 'package:dashboard/screens/dashboard/presentation/components/dashboard_card.dart';
 import 'package:dashboard/screens/dashboard/presentation/components/orders_status_chart.dart';
 import 'package:dashboard/screens/dashboard/presentation/components/sales_over_time_chart.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DashboardCharts extends StatelessWidget {
@@ -23,28 +24,32 @@ class DashboardCharts extends StatelessWidget {
       builder: (context, constraints) {
         final isNarrow = constraints.maxWidth < 1000;
 
+        final salesChart = SizedBox(
+          height: 420,
+          child: DashboardCard(
+            title: 'dashboard.sales_over_time'.tr(),
+            icon: Icons.show_chart,
+            onRefresh: onRefresh,
+            child: SalesOverTimeChart(data: salesTrend),
+          ),
+        );
+
+        final ordersChart = SizedBox(
+          height: 420,
+          child: DashboardCard(
+            title: 'dashboard.orders_by_status'.tr(),
+            icon: Icons.shopping_cart_outlined,
+            onRefresh: onRefresh,
+            child: OrdersStatusChart(overview: overview),
+          ),
+        );
+
         if (isNarrow) {
           return Column(
             children: [
-              SizedBox(
-                height: 420,
-                child: DashboardCard(
-                  title: 'Sales Over Time',
-                  icon: Icons.show_chart,
-                  onRefresh: onRefresh,
-                  child: SalesOverTimeChart(data: salesTrend),
-                ),
-              ),
+              salesChart,
               const SizedBox(height: 24),
-              SizedBox(
-                height: 420,
-                child: DashboardCard(
-                  title: 'Orders by Status',
-                  icon: Icons.shopping_cart_outlined,
-                  onRefresh: onRefresh,
-                  child: OrdersStatusChart(overview: overview),
-                ),
-              ),
+              ordersChart,
             ],
           );
         }
@@ -52,29 +57,9 @@ class DashboardCharts extends StatelessWidget {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: SizedBox(
-                height: 420,
-                child: DashboardCard(
-                  title: 'Sales Over Time',
-                  icon: Icons.show_chart,
-                  onRefresh: onRefresh,
-                  child: SalesOverTimeChart(data: salesTrend),
-                ),
-              ),
-            ),
+            Expanded(child: salesChart),
             const SizedBox(width: 24),
-            Expanded(
-              child: SizedBox(
-                height: 420,
-                child: DashboardCard(
-                  title: 'Orders by Status',
-                  icon: Icons.shopping_cart_outlined,
-                  onRefresh: onRefresh,
-                  child: OrdersStatusChart(overview: overview),
-                ),
-              ),
-            ),
+            Expanded(child: ordersChart),
           ],
         );
       },
