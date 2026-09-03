@@ -4,10 +4,12 @@ import 'package:dashboard/screens/suppliers/domain/repos/suppliers_repository.da
 
 import 'supplier_action_state.dart';
 
-class DeleteSupplierCubit extends Cubit<SupplierActionState> {
+class DeleteSupplierCubit
+    extends Cubit<SupplierActionState> {
   final SuppliersRepository repository;
 
-  DeleteSupplierCubit(this.repository) : super(const SupplierActionInitial());
+  DeleteSupplierCubit(this.repository)
+    : super(const SupplierActionInitial());
 
   Future<void> deleteSupplier(int id) async {
     emit(const SupplierActionLoading());
@@ -17,12 +19,17 @@ class DeleteSupplierCubit extends Cubit<SupplierActionState> {
     result.when(
       success: (_) {
         emit(
-          const SupplierActionSuccess(message: 'Supplier deleted successfully'),
+          const SupplierActionSuccess(
+            message:
+                'suppliers.messages.deleted_successfully',
+          ),
         );
       },
       failure: (error) {
         emit(
-          SupplierActionFailure(error.message ?? 'Failed to delete supplier'),
+          SupplierActionFailure(
+            error.message ?? 'Failed to delete supplier',
+          ),
         );
       },
     );

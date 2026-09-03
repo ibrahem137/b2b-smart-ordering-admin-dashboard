@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SupplierProductsToolbar extends StatelessWidget {
@@ -17,7 +18,12 @@ class SupplierProductsToolbar extends StatelessWidget {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
-    const filters = ['All', 'Available', 'Unavailable', 'Archived'];
+    const filters = [
+      'all',
+      'available',
+      'unavailable',
+      'archived',
+    ];
 
     return Row(
       children: [
@@ -28,30 +34,46 @@ class SupplierProductsToolbar extends StatelessWidget {
               color: colors.onSurface,
             ),
             decoration: InputDecoration(
-              hintText: 'Search product or supplier...',
-              hintStyle: theme.textTheme.bodyMedium?.copyWith(
+              hintText: 'supplier_products.search_hint'
+                  .tr(),
+              hintStyle: theme.textTheme.bodyMedium
+                  ?.copyWith(
+                    color: colors.onSurfaceVariant,
+                  ),
+              prefixIcon: Icon(
+                Icons.search,
                 color: colors.onSurfaceVariant,
               ),
-              prefixIcon: Icon(Icons.search, color: colors.onSurfaceVariant),
               filled: true,
               fillColor: colors.surface,
-              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 16,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: colors.outlineVariant),
+                borderSide: BorderSide(
+                  color: colors.outlineVariant,
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: colors.outlineVariant),
+                borderSide: BorderSide(
+                  color: colors.outlineVariant,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: colors.primary, width: 1.5),
+                borderSide: BorderSide(
+                  color: colors.primary,
+                  width: 1.5,
+                ),
               ),
             ),
           ),
         ),
+
         const SizedBox(width: 24),
+
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -59,19 +81,23 @@ class SupplierProductsToolbar extends StatelessWidget {
             final selected = selectedFilter == filter;
 
             return ChoiceChip(
-              label: Text(filter),
+              label: Text(_filterLabel(filter)),
               selected: selected,
               onSelected: (_) {
                 onFilterChanged(filter);
               },
               showCheckmark: false,
               selectedColor: colors.primary,
-              backgroundColor: colors.surfaceContainerHighest,
+              backgroundColor:
+                  colors.surfaceContainerHighest,
               side: BorderSide.none,
-              labelStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: selected ? colors.onPrimary : colors.onSurfaceVariant,
-                fontWeight: FontWeight.w600,
-              ),
+              labelStyle: theme.textTheme.bodyMedium
+                  ?.copyWith(
+                    color: selected
+                        ? colors.onPrimary
+                        : colors.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -80,5 +106,24 @@ class SupplierProductsToolbar extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _filterLabel(String filter) {
+    switch (filter) {
+      case 'all':
+        return 'common.all'.tr();
+
+      case 'available':
+        return 'supplier_products.available'.tr();
+
+      case 'unavailable':
+        return 'supplier_products.unavailable'.tr();
+
+      case 'archived':
+        return 'supplier_products.archived'.tr();
+
+      default:
+        return filter;
+    }
   }
 }

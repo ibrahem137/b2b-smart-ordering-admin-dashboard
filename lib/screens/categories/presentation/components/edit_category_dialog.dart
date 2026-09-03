@@ -1,19 +1,25 @@
 import 'package:dashboard/screens/categories/data/models/category_model.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/category_action_state.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/update_category_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditCategoryDialog extends StatefulWidget {
   final CategoryModel category;
 
-  const EditCategoryDialog({super.key, required this.category});
+  const EditCategoryDialog({
+    super.key,
+    required this.category,
+  });
 
   @override
-  State<EditCategoryDialog> createState() => _EditCategoryDialogState();
+  State<EditCategoryDialog> createState() =>
+      _EditCategoryDialogState();
 }
 
-class _EditCategoryDialogState extends State<EditCategoryDialog> {
+class _EditCategoryDialogState
+    extends State<EditCategoryDialog> {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _nameController;
@@ -37,10 +43,12 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colors = theme.colorScheme;
+    final colors = Theme.of(context).colorScheme;
 
-    return BlocConsumer<UpdateCategoryCubit, CategoryActionState>(
+    return BlocConsumer<
+      UpdateCategoryCubit,
+      CategoryActionState
+    >(
       listener: (context, state) {
         if (state is CategoryActionSuccess) {
           Navigator.pop(context, true);
@@ -75,7 +83,8 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
                   children: [
                     _buildHeader(context),
 
@@ -110,12 +119,17 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
   void initState() {
     super.initState();
 
-    _nameController = TextEditingController(text: widget.category.name);
+    _nameController = TextEditingController(
+      text: widget.category.name,
+    );
 
     _selectedColor = _normalizeColor(widget.category.color);
   }
 
-  Widget _buildActions(BuildContext context, bool isLoading) {
+  Widget _buildActions(
+    BuildContext context,
+    bool isLoading,
+  ) {
     final colors = Theme.of(context).colorScheme;
 
     return Row(
@@ -135,9 +149,11 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            child: Text(
+              'common.cancel'.tr(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -164,7 +180,7 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
                       color: colors.onPrimary,
                     ),
                   )
-                : const Text('Save Changes'),
+                : Text('categories.save_changes'.tr()),
           ),
         ),
       ],
@@ -175,13 +191,16 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
-    final selectedColor = _parseColor(_selectedColor, fallback: colors.primary);
+    final selectedColor = _parseColor(
+      _selectedColor,
+      fallback: colors.primary,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Category Color',
+          'categories.category_color'.tr(),
           style: theme.textTheme.titleSmall?.copyWith(
             color: colors.onSurface,
             fontWeight: FontWeight.w600,
@@ -191,7 +210,7 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
         const SizedBox(height: 6),
 
         Text(
-          'Choose a color to represent this category.',
+          'categories.choose_category_color'.tr(),
           style: theme.textTheme.bodySmall?.copyWith(
             color: colors.onSurfaceVariant,
           ),
@@ -199,7 +218,6 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
 
         const SizedBox(height: 18),
 
-        // Current selected color preview
         Container(
           width: double.infinity,
           height: 110,
@@ -226,7 +244,9 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
               decoration: BoxDecoration(
                 color: selectedColor,
                 shape: BoxShape.circle,
-                border: Border.all(color: colors.outlineVariant),
+                border: Border.all(
+                  color: colors.outlineVariant,
+                ),
               ),
             ),
 
@@ -248,10 +268,14 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
           spacing: 12,
           runSpacing: 12,
           children: _availableColors.map((colorHex) {
-            final color = _parseColor(colorHex, fallback: colors.primary);
+            final color = _parseColor(
+              colorHex,
+              fallback: colors.primary,
+            );
 
             final isSelected =
-                colorHex.toUpperCase() == _selectedColor.toUpperCase();
+                colorHex.toUpperCase() ==
+                _selectedColor.toUpperCase();
 
             return InkWell(
               onTap: () {
@@ -302,7 +326,11 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
             color: colors.primary.withValues(alpha: .12),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(Icons.edit_outlined, color: colors.primary, size: 24),
+          child: Icon(
+            Icons.edit_outlined,
+            color: colors.primary,
+            size: 24,
+          ),
         ),
 
         const SizedBox(width: 16),
@@ -312,17 +340,20 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Edit Category',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: colors.onSurface,
-                  fontWeight: FontWeight.bold,
-                ),
+                'categories.edit_category'.tr(),
+                style: theme.textTheme.headlineSmall
+                    ?.copyWith(
+                      color: colors.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
 
               const SizedBox(height: 4),
 
               Text(
-                'Update ${widget.category.name}.',
+                'categories.edit_category_subtitle'.tr(
+                  namedArgs: {'name': widget.category.name},
+                ),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colors.onSurfaceVariant,
                 ),
@@ -338,13 +369,13 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
     return TextFormField(
       controller: _nameController,
       textInputAction: TextInputAction.done,
-      decoration: const InputDecoration(
-        labelText: 'Category Name',
-        prefixIcon: Icon(Icons.category_outlined),
+      decoration: InputDecoration(
+        labelText: 'categories.category_name'.tr(),
+        prefixIcon: const Icon(Icons.category_outlined),
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Category name is required';
+          return 'categories.category_name_required'.tr();
         }
 
         return null;
@@ -353,7 +384,9 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
   }
 
   Color _foregroundColor(Color background) {
-    return background.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+    return background.computeLuminance() > 0.5
+        ? Colors.black
+        : Colors.white;
   }
 
   String _normalizeColor(String? value) {
@@ -370,7 +403,10 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
     return color;
   }
 
-  Color _parseColor(String? value, {required Color fallback}) {
+  Color _parseColor(
+    String? value, {
+    required Color fallback,
+  }) {
     if (value == null || value.trim().isEmpty) {
       return fallback;
     }

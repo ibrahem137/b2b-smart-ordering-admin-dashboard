@@ -1,13 +1,13 @@
 import 'package:dashboard/screens/supplier_products/data/models/supplier_product_model.dart';
 import 'package:dashboard/screens/supplier_products/presentation/components/supplier_product_row.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SupplierProductsTable extends StatelessWidget {
   final List<SupplierProductModel> products;
-
   final void Function(SupplierProductModel product)? onEdit;
-
-  final void Function(SupplierProductModel product)? onDelete;
+  final void Function(SupplierProductModel product)?
+  onDelete;
 
   const SupplierProductsTable({
     super.key,
@@ -35,10 +35,12 @@ class SupplierProductsTable extends StatelessWidget {
             child: products.isEmpty
                 ? Center(
                     child: Text(
-                      'No supplier offers found.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: colors.onSurfaceVariant,
-                      ),
+                      'supplier_products.empty.no_offers'
+                          .tr(),
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
                     ),
                   )
                 : ListView.separated(
@@ -80,25 +82,73 @@ class SupplierProductsTable extends StatelessWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 18,
+      ),
       decoration: BoxDecoration(
         color: colors.surfaceContainerLow,
-        border: Border(bottom: BorderSide(color: colors.outlineVariant)),
+        border: Border(
+          bottom: BorderSide(color: colors.outlineVariant),
+        ),
       ),
       child: Row(
         children: [
-          Expanded(flex: 3, child: Text('Product', style: headerStyle)),
-          Expanded(flex: 3, child: Text('Supplier', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Category', style: headerStyle)),
-          Expanded(child: Text('Buy Price', style: headerStyle)),
-          Expanded(child: Text('Stock', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Status', style: headerStyle)),
-          Expanded(flex: 2, child: Text('Last Updated', style: headerStyle)),
+          Expanded(
+            flex: 3,
+            child: Text(
+              'supplier_products.columns.product'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Text(
+              'supplier_products.columns.supplier'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'supplier_products.columns.category'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              'supplier_products.columns.buy_price'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              'supplier_products.columns.stock'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'common.status'.tr(),
+              style: headerStyle,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'supplier_products.columns.last_updated'.tr(),
+              style: headerStyle,
+            ),
+          ),
           SizedBox(
             width: 90,
             child: Align(
               alignment: Alignment.centerRight,
-              child: Text('Actions', style: headerStyle),
+              child: Text(
+                'common.actions'.tr(),
+                style: headerStyle,
+              ),
             ),
           ),
         ],

@@ -1,6 +1,7 @@
 import 'package:dashboard/screens/categories/presentation/components/color_picker.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/category_action_state.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/create_category_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,14 +9,16 @@ class AddCategoryDialog extends StatefulWidget {
   const AddCategoryDialog({super.key});
 
   @override
-  State<AddCategoryDialog> createState() => _AddCategoryDialogState();
+  State<AddCategoryDialog> createState() =>
+      _AddCategoryDialogState();
 }
 
-class _AddCategoryDialogState extends State<AddCategoryDialog> {
+class _AddCategoryDialogState
+    extends State<AddCategoryDialog> {
   final _formKey = GlobalKey<FormState>();
+
   final _nameController = TextEditingController();
 
-  // These are category colors, not theme colors.
   final List<Color> categoryColors = const [
     Color(0xFF3B82F6),
     Color(0xFF10B981),
@@ -31,16 +34,23 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    return BlocConsumer<CreateCategoryCubit, CategoryActionState>(
+    return BlocConsumer<
+      CreateCategoryCubit,
+      CategoryActionState
+    >(
       listener: (context, state) {
         if (state is CategoryActionSuccess) {
-          debugPrint('CATEGORY CREATED SUCCESSFULLY: ${state.message}');
+          debugPrint(
+            'CATEGORY CREATED SUCCESSFULLY: ${state.message}',
+          );
 
           Navigator.pop(context, true);
         }
 
         if (state is CategoryActionFailure) {
-          debugPrint('CREATE CATEGORY FAILED: ${state.message}');
+          debugPrint(
+            'CREATE CATEGORY FAILED: ${state.message}',
+          );
 
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -70,7 +80,8 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start,
                   children: [
                     _buildHeader(context),
 
@@ -81,11 +92,14 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
                     const SizedBox(height: 24),
 
                     Text(
-                      'Category Color',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: colors.onSurface,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      'categories.category_color'.tr(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(
+                            color: colors.onSurface,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
 
                     const SizedBox(height: 12),
@@ -123,7 +137,10 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
     super.dispose();
   }
 
-  Widget _buildActions(BuildContext context, bool isLoading) {
+  Widget _buildActions(
+    BuildContext context,
+    bool isLoading,
+  ) {
     final colors = Theme.of(context).colorScheme;
 
     return Row(
@@ -144,13 +161,17 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
                 : () {
                     Navigator.pop(context);
                   },
-            child: const Text(
-              'Cancel',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            child: Text(
+              'common.cancel'.tr(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
+
         const SizedBox(width: 10),
+
         Expanded(
           child: FilledButton.icon(
             style: FilledButton.styleFrom(
@@ -172,7 +193,11 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
                     ),
                   )
                 : const Icon(Icons.add),
-            label: Text(isLoading ? 'Adding...' : 'Add Category'),
+            label: Text(
+              isLoading
+                  ? 'categories.adding'.tr()
+                  : 'categories.add_category'.tr(),
+            ),
           ),
         ),
       ],
@@ -205,24 +230,28 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
               color: _foregroundColor(selectedColor),
             ),
           ),
+
           const SizedBox(width: 14),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Color Preview',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: colors.onSurface,
-                  ),
+                  'categories.color_preview'.tr(),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: colors.onSurface,
+                      ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   _colorToHex(selectedColor),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colors.onSurfaceVariant,
-                  ),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                 ),
               ],
             ),
@@ -241,23 +270,31 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
         CircleAvatar(
           radius: 24,
           backgroundColor: colors.primary,
-          child: Icon(Icons.category_outlined, color: colors.onPrimary),
+          child: Icon(
+            Icons.category_outlined,
+            color: colors.onPrimary,
+          ),
         ),
+
         const SizedBox(width: 16),
+
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Add Category',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: colors.onSurface,
-                  fontWeight: FontWeight.bold,
-                ),
+                'categories.add_category'.tr(),
+                style: theme.textTheme.headlineSmall
+                    ?.copyWith(
+                      color: colors.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
+
               const SizedBox(height: 4),
+
               Text(
-                'Create a new product category.',
+                'categories.add_category_subtitle'.tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colors.onSurfaceVariant,
                 ),
@@ -274,12 +311,12 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
       controller: _nameController,
       decoration: _inputDecoration(
         context: context,
-        label: 'Category Name',
+        label: 'categories.category_name'.tr(),
         icon: Icons.category_outlined,
       ),
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
-          return 'Category name is required';
+          return 'categories.category_name_required'.tr();
         }
 
         return null;
@@ -292,7 +329,9 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
   }
 
   Color _foregroundColor(Color background) {
-    return background.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+    return background.computeLuminance() > 0.5
+        ? Colors.black
+        : Colors.white;
   }
 
   InputDecoration _inputDecoration({
@@ -304,23 +343,42 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
 
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(icon, color: colors.onSurfaceVariant),
+      prefixIcon: Icon(
+        icon,
+        color: colors.onSurfaceVariant,
+      ),
       floatingLabelStyle: TextStyle(color: colors.primary),
       focusedBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        borderSide: BorderSide(color: colors.primary, width: 1.5),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8),
+        ),
+        borderSide: BorderSide(
+          color: colors.primary,
+          width: 1.5,
+        ),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        borderSide: BorderSide(color: colors.outlineVariant),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8),
+        ),
+        borderSide: BorderSide(
+          color: colors.outlineVariant,
+        ),
       ),
       errorBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8),
+        ),
         borderSide: BorderSide(color: colors.error),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        borderSide: BorderSide(color: colors.error, width: 1.5),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8),
+        ),
+        borderSide: BorderSide(
+          color: colors.error,
+          width: 1.5,
+        ),
       ),
       border: const OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -339,9 +397,11 @@ class _AddCategoryDialogState extends State<AddCategoryDialog> {
     debugPrint('NAME: ${_nameController.text.trim()}');
     debugPrint('COLOR: $colorHex');
 
-    await context.read<CreateCategoryCubit>().createCategory(
-      name: _nameController.text.trim(),
-      color: colorHex,
-    );
+    await context
+        .read<CreateCategoryCubit>()
+        .createCategory(
+          name: _nameController.text.trim(),
+          color: colorHex,
+        );
   }
 }

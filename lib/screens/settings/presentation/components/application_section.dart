@@ -2,10 +2,22 @@ import 'package:dashboard/core/theme/cubit/theme_cubit.dart';
 import 'package:dashboard/core/theme/cubit/theme_state.dart';
 import 'package:dashboard/screens/settings/presentation/components/settings_card.dart';
 import 'package:dashboard/screens/settings/presentation/components/settings_info_row.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ApplicationSection extends StatelessWidget {
+  static const List<Locale> _supportedLocales = [
+    Locale('en'),
+    Locale('ru'),
+    Locale('tr'),
+    Locale('de'),
+    Locale('pt'),
+    Locale('nl'),
+    Locale('fr'),
+    Locale('es'),
+  ];
+
   const ApplicationSection({super.key});
 
   @override
@@ -14,29 +26,25 @@ class ApplicationSection extends StatelessWidget {
     final colors = theme.colorScheme;
 
     return SettingsCard(
-      title: 'Application',
+      title: 'settings.application'.tr(),
       icon: Icons.tune_outlined,
       child: Column(
         children: [
-          const SettingsInfoRow(
-            icon: Icons.language_outlined,
-            title: 'Language',
-            value: 'English',
-          ),
+          _buildLanguageRow(context, theme, colors),
 
           const Divider(height: 30),
 
-          const SettingsInfoRow(
+          SettingsInfoRow(
             icon: Icons.dashboard_outlined,
-            title: 'Application',
+            title: 'settings.application'.tr(),
             value: 'B2B Admin Panel',
           ),
 
           const Divider(height: 30),
 
-          const SettingsInfoRow(
+          SettingsInfoRow(
             icon: Icons.info_outline,
-            title: 'Version',
+            title: 'settings.version'.tr(),
             value: '1.0.0',
           ),
 
@@ -56,10 +64,11 @@ class ApplicationSection extends StatelessWidget {
 
                   Expanded(
                     child: Text(
-                      'Theme',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: colors.onSurfaceVariant,
-                      ),
+                      'settings.theme'.tr(),
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
                     ),
                   ),
 
@@ -72,22 +81,23 @@ class ApplicationSection extends StatelessWidget {
                       Icons.keyboard_arrow_down,
                       color: colors.onSurfaceVariant,
                     ),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colors.onSurface,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    items: const [
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(
+                          color: colors.onSurface,
+                          fontWeight: FontWeight.w600,
+                        ),
+                    items: [
                       DropdownMenuItem<ThemeMode>(
                         value: ThemeMode.system,
-                        child: Text('System'),
+                        child: Text('themes.system'.tr()),
                       ),
                       DropdownMenuItem<ThemeMode>(
                         value: ThemeMode.light,
-                        child: Text('Light'),
+                        child: Text('themes.light'.tr()),
                       ),
                       DropdownMenuItem<ThemeMode>(
                         value: ThemeMode.dark,
-                        child: Text('Dark'),
+                        child: Text('themes.dark'.tr()),
                       ),
                     ],
                     onChanged: (value) {
@@ -95,7 +105,9 @@ class ApplicationSection extends StatelessWidget {
                         return;
                       }
 
-                      context.read<ThemeCubit>().changeTheme(value);
+                      context
+                          .read<ThemeCubit>()
+                          .changeTheme(value);
                     },
                   ),
                 ],
@@ -105,6 +117,106 @@ class ApplicationSection extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildLanguageRow(
+    BuildContext context,
+    ThemeData theme,
+    ColorScheme colors,
+  ) {
+    final currentLocale = context.locale;
+
+    return Row(
+      children: [
+        Icon(
+          Icons.language_outlined,
+          size: 20,
+          color: colors.onSurfaceVariant,
+        ),
+
+        const SizedBox(width: 14),
+
+        Expanded(
+          child: Text(
+            'settings.language'.tr(),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: colors.onSurfaceVariant,
+            ),
+          ),
+        ),
+
+        DropdownButton<Locale>(
+          value: _findLocale(currentLocale),
+          underline: const SizedBox.shrink(),
+          borderRadius: BorderRadius.circular(10),
+          dropdownColor: colors.surface,
+          icon: Icon(
+            Icons.keyboard_arrow_down,
+            color: colors.onSurfaceVariant,
+          ),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: colors.onSurface,
+            fontWeight: FontWeight.w600,
+          ),
+          items: _supportedLocales.map((locale) {
+            return DropdownMenuItem<Locale>(
+              value: locale,
+              child: Text(_languageLabel(locale).tr()),
+            );
+          }).toList(),
+          onChanged: (locale) async {
+            if (locale == null) {
+              return;
+            }
+
+            if (locale == context.locale) {
+              return;
+            }
+
+            await context.setLocale(locale);
+          },
+        ),
+      ],
+    );
+  }
+
+  Locale _findLocale(Locale currentLocale) {
+    return _supportedLocales.firstWhere(
+      (locale) =>
+          locale.languageCode == currentLocale.languageCode,
+      orElse: () => const Locale('en'),
+    );
+  }
+
+  String _languageLabel(Locale locale) {
+    switch (locale.languageCode) {
+      case 'en':
+        return 'languages.english';
+
+      case 'ru':
+        return 'languages.russian';
+
+      case 'tr':
+        return 'languages.turkish';
+
+      case 'de':
+        return 'languages.german';
+
+      case 'pt':
+        return 'languages.portuguese';
+
+      case 'nl':
+        return 'languages.dutch';
+
+      case 'fr':
+        return 'languages.french';
+
+      case 'es':
+        return 'languages.spanish';
+
+      default:
+        return 'languages.english';
+    }
   }
 
   IconData _themeIcon(ThemeMode mode) {

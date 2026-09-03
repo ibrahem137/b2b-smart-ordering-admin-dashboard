@@ -64,3 +64,11 @@ web_build/
 *.bak
 # Gradle generated reports
 android/build/
+# Localization audit files
+all_untranslated_strings.txt
+hardcoded_remaining.txt
+hardcoded_strings_check.txt
+hardcoded_ui_strings.txt
+messages_check.txt
+translation_keys_used.txt
+ui_strings_check.txt

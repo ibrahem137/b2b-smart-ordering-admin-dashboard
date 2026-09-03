@@ -4,6 +4,7 @@ import 'package:dashboard/screens/settings/presentation/components/application_s
 import 'package:dashboard/screens/settings/presentation/components/security_section.dart';
 import 'package:dashboard/screens/settings/presentation/cubit/settings_cubit.dart';
 import 'package:dashboard/screens/settings/presentation/cubit/settings_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,8 +31,10 @@ class _SettingsView extends StatelessWidget {
     return BlocListener<SettingsCubit, SettingsState>(
       listener: (context, state) {
         if (state is SettingsLogoutSuccess) {
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil('/login', (route) => false);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            '/login',
+            (route) => false,
+          );
         }
 
         if (state is SettingsLogoutFailure) {
@@ -54,28 +57,23 @@ class _SettingsView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Settings',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  color: colors.onSurface,
-                  fontWeight: FontWeight.bold,
-                ),
+                'settings.title'.tr(),
+                style: theme.textTheme.headlineSmall
+                    ?.copyWith(
+                      color: colors.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-
               const SizedBox(height: 4),
-
               Text(
-                'Manage your admin account and application preferences',
+                'settings.subtitle'.tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colors.onSurfaceVariant,
                 ),
               ),
-
               const SizedBox(height: 28),
-
               const AccountSection(),
-
               const SizedBox(height: 24),
-
               LayoutBuilder(
                 builder: (context, constraints) {
                   if (constraints.maxWidth < 900) {
@@ -89,7 +87,8 @@ class _SettingsView extends StatelessWidget {
                   }
 
                   return const Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
                     children: [
                       Expanded(child: ApplicationSection()),
                       SizedBox(width: 24),

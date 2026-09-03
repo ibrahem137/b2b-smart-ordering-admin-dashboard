@@ -6,6 +6,7 @@ import 'package:dashboard/screens/sales/presentation/components/sales_table.dart
 import 'package:dashboard/screens/sales/presentation/components/sales_toolbar.dart';
 import 'package:dashboard/screens/sales/presentation/cubit/sales_cubit.dart';
 import 'package:dashboard/screens/sales/presentation/cubit/sales_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,7 +43,9 @@ class _SalesViewState extends State<_SalesView> {
         child: BlocBuilder<SalesCubit, SalesState>(
           builder: (context, state) {
             if (state is SalesLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
 
             if (state is SalesFailure) {
@@ -56,16 +59,21 @@ class _SalesViewState extends State<_SalesView> {
 
               final totalRevenue = sales.fold<double>(
                 0.0,
-                (sum, sale) => sum + (double.tryParse(sale.total) ?? 0.0),
+                (sum, sale) =>
+                    sum +
+                    (double.tryParse(sale.total) ?? 0.0),
               );
 
               final totalProfit = sales.fold<double>(
                 0.0,
-                (sum, sale) => sum + (double.tryParse(sale.profit) ?? 0.0),
+                (sum, sale) =>
+                    sum +
+                    (double.tryParse(sale.profit) ?? 0.0),
               );
 
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
                 children: [
                   const SalesHeader(),
 
@@ -108,7 +116,10 @@ class _SalesViewState extends State<_SalesView> {
     );
   }
 
-  Widget _buildFailure(BuildContext context, SalesFailure state) {
+  Widget _buildFailure(
+    BuildContext context,
+    SalesFailure state,
+  ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -123,13 +134,17 @@ class _SalesViewState extends State<_SalesView> {
               color: colors.error.withValues(alpha: .10),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.error_outline, size: 34, color: colors.error),
+            child: Icon(
+              Icons.error_outline,
+              size: 34,
+              color: colors.error,
+            ),
           ),
 
           const SizedBox(height: 16),
 
           Text(
-            'Unable to load sales',
+            'sales.unable_to_load_sales'.tr(),
             textAlign: TextAlign.center,
             style: theme.textTheme.titleMedium?.copyWith(
               color: colors.onSurface,
@@ -154,14 +169,17 @@ class _SalesViewState extends State<_SalesView> {
               context.read<SalesCubit>().getSales();
             },
             icon: const Icon(Icons.refresh),
-            label: const Text('Retry'),
+            label: Text('common.retry'.tr()),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildStatusChip(BuildContext context, String status) {
+  Widget _buildStatusChip(
+    BuildContext context,
+    String status,
+  ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -184,13 +202,16 @@ class _SalesViewState extends State<_SalesView> {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 5,
+      ),
       decoration: BoxDecoration(
         color: statusColor.withValues(alpha: .10),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        _formatStatus(status),
+        _statusLabel(status),
         style: theme.textTheme.bodySmall?.copyWith(
           color: statusColor,
           fontWeight: FontWeight.w600,
@@ -199,7 +220,11 @@ class _SalesViewState extends State<_SalesView> {
     );
   }
 
-  Widget _detail(BuildContext context, String title, String value) {
+  Widget _detail(
+    BuildContext context,
+    String title,
+    String value,
+  ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -241,9 +266,11 @@ class _SalesViewState extends State<_SalesView> {
     return sales.where((sale) {
       final saleNumber = 'sale-${sale.id}'.toLowerCase();
 
-      final storeName = sale.store?.name.toLowerCase() ?? '';
+      final storeName =
+          sale.store?.name.toLowerCase() ?? '';
 
-      final customerName = sale.customer?.name.toLowerCase() ?? '';
+      final customerName =
+          sale.customer?.name.toLowerCase() ?? '';
 
       final status = sale.status.toLowerCase();
 
@@ -257,22 +284,10 @@ class _SalesViewState extends State<_SalesView> {
     }).toList();
   }
 
-  String _formatStatus(String status) {
-    if (status.isEmpty) {
-      return '—';
-    }
-
-    return status
-        .split('_')
-        .map(
-          (word) => word.isEmpty
-              ? ''
-              : '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}',
-        )
-        .join(' ');
-  }
-
-  void _showSaleDetails(BuildContext context, SaleModel sale) {
+  void _showSaleDetails(
+    BuildContext context,
+    SaleModel sale,
+  ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -292,7 +307,9 @@ class _SalesViewState extends State<_SalesView> {
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: colors.primary.withValues(alpha: .10),
+                  color: colors.primary.withValues(
+                    alpha: .10,
+                  ),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -306,11 +323,12 @@ class _SalesViewState extends State<_SalesView> {
 
               Expanded(
                 child: Text(
-                  'Sale #${sale.id}',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  '${'sales.sale'.tr()} #${sale.id}',
+                  style: theme.textTheme.titleLarge
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
             ],
@@ -321,42 +339,76 @@ class _SalesViewState extends State<_SalesView> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _detail(context, 'Store', sale.store?.name ?? '—'),
+                _detail(
+                  context,
+                  'sales.store'.tr(),
+                  sale.store?.name ?? '—',
+                ),
 
-                _detail(context, 'Customer', sale.customer?.name ?? '—'),
+                _detail(
+                  context,
+                  'sales.customer'.tr(),
+                  sale.customer?.name ?? '—',
+                ),
 
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.only(
+                    bottom: 12,
+                  ),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.center,
                     children: [
                       SizedBox(
                         width: 90,
                         child: Text(
-                          'Status:',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: colors.onSurface,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          '${'common.status'.tr()}:',
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(
+                                color: colors.onSurface,
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                       ),
-                      _buildStatusChip(context, sale.status),
+
+                      _buildStatusChip(
+                        context,
+                        sale.status,
+                      ),
                     ],
                   ),
                 ),
 
-                _detail(context, 'Total', '\$${sale.total}'),
-
-                _detail(context, 'Cost', '\$${sale.totalCost}'),
-
-                _detail(context, 'Profit', '\$${sale.profit}'),
-
-                _detail(context, 'Paid', '\$${sale.paidAmount}'),
+                _detail(
+                  context,
+                  'common.total'.tr(),
+                  '\$${sale.total}',
+                ),
 
                 _detail(
                   context,
-                  'Notes',
-                  sale.notes?.trim().isNotEmpty == true ? sale.notes! : '—',
+                  'sales.cost'.tr(),
+                  '\$${sale.totalCost}',
+                ),
+
+                _detail(
+                  context,
+                  'sales.profit'.tr(),
+                  '\$${sale.profit}',
+                ),
+
+                _detail(
+                  context,
+                  'sales.paid'.tr(),
+                  '\$${sale.paidAmount}',
+                ),
+
+                _detail(
+                  context,
+                  'sales.notes'.tr(),
+                  sale.notes?.trim().isNotEmpty == true
+                      ? sale.notes!
+                      : '—',
                 ),
               ],
             ),
@@ -366,11 +418,36 @@ class _SalesViewState extends State<_SalesView> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Close'),
+              child: Text('common.close'.tr()),
             ),
           ],
         );
       },
     );
+  }
+
+  String _statusLabel(String status) {
+    switch (status.toLowerCase()) {
+      case 'paid':
+        return 'sales.paid'.tr();
+
+      case 'cancelled':
+        return 'sales.cancelled'.tr();
+
+      case 'refunded':
+        return 'sales.refunded'.tr();
+
+      case 'draft':
+        return 'sales.draft'.tr();
+
+      case 'pending':
+        return 'sales.pending'.tr();
+
+      case 'completed':
+        return 'sales.completed'.tr();
+
+      default:
+        return status;
+    }
   }
 }

@@ -40,14 +40,21 @@ class CustomDropdown<T> extends StatelessWidget {
           horizontal: 16,
           vertical: 18,
         ),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colors.outlineVariant),
+          borderSide: BorderSide(
+            color: colors.outlineVariant,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colors.primary, width: 1.5),
+          borderSide: BorderSide(
+            color: colors.primary,
+            width: 1.5,
+          ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -55,7 +62,10 @@ class CustomDropdown<T> extends StatelessWidget {
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: colors.error, width: 1.5),
+          borderSide: BorderSide(
+            color: colors.error,
+            width: 1.5,
+          ),
         ),
       ),
       icon: const Icon(Icons.keyboard_arrow_down),

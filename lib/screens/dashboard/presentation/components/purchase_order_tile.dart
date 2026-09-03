@@ -1,7 +1,7 @@
 import 'package:dashboard/core/theme/extensions.dart';
 import 'package:dashboard/screens/orders/data/models/order_model.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class PurchaseOrderTile extends StatelessWidget {
   final OrderModel order;
@@ -12,11 +12,15 @@ class PurchaseOrderTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
 
     final totalBuy = double.tryParse(order.totalBuy) ?? 0.0;
-
-    final statusColor = _getStatusColor(order.status, colors, dashboardColors);
+    final statusColor = _getStatusColor(
+      order.status,
+      colors,
+      dashboardColors,
+    );
 
     return Container(
       padding: const EdgeInsets.all(18),
@@ -35,67 +39,68 @@ class PurchaseOrderTile extends StatelessWidget {
                   children: [
                     Text(
                       'PO-${order.id.toString().padLeft(4, '0')}',
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: colors.onSurface,
-                      ),
+                      style: theme.textTheme.bodyLarge
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colors.onSurface,
+                          ),
                     ),
-
                     const SizedBox(width: 10),
-
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 10,
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: statusColor.withValues(alpha: .12),
-                        borderRadius: BorderRadius.circular(30),
+                        color: statusColor.withValues(
+                          alpha: .12,
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          30,
+                        ),
                       ),
                       child: Text(
                         _statusLabel(order.status),
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: statusColor,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: theme.textTheme.bodySmall
+                            ?.copyWith(
+                              color: statusColor,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 6),
-
                 Text(
-                  order.supplier?.name ?? 'Unknown Supplier',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  order.supplier?.name ??
+                      'dashboard.unknown_supplier'.tr(),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
-
                 const SizedBox(height: 4),
-
                 Text(
-                  order.store?.name ?? 'Unknown Store',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colors.onSurfaceVariant,
-                  ),
+                  order.store?.name ??
+                      'dashboard.unknown_store'.tr(),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                 ),
-
                 const SizedBox(height: 12),
-
                 Text(
                   _formatDate(order.createdAt),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colors.onSurfaceVariant,
-                  ),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                 ),
               ],
             ),
           ),
-
           const SizedBox(width: 20),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -106,11 +111,9 @@ class PurchaseOrderTile extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               const SizedBox(height: 5),
-
               Text(
-                'Buy Total',
+                'dashboard.buy_total'.tr(),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colors.onSurfaceVariant,
                 ),
@@ -133,7 +136,8 @@ class PurchaseOrderTile extends StatelessWidget {
       return value;
     }
 
-    return DateFormat('yyyy-MM-dd HH:mm').format(date.toLocal());
+    return DateFormat('yyyy-MM-dd HH:mm')
+        .format(date.toLocal());
   }
 
   Color _getStatusColor(
@@ -144,16 +148,12 @@ class PurchaseOrderTile extends StatelessWidget {
     switch (status.toLowerCase()) {
       case 'submitted':
         return dashboardColors.warning;
-
       case 'received':
         return dashboardColors.success;
-
       case 'cancelled':
         return dashboardColors.cancelled;
-
       case 'draft':
         return colors.onSurfaceVariant;
-
       default:
         return colors.onSurfaceVariant;
     }
@@ -162,17 +162,13 @@ class PurchaseOrderTile extends StatelessWidget {
   String _statusLabel(String status) {
     switch (status.toLowerCase()) {
       case 'submitted':
-        return 'Submitted';
-
+        return 'dashboard.submitted'.tr();
       case 'received':
-        return 'Received';
-
+        return 'dashboard.received'.tr();
       case 'cancelled':
-        return 'Cancelled';
-
+        return 'dashboard.cancelled'.tr();
       case 'draft':
-        return 'Draft';
-
+        return 'dashboard.draft'.tr();
       default:
         return status;
     }

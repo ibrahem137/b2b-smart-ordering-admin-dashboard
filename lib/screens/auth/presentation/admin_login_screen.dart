@@ -2,6 +2,7 @@ import 'package:dashboard/core/di/injection.dart';
 import 'package:dashboard/core/router/routes.dart';
 import 'package:dashboard/screens/auth/presentation/cubit/auth_cubit.dart';
 import 'package:dashboard/screens/auth/presentation/cubit/auth_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,13 +22,15 @@ class _AdminLoginView extends StatefulWidget {
   const _AdminLoginView();
 
   @override
-  State<_AdminLoginView> createState() => _AdminLoginViewState();
+  State<_AdminLoginView> createState() =>
+      _AdminLoginViewState();
 }
 
 class _AdminLoginViewState extends State<_AdminLoginView> {
   final _formKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();
+
   final _passwordController = TextEditingController();
 
   bool _obscurePassword = true;
@@ -48,10 +51,14 @@ class _AdminLoginViewState extends State<_AdminLoginView> {
             decoration: BoxDecoration(
               color: colors.surface,
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: colors.outlineVariant),
+              border: Border.all(
+                color: colors.outlineVariant,
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: colors.shadow.withValues(alpha: .08),
+                  color: colors.shadow.withValues(
+                    alpha: .08,
+                  ),
                   blurRadius: 24,
                   offset: const Offset(0, 10),
                 ),
@@ -60,22 +67,26 @@ class _AdminLoginViewState extends State<_AdminLoginView> {
             child: BlocConsumer<AdminLoginCubit, AuthState>(
               listener: (context, state) {
                 if (state is AuthSuccess) {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    Routes.mainScreen,
-                    (route) => false,
-                  );
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(
+                        Routes.mainScreen,
+                        (route) => false,
+                      );
                 }
 
                 if (state is AuthFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: colors.error,
-                      content: Text(
-                        state.message,
-                        style: TextStyle(color: colors.onError),
-                      ),
-                    ),
-                  );
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(
+                        SnackBar(
+                          backgroundColor: colors.error,
+                          content: Text(
+                            state.message,
+                            style: TextStyle(
+                              color: colors.onError,
+                            ),
+                          ),
+                        ),
+                      );
                 }
               },
               builder: (context, state) {
@@ -85,7 +96,8 @@ class _AdminLoginViewState extends State<_AdminLoginView> {
                   key: _formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.stretch,
                     children: [
                       Center(
                         child: Container(
@@ -93,12 +105,15 @@ class _AdminLoginViewState extends State<_AdminLoginView> {
                           height: 64,
                           decoration: BoxDecoration(
                             color: colors.primaryContainer,
-                            borderRadius: BorderRadius.circular(18),
+                            borderRadius:
+                                BorderRadius.circular(18),
                           ),
                           child: Icon(
-                            Icons.admin_panel_settings_outlined,
+                            Icons
+                                .admin_panel_settings_outlined,
                             size: 34,
-                            color: colors.onPrimaryContainer,
+                            color:
+                                colors.onPrimaryContainer,
                           ),
                         ),
                       ),
@@ -106,35 +121,41 @@ class _AdminLoginViewState extends State<_AdminLoginView> {
                       const SizedBox(height: 18),
 
                       Text(
-                        'Admin Login',
+                        'auth.admin_login'.tr(),
                         textAlign: TextAlign.center,
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          color: colors.onSurface,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: theme.textTheme.headlineSmall
+                            ?.copyWith(
+                              color: colors.onSurface,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
 
                       const SizedBox(height: 8),
 
                       Text(
-                        'Sign in to continue to the dashboard',
+                        'auth.sign_in_subtitle'.tr(),
                         textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: colors.onSurfaceVariant,
-                        ),
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(
+                              color:
+                                  colors.onSurfaceVariant,
+                            ),
                       ),
 
                       const SizedBox(height: 32),
 
                       TextFormField(
                         controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: colors.onSurface,
-                        ),
+                        keyboardType:
+                            TextInputType.emailAddress,
+                        textInputAction:
+                            TextInputAction.next,
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(
+                              color: colors.onSurface,
+                            ),
                         decoration: InputDecoration(
-                          labelText: 'Email',
+                          labelText: 'auth.email'.tr(),
                           hintText: 'admin@example.com',
                           prefixIcon: Icon(
                             Icons.email_outlined,
@@ -142,12 +163,15 @@ class _AdminLoginViewState extends State<_AdminLoginView> {
                           ),
                         ),
                         validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Please enter your email';
+                          if (value == null ||
+                              value.trim().isEmpty) {
+                            return 'auth.email_required'
+                                .tr();
                           }
 
                           if (!value.contains('@')) {
-                            return 'Please enter a valid email';
+                            return 'auth.invalid_email'
+                                .tr();
                           }
 
                           return null;
@@ -159,17 +183,19 @@ class _AdminLoginViewState extends State<_AdminLoginView> {
                       TextFormField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,
-                        textInputAction: TextInputAction.done,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: colors.onSurface,
-                        ),
+                        textInputAction:
+                            TextInputAction.done,
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(
+                              color: colors.onSurface,
+                            ),
                         onFieldSubmitted: (_) {
                           if (!isLoading) {
                             _login();
                           }
                         },
                         decoration: InputDecoration(
-                          labelText: 'Password',
+                          labelText: 'auth.password'.tr(),
                           prefixIcon: Icon(
                             Icons.lock_outline,
                             color: colors.onSurfaceVariant,
@@ -177,24 +203,31 @@ class _AdminLoginViewState extends State<_AdminLoginView> {
                           suffixIcon: IconButton(
                             onPressed: () {
                               setState(() {
-                                _obscurePassword = !_obscurePassword;
+                                _obscurePassword =
+                                    !_obscurePassword;
                               });
                             },
                             icon: Icon(
                               _obscurePassword
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: colors.onSurfaceVariant,
+                                  ? Icons
+                                        .visibility_outlined
+                                  : Icons
+                                        .visibility_off_outlined,
+                              color:
+                                  colors.onSurfaceVariant,
                             ),
                           ),
                         ),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                          if (value == null ||
+                              value.isEmpty) {
+                            return 'auth.password_required'
+                                .tr();
                           }
 
                           if (value.length < 6) {
-                            return 'Password must be at least 6 characters';
+                            return 'auth.password_min_length'
+                                .tr();
                           }
 
                           return null;
@@ -206,28 +239,35 @@ class _AdminLoginViewState extends State<_AdminLoginView> {
                       SizedBox(
                         height: 52,
                         child: FilledButton(
-                          onPressed: isLoading ? null : _login,
+                          onPressed: isLoading
+                              ? null
+                              : _login,
                           style: FilledButton.styleFrom(
                             backgroundColor: colors.primary,
-                            foregroundColor: colors.onPrimary,
+                            foregroundColor:
+                                colors.onPrimary,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius:
+                                  BorderRadius.circular(12),
                             ),
                           ),
                           child: isLoading
                               ? SizedBox(
                                   width: 22,
                                   height: 22,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: colors.onPrimary,
-                                  ),
+                                  child:
+                                      CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: colors
+                                            .onPrimary,
+                                      ),
                                 )
-                              : const Text(
-                                  'Login',
-                                  style: TextStyle(
+                              : Text(
+                                  'auth.login'.tr(),
+                                  style: const TextStyle(
                                     fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight:
+                                        FontWeight.w600,
                                   ),
                                 ),
                         ),
@@ -247,7 +287,6 @@ class _AdminLoginViewState extends State<_AdminLoginView> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-
     super.dispose();
   }
 

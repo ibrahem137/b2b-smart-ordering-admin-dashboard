@@ -1,5 +1,6 @@
 import 'package:dashboard/core/theme/extensions.dart';
 import 'package:dashboard/screens/suppliers/presentation/components/status_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SuppliersToolbar extends StatelessWidget {
@@ -20,7 +21,8 @@ class SuppliersToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
 
     return Row(
       children: [
@@ -31,22 +33,34 @@ class SuppliersToolbar extends StatelessWidget {
               controller: searchController,
               onChanged: onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Search suppliers...',
-                prefixIcon: Icon(Icons.search, color: colors.onSurfaceVariant),
+                hintText: 'suppliers.search_hint'.tr(),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: colors.onSurfaceVariant,
+                ),
                 filled: true,
                 fillColor: colors.surface,
-                contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: colors.outlineVariant),
+                  borderSide: BorderSide(
+                    color: colors.outlineVariant,
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: colors.outlineVariant),
+                  borderSide: BorderSide(
+                    color: colors.outlineVariant,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: colors.primary, width: 1.5),
+                  borderSide: BorderSide(
+                    color: colors.primary,
+                    width: 1.5,
+                  ),
                 ),
               ),
             ),
@@ -54,14 +68,15 @@ class SuppliersToolbar extends StatelessWidget {
         ),
         const SizedBox(width: 24),
         StatusCard(
-          title: 'Active',
+          title: 'suppliers.active'.tr(),
           value: activeSuppliers,
-          backgroundColor: dashboardColors.success.withValues(alpha: .10),
+          backgroundColor: dashboardColors.success
+              .withValues(alpha: .10),
           textColor: dashboardColors.success,
         ),
         const SizedBox(width: 12),
         StatusCard(
-          title: 'Inactive',
+          title: 'suppliers.inactive'.tr(),
           value: inactiveSuppliers,
           backgroundColor: colors.surfaceContainerHighest,
           textColor: colors.onSurfaceVariant,

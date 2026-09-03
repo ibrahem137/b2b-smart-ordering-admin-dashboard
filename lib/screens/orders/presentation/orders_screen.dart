@@ -5,6 +5,7 @@ import 'package:dashboard/screens/orders/presentation/components/orders_table.da
 import 'package:dashboard/screens/orders/presentation/components/orders_toolbar.dart';
 import 'package:dashboard/screens/orders/presentation/cubit/orders_cubit.dart';
 import 'package:dashboard/screens/orders/presentation/cubit/orders_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,7 +29,8 @@ class _OrdersView extends StatefulWidget {
 }
 
 class _OrdersViewState extends State<_OrdersView> {
-  String selectedFilter = 'All';
+  String selectedFilter = 'all';
+
   String searchQuery = '';
 
   @override
@@ -70,7 +72,9 @@ class _OrdersViewState extends State<_OrdersView> {
               child: BlocBuilder<OrdersCubit, OrdersState>(
                 builder: (context, state) {
                   if (state is OrdersLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
 
                   if (state is OrdersFailure) {
@@ -78,7 +82,9 @@ class _OrdersViewState extends State<_OrdersView> {
                   }
 
                   if (state is OrdersSuccess) {
-                    final orders = _filterLocally(state.orders);
+                    final orders = _filterLocally(
+                      state.orders,
+                    );
 
                     if (orders.isEmpty) {
                       return _buildEmptyState(context);
@@ -127,7 +133,7 @@ class _OrdersViewState extends State<_OrdersView> {
           const SizedBox(height: 16),
 
           Text(
-            'No orders found',
+            'orders.no_orders_found'.tr(),
             style: theme.textTheme.titleMedium?.copyWith(
               color: colors.onSurface,
               fontWeight: FontWeight.w600,
@@ -137,9 +143,10 @@ class _OrdersViewState extends State<_OrdersView> {
           const SizedBox(height: 6),
 
           Text(
-            searchQuery.isNotEmpty || selectedFilter != 'All'
-                ? 'Try changing your search or filter.'
-                : 'Orders will appear here once they are available.',
+            searchQuery.isNotEmpty ||
+                    selectedFilter != 'all'
+                ? 'orders.change_search_or_filter'.tr()
+                : 'orders.orders_empty_description'.tr(),
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: colors.onSurfaceVariant,
@@ -150,7 +157,10 @@ class _OrdersViewState extends State<_OrdersView> {
     );
   }
 
-  Widget _buildFailure(BuildContext context, OrdersFailure state) {
+  Widget _buildFailure(
+    BuildContext context,
+    OrdersFailure state,
+  ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -165,13 +175,17 @@ class _OrdersViewState extends State<_OrdersView> {
               color: colors.error.withValues(alpha: .10),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.error_outline, size: 34, color: colors.error),
+            child: Icon(
+              Icons.error_outline,
+              size: 34,
+              color: colors.error,
+            ),
           ),
 
           const SizedBox(height: 16),
 
           Text(
-            'Unable to load orders',
+            'orders.unable_to_load_orders'.tr(),
             textAlign: TextAlign.center,
             style: theme.textTheme.titleMedium?.copyWith(
               color: colors.onSurface,
@@ -198,14 +212,18 @@ class _OrdersViewState extends State<_OrdersView> {
               );
             },
             icon: const Icon(Icons.refresh),
-            label: const Text('Retry'),
+            label: Text('common.retry'.tr()),
           ),
         ],
       ),
     );
   }
 
-  Widget _detail(BuildContext context, String title, String value) {
+  Widget _detail(
+    BuildContext context,
+    String title,
+    String value,
+  ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -250,7 +268,8 @@ class _OrdersViewState extends State<_OrdersView> {
 
       final store = order.store?.name.toLowerCase() ?? '';
 
-      final supplier = order.supplier?.name.toLowerCase() ?? '';
+      final supplier =
+          order.supplier?.name.toLowerCase() ?? '';
 
       final status = order.status.toLowerCase();
 
@@ -264,7 +283,10 @@ class _OrdersViewState extends State<_OrdersView> {
     }).toList();
   }
 
-  void _showOrderDetails(BuildContext context, OrderModel order) {
+  void _showOrderDetails(
+    BuildContext context,
+    OrderModel order,
+  ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -284,7 +306,9 @@ class _OrdersViewState extends State<_OrdersView> {
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: colors.primary.withValues(alpha: .10),
+                  color: colors.primary.withValues(
+                    alpha: .10,
+                  ),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -298,11 +322,12 @@ class _OrdersViewState extends State<_OrdersView> {
 
               Expanded(
                 child: Text(
-                  'Order #${order.id}',
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  '${'orders.order'.tr()} #${order.id}',
+                  style: theme.textTheme.titleLarge
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
             ],
@@ -313,16 +338,38 @@ class _OrdersViewState extends State<_OrdersView> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _detail(context, 'Store', order.store?.name ?? '—'),
-                _detail(context, 'Supplier', order.supplier?.name ?? '—'),
-                _detail(context, 'Status', _statusLabel(order.status)),
-                _detail(context, 'Total Buy', '\$${order.totalBuy}'),
                 _detail(
                   context,
-                  'Total Sell',
-                  order.totalSell == null ? '—' : '\$${order.totalSell}',
+                  'orders.store'.tr(),
+                  order.store?.name ?? '—',
                 ),
-                _detail(context, 'Notes', order.notes ?? '—'),
+                _detail(
+                  context,
+                  'orders.supplier'.tr(),
+                  order.supplier?.name ?? '—',
+                ),
+                _detail(
+                  context,
+                  'common.status'.tr(),
+                  _statusLabel(order.status),
+                ),
+                _detail(
+                  context,
+                  'orders.total_buy'.tr(),
+                  '\$${order.totalBuy}',
+                ),
+                _detail(
+                  context,
+                  'orders.total_sell'.tr(),
+                  order.totalSell == null
+                      ? '—'
+                      : '\$${order.totalSell}',
+                ),
+                _detail(
+                  context,
+                  'orders.notes'.tr(),
+                  order.notes ?? '—',
+                ),
               ],
             ),
           ),
@@ -331,7 +378,7 @@ class _OrdersViewState extends State<_OrdersView> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Close'),
+              child: Text('common.close'.tr()),
             ),
           ],
         );
@@ -341,18 +388,19 @@ class _OrdersViewState extends State<_OrdersView> {
 
   String? _statusFromFilter(String filter) {
     switch (filter) {
-      case 'Draft':
+      case 'draft':
         return 'draft';
 
-      case 'Submitted':
+      case 'submitted':
         return 'submitted';
 
-      case 'Received':
+      case 'received':
         return 'received';
 
-      case 'Cancelled':
+      case 'cancelled':
         return 'cancelled';
 
+      case 'all':
       default:
         return null;
     }
@@ -361,13 +409,17 @@ class _OrdersViewState extends State<_OrdersView> {
   String _statusLabel(String status) {
     switch (status.toLowerCase()) {
       case 'draft':
-        return 'Draft';
+        return 'orders.draft'.tr();
+
       case 'submitted':
-        return 'Submitted';
+        return 'orders.submitted'.tr();
+
       case 'received':
-        return 'Received';
+        return 'orders.received'.tr();
+
       case 'cancelled':
-        return 'Cancelled';
+        return 'orders.cancelled'.tr();
+
       default:
         return status;
     }

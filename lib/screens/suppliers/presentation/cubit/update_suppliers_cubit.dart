@@ -6,10 +6,12 @@ import 'package:flutter/foundation.dart';
 
 import 'supplier_action_state.dart';
 
-class UpdateSupplierCubit extends Cubit<SupplierActionState> {
+class UpdateSupplierCubit
+    extends Cubit<SupplierActionState> {
   final SuppliersRepository repository;
 
-  UpdateSupplierCubit(this.repository) : super(const SupplierActionInitial());
+  UpdateSupplierCubit(this.repository)
+    : super(const SupplierActionInitial());
 
   Future<void> updateSupplier({
     required int id,
@@ -39,14 +41,19 @@ class UpdateSupplierCubit extends Cubit<SupplierActionState> {
         debugPrint('UPDATE SUCCESS: $response');
 
         emit(
-          const SupplierActionSuccess(message: 'Supplier updated successfully'),
+          const SupplierActionSuccess(
+            message:
+                'suppliers.messages.updated_successfully',
+          ),
         );
       },
       failure: (error) {
         debugPrint('UPDATE FAILED: ${error.message}');
 
         emit(
-          SupplierActionFailure(error.message ?? 'Failed to update supplier'),
+          SupplierActionFailure(
+            error.message ?? 'Failed to update supplier',
+          ),
         );
       },
     );

@@ -1,34 +1,44 @@
 import 'package:dashboard/core/theme/extensions.dart';
 import 'package:dashboard/screens/dashboard/data/models/low_stock_response.dart';
 import 'package:dashboard/screens/dashboard/presentation/components/dashboard_card.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class LowStockCard extends StatelessWidget {
   final LowStockData data;
   final VoidCallback? onRefresh;
 
-  const LowStockCard({super.key, required this.data, this.onRefresh});
+  const LowStockCard({
+    super.key,
+    required this.data,
+    this.onRefresh,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
-
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
     final items = data.items;
 
     return DashboardCard(
-      title: 'Low Stock',
+      title: 'dashboard.low_stock'.tr(),
       icon: Icons.inventory_2_outlined,
       onRefresh: onRefresh,
       trailing: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 5,
+        ),
         decoration: BoxDecoration(
-          color: dashboardColors.warning.withValues(alpha: .12),
+          color: dashboardColors.warning.withValues(
+            alpha: .12,
+          ),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
-          'Threshold: ${data.threshold}',
+          '${'dashboard.threshold'.tr()}: ${data.threshold}',
           style: theme.textTheme.bodySmall?.copyWith(
             color: dashboardColors.warning,
             fontWeight: FontWeight.w600,
@@ -38,7 +48,7 @@ class LowStockCard extends StatelessWidget {
       child: items.isEmpty
           ? Center(
               child: Text(
-                'No low stock items.',
+                'dashboard.no_low_stock_items'.tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colors.onSurfaceVariant,
                 ),
@@ -46,13 +56,13 @@ class LowStockCard extends StatelessWidget {
             )
           : ListView.separated(
               itemCount: items.length,
-              separatorBuilder: (_, _) =>
-                  Divider(height: 1, color: colors.outlineVariant),
+              separatorBuilder: (_, _) => Divider(
+                height: 1,
+                color: colors.outlineVariant,
+              ),
               itemBuilder: (context, index) {
                 final item = items[index];
-
                 final stock = item.stockQuantity;
-
                 final isCritical = stock <= 1;
 
                 final statusColor = isCritical
@@ -60,15 +70,20 @@ class LowStockCard extends StatelessWidget {
                     : dashboardColors.warning;
 
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 14,
+                  ),
                   child: Row(
                     children: [
                       Container(
                         width: 42,
                         height: 42,
                         decoration: BoxDecoration(
-                          color: statusColor.withValues(alpha: .10),
-                          borderRadius: BorderRadius.circular(10),
+                          color: statusColor.withValues(
+                            alpha: .10,
+                          ),
+                          borderRadius:
+                              BorderRadius.circular(10),
                         ),
                         child: Icon(
                           Icons.warning_amber_rounded,
@@ -76,86 +91,117 @@ class LowStockCard extends StatelessWidget {
                           size: 22,
                         ),
                       ),
-
                       const SizedBox(width: 14),
-
                       Expanded(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
                           children: [
                             Text(
-                              item.product?.name ?? 'Unknown Product',
+                              item.product?.name ??
+                                  'dashboard.unknown_product'
+                                      .tr(),
                               maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                              overflow:
+                                  TextOverflow.ellipsis,
+                              style: theme
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                    fontWeight:
+                                        FontWeight.w600,
+                                  ),
                             ),
-
                             const SizedBox(height: 4),
-
                             Text(
-                              item.supplier?.name ?? 'Unknown Supplier',
+                              item.supplier?.name ??
+                                  'dashboard.unknown_supplier'
+                                      .tr(),
                               maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: colors.onSurfaceVariant,
-                              ),
+                              overflow:
+                                  TextOverflow.ellipsis,
+                              style: theme
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: colors
+                                        .onSurfaceVariant,
+                                  ),
                             ),
-
                             const SizedBox(height: 3),
-
                             Text(
-                              item.product?.category?.name ?? 'No Category',
+                              item
+                                      .product
+                                      ?.category
+                                      ?.name ??
+                                  'dashboard.no_category'
+                                      .tr(),
                               maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: colors.onSurfaceVariant,
-                              ),
+                              overflow:
+                                  TextOverflow.ellipsis,
+                              style: theme
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: colors
+                                        .onSurfaceVariant,
+                                  ),
                             ),
                           ],
                         ),
                       ),
-
                       const SizedBox(width: 16),
-
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment:
+                            CrossAxisAlignment.end,
                         children: [
                           Text(
                             stock.toString(),
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              color: statusColor,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: theme
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                  color: statusColor,
+                                  fontWeight:
+                                      FontWeight.bold,
+                                ),
                           ),
-
                           const SizedBox(height: 3),
-
                           Text(
-                            'units left',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: colors.onSurfaceVariant,
-                            ),
+                            'dashboard.units_left'.tr(),
+                            style: theme.textTheme.bodySmall
+                                ?.copyWith(
+                                  color: colors
+                                      .onSurfaceVariant,
+                                ),
                           ),
-
                           const SizedBox(height: 8),
-
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 9,
-                              vertical: 4,
-                            ),
+                            padding:
+                                const EdgeInsets.symmetric(
+                                  horizontal: 9,
+                                  vertical: 4,
+                                ),
                             decoration: BoxDecoration(
-                              color: statusColor.withValues(alpha: .10),
-                              borderRadius: BorderRadius.circular(20),
+                              color: statusColor.withValues(
+                                alpha: .10,
+                              ),
+                              borderRadius:
+                                  BorderRadius.circular(20),
                             ),
                             child: Text(
-                              isCritical ? 'Critical' : 'Low',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: statusColor,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              isCritical
+                                  ? 'dashboard.critical'
+                                        .tr()
+                                  : 'dashboard.low'.tr(),
+                              style: theme
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: statusColor,
+                                    fontWeight:
+                                        FontWeight.w600,
+                                  ),
                             ),
                           ),
                         ],

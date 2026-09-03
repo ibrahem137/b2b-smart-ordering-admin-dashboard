@@ -1,23 +1,33 @@
 import 'package:dashboard/core/theme/extensions.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SupplierStatusBadge extends StatelessWidget {
   final bool isActive;
 
-  const SupplierStatusBadge({super.key, required this.isActive});
+  const SupplierStatusBadge({
+    super.key,
+    required this.isActive,
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme.extension<DashboardColors>()!;
+    final dashboardColors = theme
+        .extension<DashboardColors>()!;
 
-    final color = isActive ? dashboardColors.success : colors.onSurfaceVariant;
+    final color = isActive
+        ? dashboardColors.success
+        : colors.onSurfaceVariant;
 
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 5,
+        ),
         decoration: BoxDecoration(
           color: color.withValues(alpha: .10),
           borderRadius: BorderRadius.circular(20),
@@ -28,11 +38,16 @@ class SupplierStatusBadge extends StatelessWidget {
             Container(
               width: 6,
               height: 6,
-              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+              ),
             ),
             const SizedBox(width: 6),
             Text(
-              isActive ? 'Active' : 'Inactive',
+              isActive
+                  ? 'suppliers.active'.tr()
+                  : 'suppliers.inactive'.tr(),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: color,
                 fontWeight: FontWeight.w600,

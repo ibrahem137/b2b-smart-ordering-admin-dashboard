@@ -10,6 +10,7 @@ import 'package:dashboard/screens/categories/presentation/cubit/category_action_
 import 'package:dashboard/screens/categories/presentation/cubit/create_category_cubit.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/delete_category_cubit.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/update_category_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +20,8 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CategoriesCubit>(
-      create: (_) => getIt<CategoriesCubit>()..getCategories(),
+      create: (_) =>
+          getIt<CategoriesCubit>()..getCategories(),
       child: const _CategoriesView(),
     );
   }
@@ -52,22 +54,30 @@ class _CategoriesView extends StatelessWidget {
                 builder: (context, state) {
                   if (state is CategoriesLoading) {
                     return Center(
-                      child: CircularProgressIndicator(color: colors.primary),
+                      child: CircularProgressIndicator(
+                        color: colors.primary,
+                      ),
                     );
                   }
 
                   if (state is CategoriesFailure) {
-                    return _buildFailureState(context, state);
+                    return _buildFailureState(
+                      context,
+                      state,
+                    );
                   }
 
                   if (state is CategoriesSuccess) {
                     if (state.categories.isEmpty) {
                       return Center(
                         child: Text(
-                          'No categories found.',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: colors.onSurfaceVariant,
-                          ),
+                          'categories.no_categories_found'
+                              .tr(),
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(
+                                color:
+                                    colors.onSurfaceVariant,
+                              ),
                         ),
                       );
                     }
@@ -75,35 +85,58 @@ class _CategoriesView extends StatelessWidget {
                     return CategoriesGrid(
                       categories: state.categories,
                       onEdit: (category) async {
-                        final updated = await showDialog<bool>(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (_) {
-                            return BlocProvider<UpdateCategoryCubit>(
-                              create: (_) => getIt<UpdateCategoryCubit>(),
-                              child: EditCategoryDialog(category: category),
+                        final updated =
+                            await showDialog<bool>(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (_) {
+                                return BlocProvider<
+                                  UpdateCategoryCubit
+                                >(
+                                  create: (_) =>
+                                      getIt<
+                                        UpdateCategoryCubit
+                                      >(),
+                                  child: EditCategoryDialog(
+                                    category: category,
+                                  ),
+                                );
+                              },
                             );
-                          },
-                        );
 
-                        if (updated == true && context.mounted) {
-                          context.read<CategoriesCubit>().getCategories();
+                        if (updated == true &&
+                            context.mounted) {
+                          context
+                              .read<CategoriesCubit>()
+                              .getCategories();
                         }
                       },
                       onDelete: (category) async {
-                        final deleted = await showDialog<bool>(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (_) {
-                            return BlocProvider<DeleteCategoryCubit>(
-                              create: (_) => getIt<DeleteCategoryCubit>(),
-                              child: _DeleteCategoryDialog(category: category),
+                        final deleted =
+                            await showDialog<bool>(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (_) {
+                                return BlocProvider<
+                                  DeleteCategoryCubit
+                                >(
+                                  create: (_) =>
+                                      getIt<
+                                        DeleteCategoryCubit
+                                      >(),
+                                  child:
+                                      _DeleteCategoryDialog(
+                                        category: category,
+                                      ),
+                                );
+                              },
                             );
-                          },
-                        );
 
-                        if (deleted == true && context.mounted) {
-                          context.read<CategoriesCubit>().getCategories();
+                        if (deleted == true &&
+                            context.mounted) {
+                          context
+                              .read<CategoriesCubit>()
+                              .getCategories();
                         }
                       },
                     );
@@ -119,7 +152,10 @@ class _CategoriesView extends StatelessWidget {
     );
   }
 
-  Widget _buildFailureState(BuildContext context, CategoriesFailure state) {
+  Widget _buildFailureState(
+    BuildContext context,
+    CategoriesFailure state,
+  ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -127,7 +163,11 @@ class _CategoriesView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.error_outline, color: colors.error, size: 40),
+          Icon(
+            Icons.error_outline,
+            color: colors.error,
+            size: 40,
+          ),
 
           const SizedBox(height: 12),
 
@@ -143,17 +183,21 @@ class _CategoriesView extends StatelessWidget {
 
           FilledButton.icon(
             onPressed: () {
-              context.read<CategoriesCubit>().getCategories();
+              context
+                  .read<CategoriesCubit>()
+                  .getCategories();
             },
             icon: const Icon(Icons.refresh),
-            label: const Text('Retry'),
+            label: Text('common.retry'.tr()),
           ),
         ],
       ),
     );
   }
 
-  Future<void> _openAddCategoryDialog(BuildContext context) async {
+  Future<void> _openAddCategoryDialog(
+    BuildContext context,
+  ) async {
     final created = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -180,7 +224,10 @@ class _DeleteCategoryDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    return BlocConsumer<DeleteCategoryCubit, CategoryActionState>(
+    return BlocConsumer<
+      DeleteCategoryCubit,
+      CategoryActionState
+    >(
       listener: (context, state) {
         if (state is CategoryActionSuccess) {
           Navigator.pop(context, true);
@@ -202,10 +249,11 @@ class _DeleteCategoryDialog extends StatelessWidget {
         final isLoading = state is CategoryActionLoading;
 
         return AlertDialog(
-          title: const Text('Delete Category'),
+          title: Text('categories.delete_category'.tr()),
           content: Text(
-            'Are you sure you want to delete '
-            '"${category.name}"?',
+            'categories.delete_confirmation'.tr(
+              namedArgs: {'name': category.name},
+            ),
           ),
           actions: [
             TextButton(
@@ -214,16 +262,15 @@ class _DeleteCategoryDialog extends StatelessWidget {
                   : () {
                       Navigator.pop(context);
                     },
-              child: const Text('Cancel'),
+              child: Text('common.cancel'.tr()),
             ),
-
             FilledButton(
               onPressed: isLoading
                   ? null
                   : () {
-                      context.read<DeleteCategoryCubit>().deleteCategory(
-                        category.id,
-                      );
+                      context
+                          .read<DeleteCategoryCubit>()
+                          .deleteCategory(category.id);
                     },
               style: FilledButton.styleFrom(
                 backgroundColor: colors.error,
@@ -238,7 +285,7 @@ class _DeleteCategoryDialog extends StatelessWidget {
                         color: colors.onError,
                       ),
                     )
-                  : const Text('Delete'),
+                  : Text('common.delete'.tr()),
             ),
           ],
         );

@@ -1,4 +1,5 @@
 import 'package:dashboard/screens/settings/presentation/cubit/settings_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +13,7 @@ class AccountSection extends StatelessWidget {
 
     final admin = context.read<SettingsCubit>().admin;
 
-    final name = admin?.name ?? 'Administrator';
+    final name = admin?.name ?? 'admin'.tr();
     final email = admin?.email ?? '—';
 
     return Container(
@@ -49,19 +50,21 @@ class AccountSection extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: theme.textTheme.titleLarge
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
 
                 const SizedBox(height: 5),
 
                 Text(
                   email,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colors.onSurfaceVariant,
-                  ),
+                  style: theme.textTheme.bodyMedium
+                      ?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                 ),
 
                 const SizedBox(height: 10),
@@ -77,11 +80,12 @@ class AccountSection extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    'Administrator',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: colors.onPrimaryContainer,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    'admin'.tr(),
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(
+                          color: colors.onPrimaryContainer,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                 ),
               ],
@@ -91,7 +95,10 @@ class AccountSection extends StatelessWidget {
           // Admin ID
           if (admin != null)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 10,
+              ),
               decoration: BoxDecoration(
                 color: colors.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(10),

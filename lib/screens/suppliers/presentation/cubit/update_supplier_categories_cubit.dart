@@ -3,7 +3,8 @@ import 'package:dashboard/core/networking/api_result.dart';
 import 'package:dashboard/screens/suppliers/domain/repos/suppliers_repository.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/supplier_action_state.dart';
 
-class UpdateSupplierCategoriesCubit extends Cubit<SupplierActionState> {
+class UpdateSupplierCategoriesCubit
+    extends Cubit<SupplierActionState> {
   final SuppliersRepository repository;
 
   UpdateSupplierCategoriesCubit(this.repository)
@@ -15,23 +16,25 @@ class UpdateSupplierCategoriesCubit extends Cubit<SupplierActionState> {
   }) async {
     emit(const SupplierActionLoading());
 
-    final result = await repository.updateSupplierCategories(
-      supplierId: supplierId,
-      categoryIds: categoryIds,
-    );
+    final result = await repository
+        .updateSupplierCategories(
+          supplierId: supplierId,
+          categoryIds: categoryIds,
+        );
 
     result.when(
       success: (_) {
         emit(
           const SupplierActionSuccess(
-            message: 'Supplier categories updated successfully',
+            message: 'suppliers.messages.categories_updated_successfully',
           ),
         );
       },
       failure: (error) {
         emit(
           SupplierActionFailure(
-            error.message ?? 'Failed to update supplier categories',
+            error.message ??
+                'Failed to update supplier categories',
           ),
         );
       },
