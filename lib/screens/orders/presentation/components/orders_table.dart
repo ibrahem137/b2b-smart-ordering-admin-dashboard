@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 
 class OrdersTable extends StatelessWidget {
   final List<OrderModel> orders;
-
   final void Function(OrderModel order)? onView;
+  final void Function(OrderModel order)? onChangeStatus;
 
   const OrdersTable({
     super.key,
     required this.orders,
     this.onView,
+    this.onChangeStatus,
   });
 
   @override
@@ -34,10 +35,9 @@ class OrdersTable extends StatelessWidget {
                 ? Center(
                     child: Text(
                       'orders.no_orders_found_period'.tr(),
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(
-                            color: colors.onSurfaceVariant,
-                          ),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
                     ),
                   )
                 : ListView.separated(
@@ -56,6 +56,9 @@ class OrdersTable extends StatelessWidget {
                         order: order,
                         onView: () {
                           onView?.call(order);
+                        },
+                        onChangeStatus: () {
+                          onChangeStatus?.call(order);
                         },
                       );
                     },
@@ -76,79 +79,41 @@ class OrdersTable extends StatelessWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 18,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       decoration: BoxDecoration(
         color: colors.surfaceContainerLow,
-        border: Border(
-          bottom: BorderSide(color: colors.outlineVariant),
-        ),
+        border: Border(bottom: BorderSide(color: colors.outlineVariant)),
       ),
       child: Row(
         children: [
           Expanded(
             flex: 2,
-            child: Text(
-              'orders.order'.tr(),
-              style: headerStyle,
-            ),
+            child: Text('orders.order'.tr(), style: headerStyle),
           ),
           Expanded(
             flex: 2,
-            child: Text(
-              'orders.store'.tr(),
-              style: headerStyle,
-            ),
+            child: Text('orders.store'.tr(), style: headerStyle),
           ),
           Expanded(
             flex: 2,
-            child: Text(
-              'orders.supplier'.tr(),
-              style: headerStyle,
-            ),
+            child: Text('orders.supplier'.tr(), style: headerStyle),
           ),
+          Expanded(child: Text('orders.total_buy'.tr(), style: headerStyle)),
+          Expanded(child: Text('orders.total_sell'.tr(), style: headerStyle)),
           Expanded(
-            child: Text(
-              'orders.total_buy'.tr(),
-              style: headerStyle,
-            ),
-          ),
-          Expanded(
-            child: Text(
-              'orders.total_sell'.tr(),
-              style: headerStyle,
-            ),
+            flex: 2,
+            child: Text('common.status'.tr(), style: headerStyle),
           ),
           Expanded(
             flex: 2,
-            child: Text(
-              'common.status'.tr(),
-              style: headerStyle,
-            ),
+            child: Text('orders.notes'.tr(), style: headerStyle),
           ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              'orders.notes'.tr(),
-              style: headerStyle,
-            ),
-          ),
-          Expanded(
-            child: Text(
-              'common.date'.tr(),
-              style: headerStyle,
-            ),
-          ),
+          Expanded(child: Text('common.date'.tr(), style: headerStyle)),
           SizedBox(
-            width: 70,
+            width: 110,
             child: Align(
               alignment: Alignment.centerRight,
-              child: Text(
-                'common.actions'.tr(),
-                style: headerStyle,
-              ),
+              child: Text('common.actions'.tr(), style: headerStyle),
             ),
           ),
         ],

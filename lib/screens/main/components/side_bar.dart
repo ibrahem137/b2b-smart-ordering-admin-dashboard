@@ -24,53 +24,36 @@ class SideBar extends StatelessWidget {
         width: 250,
         decoration: BoxDecoration(
           color: colors.surface,
-          border: Border(
-            right: BorderSide(color: colors.outlineVariant),
-          ),
+          border: Border(right: BorderSide(color: colors.outlineVariant)),
         ),
         textStyle: theme.textTheme.bodyMedium?.copyWith(
           color: colors.onSurface,
           fontWeight: FontWeight.w600,
         ),
-        iconTheme: IconThemeData(
-          color: colors.onSurfaceVariant,
-          size: 22,
-        ),
+        iconTheme: IconThemeData(color: colors.onSurfaceVariant, size: 22),
         hoverColor: colors.primary.withValues(alpha: .08),
-        hoverTextStyle: theme.textTheme.bodyMedium
-            ?.copyWith(
-              color: colors.primary,
-              fontWeight: FontWeight.w600,
-            ),
-        hoverIconTheme: IconThemeData(
+        hoverTextStyle: theme.textTheme.bodyMedium?.copyWith(
           color: colors.primary,
-          size: 22,
+          fontWeight: FontWeight.w600,
         ),
+        hoverIconTheme: IconThemeData(color: colors.primary, size: 22),
         itemTextPadding: const EdgeInsets.only(left: 20),
-        selectedItemTextPadding: const EdgeInsets.only(
-          left: 20,
-        ),
+        selectedItemTextPadding: const EdgeInsets.only(left: 20),
         selectedItemDecoration: BoxDecoration(
           color: colors.primary,
           borderRadius: BorderRadius.circular(10),
         ),
-        selectedTextStyle: theme.textTheme.bodyMedium
-            ?.copyWith(
-              color: colors.onPrimary,
-              fontWeight: FontWeight.w700,
-            ),
-        selectedIconTheme: IconThemeData(
+        selectedTextStyle: theme.textTheme.bodyMedium?.copyWith(
           color: colors.onPrimary,
-          size: 22,
+          fontWeight: FontWeight.w700,
         ),
+        selectedIconTheme: IconThemeData(color: colors.onPrimary, size: 22),
       ),
       extendedTheme: SidebarXTheme(
         width: 250,
         decoration: BoxDecoration(
           color: colors.surface,
-          border: Border(
-            right: BorderSide(color: colors.outlineVariant),
-          ),
+          border: Border(right: BorderSide(color: colors.outlineVariant)),
         ),
       ),
       items: [
@@ -95,13 +78,18 @@ class SideBar extends StatelessWidget {
           label: 'navigation.supplier_products'.tr(),
         ),
         SidebarXItem(
+          icon: Icons.local_offer_outlined,
+          label: 'navigation.supplier_offers'.tr(),
+        ),
+        SidebarXItem(
+          icon: Icons.storefront_outlined,
+          label: 'navigation.stores'.tr(),
+        ),
+        SidebarXItem(
           icon: Icons.shopping_cart_outlined,
           label: 'navigation.orders'.tr(),
         ),
-        SidebarXItem(
-          icon: Icons.trending_up,
-          label: 'navigation.sales'.tr(),
-        ),
+        SidebarXItem(icon: Icons.trending_up, label: 'navigation.sales'.tr()),
         SidebarXItem(
           icon: Icons.settings_outlined,
           label: 'navigation.settings'.tr(),

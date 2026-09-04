@@ -11,7 +11,9 @@
     "supplier_products": "Товары поставщиков",
     "orders": "Заказы",
     "sales": "Продажи",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "supplier_offers": "Предложения поставщиков",
+    "stores": "Магазины"
   },
   "common": {
     "page_not_found": "Страница не найдена",
@@ -39,7 +41,11 @@
     "email": "Эл. почта",
     "phone": "Телефон",
     "address": "Адрес",
-    "total": "Итого"
+    "total": "Итого",
+    "remove": "Удалить",
+    "clear": "Очистить",
+    "optional": "Необязательно",
+    "save_changes": "Сохранить изменения"
   },
   "settings": {
     "title": "Настройки",
@@ -102,7 +108,8 @@
     "select_color": "Выбрать цвет",
     "selected_color": "Выбранный цвет",
     "upload_category_image": "Загрузить изображение категории",
-    "upload_image_hint": "Выберите изображение для этой категории"
+    "upload_image_hint": "Выберите изображение для этой категории",
+    "no_categories_found": "????????? ?? ???????"
   },
   "dashboard": {
     "total_products": "Всего товаров",
@@ -193,7 +200,23 @@
     "select_supplier": "Выберите поставщика",
     "select_supplier_validation": "Пожалуйста, выберите поставщика",
     "select_supplier_first": "Сначала выберите поставщика",
-    "select_supplier_first_validation": "Пожалуйста, сначала выберите поставщика"
+    "select_supplier_first_validation": "Пожалуйста, сначала выберите поставщика",
+    "image_too_large": "Размер изображения слишком большой",
+    "image_required": "Изображение товара обязательно",
+    "product_image": "Изображение товара",
+    "image_read_error": "Не удалось прочитать выбранное изображение",
+    "image_update_hint": "Выберите новое изображение для замены текущего",
+    "invalid_image_format": "Недопустимый формат изображения",
+    "change_image": "Изменить изображение",
+    "remove_image": "Удалить изображение",
+    "no_image": "Нет изображения",
+    "select_image": "Выбрать изображение",
+    "image": "Изображение",
+    "upload_product_image": "Загрузить изображение товара",
+    "image_upload_hint": "JPG, JPEG, PNG или WEBP",
+    "no_products_found_period": "?????? ?? ???????.",
+    "products_empty_description": "???? ??? ??????? ??? ???????????.",
+    "unable_to_load_products": "?? ??????? ????????? ??????"
   },
   "supplier_products": {
     "title": "Товары поставщиков",
@@ -282,7 +305,16 @@
     "no_orders_found": "Заказы не найдены",
     "no_orders_found_period": "Заказы за этот период не найдены.",
     "orders_empty_description": "Заказы появятся здесь после создания.",
-    "change_search_or_filter": "Попробуйте изменить поиск или фильтр."
+    "change_search_or_filter": "Попробуйте изменить поиск или фильтр.",
+    "new_status": "Новый статус",
+    "status_notes_hint": "Добавьте примечание об изменении статуса...",
+    "select_new_status": "Выберите новый статус",
+    "change_status": "Изменить статус",
+    "notes_optional": "Примечания (Необязательно)",
+    "update_status": "Обновить статус",
+    "change_status_subtitle": "Обновите текущий статус заказа.",
+    "updating_status": "Обновление...",
+    "current_status": "Текущий статус"
   },
   "sales": {
     "title": "Продажи",
@@ -363,6 +395,133 @@
     },
     "errors": {
       "missing_supplier_id": "Идентификатор поставщика отсутствует"
+    }
+  },
+  "stores": {
+    "details": {
+      "email": "Эл. почта",
+      "updated_at": "Обновлен",
+      "phone": "Телефон",
+      "owner": "Владелец",
+      "created_at": "Создан",
+      "address": "Адрес"
+    },
+    "columns": {
+      "email": "Эл. почта",
+      "owner": "Владелец",
+      "store": "Магазин",
+      "phone": "Телефон"
+    },
+    "deactivate_store": "Деактивировать магазин",
+    "deactivate": "Деактивировать",
+    "total": "всего магазинов",
+    "status": {
+      "inactive": "Неактивен",
+      "active": "Активен"
+    },
+    "activate": "Активировать",
+    "no_stores_found": "Магазины не найдены",
+    "all_statuses": "Все статусы",
+    "title": "Магазины",
+    "search_hint": "Поиск магазинов...",
+    "view_details": "Подробнее",
+    "subtitle": "Управление зарегистрированными супермаркетами и статусом их учетных записей",
+    "activate_confirmation": "Вы уверены, что хотите активировать этот магазин?",
+    "deactivate_confirmation": "Вы уверены, что хотите деактивировать этот магазин?",
+    "activate_store": "Активировать магазин",
+    "fields": {
+      "search_country": "????? ??????",
+      "address": "?????",
+      "email": "??????????? ?????",
+      "image": "??????????? ????????",
+      "name": "???????? ????????",
+      "owner_name": "??? ?????????",
+      "password": "??????",
+      "phone": "???????"
+    },
+    "validation": {
+      "name_required": "???????? ???????? ???????????.",
+      "owner_required": "??? ????????? ???????????.",
+      "invalid_phone": "??????? ?????????? ????? ?????????? ????????.",
+      "email_required": "????? ??????????? ????? ??????????.",
+      "invalid_email": "??????? ?????????? ????? ??????????? ?????.",
+      "image_read_failed": "?? ??????? ????????? ????????? ???????????.",
+      "image_too_large": "?????? ??????????? ?? ?????? ????????? 5 ??.",
+      "invalid_image": "???????? ??????????? JPG, JPEG, PNG ??? WEBP.",
+      "password_min": "?????? ?????? ????????? ?? ????? 8 ????????.",
+      "password_required": "?????? ??????????.",
+      "required": "??? ???? ???????????."
+    },
+    "add_store": "???????? ???????",
+    "add_store_subtitle": "??????? ?????????? ? ???????? ????.",
+    "choose_image": "??????? ??????????? ????????",
+    "delete_confirmation": "?? ???????, ??? ?????? ??????? ???? ????????",
+    "delete_store": "??????? ???????"
+  },
+  "supplier_offers": {
+    "columns": {
+      "expires_at": "Действует до",
+      "offer_price": "Цена предложения",
+      "product": "Товар",
+      "supplier": "Поставщик",
+      "stock": "Запас",
+      "status": "Статус"
+    },
+    "image_optional_hint": "Необязательно - JPG, JPEG, PNG или WebP. Максимум 5 МБ.",
+    "offer_image": "Изображение предложения",
+    "current_image_kept": "Текущее изображение будет сохранено, если вы не выберете замену.",
+    "choose_replacement_image": "Нажмите, чтобы выбрать замену изображения",
+    "edit_subtitle": "Обновите информацию о предложении.",
+    "expires_at": "Действует до",
+    "select_status": "Выберите статус",
+    "add_offer": "Добавить предложение",
+    "status": {
+      "available": "Доступно",
+      "unavailable": "Недоступно"
+    },
+    "supplier_fallback": "ID поставщика: {id}",
+    "select_supplier_product": "Выберите товар поставщика",
+    "choose_image": "Нажмите, чтобы выбрать изображение",
+    "remove_replacement_image": "Удалить замену изображения",
+    "image_formats": "JPG, JPEG, PNG или WebP - Максимум 5 МБ",
+    "remove_image": "Удалить изображение",
+    "add_subtitle": "Создайте новое предложение для товара поставщика.",
+    "no_supplier_products": "Товары поставщиков не найдены.",
+    "current_image": "Текущее изображение",
+    "offer_stock": "Запас по предложению",
+    "validation": {
+      "invalid_price": "Введите корректную цену.",
+      "price_required": "Цена предложения обязательна.",
+      "invalid_image_format": "Выберите изображение JPG, JPEG, PNG или WebP.",
+      "image_too_large": "Размер изображения не должен превышать 5 МБ.",
+      "image_read_failed": "Не удалось прочитать выбранное изображение.",
+      "negative_stock": "Запас не может быть отрицательным.",
+      "invalid_stock": "Введите корректное количество товара.",
+      "negative_price": "Цена не может быть отрицательной.",
+      "invalid_image_type": "Поддерживаются только изображения JPG, JPEG, PNG и WebP.",
+      "invalid_offer_stock": "Введите корректное количество товара.",
+      "supplier_product_required": "Выберите товар поставщика.",
+      "invalid_offer_price": "Введите корректную цену предложения.",
+      "offer_price_required": "Цена предложения обязательна.",
+      "negative_offer_stock": "Запас по предложению не может быть отрицательным.",
+      "negative_offer_price": "Цена предложения не может быть отрицательной.",
+      "select_supplier_product": "???????? ????? ??????????."
+    },
+    "add_title": "Добавить предложение поставщика",
+    "subtitle": "Управление предложениями, ценами, запасами и сроками действия.",
+    "supplier_product_required": "Товар поставщика *",
+    "edit_title": "Редактировать предложение поставщика",
+    "product_fallback": "ID товара: {id}",
+    "title": "Предложения поставщиков",
+    "offer_price_required": "Цена предложения *",
+    "no_offers_found": "Предложения поставщиков не найдены.",
+    "fields": {
+      "expires_at": "Действует до",
+      "supplier_product": "Товар поставщика *",
+      "offer_image": "Изображение предложения",
+      "offer_price": "Цена предложения *",
+      "offer_stock": "Запас по предложению",
+      "status": "Статус"
     }
   }
 }

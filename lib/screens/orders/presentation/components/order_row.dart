@@ -7,31 +7,27 @@ import 'package:flutter/material.dart';
 class OrderRow extends StatelessWidget {
   final OrderModel order;
   final VoidCallback? onView;
+  final VoidCallback? onChangeStatus;
 
   const OrderRow({
     super.key,
     required this.order,
     this.onView,
+    this.onChangeStatus,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-
-    final dashboardColors = theme
-        .extension<DashboardColors>()!;
+    final dashboardColors = theme.extension<DashboardColors>()!;
 
     final totalBuy = double.tryParse(order.totalBuy) ?? 0.0;
 
-    final totalSell =
-        double.tryParse(order.totalSell ?? '') ?? 0.0;
+    final totalSell = double.tryParse(order.totalSell ?? '') ?? 0.0;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 18,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       color: colors.surface,
       child: Row(
         children: [
@@ -42,21 +38,19 @@ class OrderRow extends StatelessWidget {
               children: [
                 Text(
                   'PO-${order.id.toString().padLeft(4, '0')}',
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(
-                        color: colors.onSurface,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colors.onSurface,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
                 ),
                 const SizedBox(height: 5),
                 Text(
                   _formatDateTime(order.createdAt),
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(
-                        color: colors.onSurfaceVariant,
-                        fontSize: 12,
-                      ),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colors.onSurfaceVariant,
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ),
@@ -68,24 +62,21 @@ class OrderRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  order.store?.name ??
-                      'orders.unknown_store'.tr(),
+                  order.store?.name ?? 'orders.unknown_store'.tr(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(
-                        color: colors.onSurface,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colors.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'ID: ${order.storeId}',
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(
-                        color: colors.onSurfaceVariant,
-                        fontSize: 12,
-                      ),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colors.onSurfaceVariant,
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ),
@@ -97,24 +88,21 @@ class OrderRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  order.supplier?.name ??
-                      'orders.unknown_supplier'.tr(),
+                  order.supplier?.name ?? 'orders.unknown_supplier'.tr(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(
-                        color: colors.onSurface,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colors.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'ID: ${order.supplierId}',
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(
-                        color: colors.onSurfaceVariant,
-                        fontSize: 12,
-                      ),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: colors.onSurfaceVariant,
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ),
@@ -153,9 +141,7 @@ class OrderRow extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Text(
-              order.notes?.trim().isNotEmpty == true
-                  ? order.notes!
-                  : '—',
+              order.notes?.trim().isNotEmpty == true ? order.notes! : '—',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodySmall?.copyWith(
@@ -176,23 +162,52 @@ class OrderRow extends StatelessWidget {
           ),
 
           SizedBox(
-            width: 70,
+            width: 110,
             child: Align(
               alignment: Alignment.centerRight,
-              child: IconButton(
-                tooltip: 'orders.view'.tr(),
-                onPressed: onView,
-                icon: Icon(
-                  Icons.remove_red_eye_outlined,
-                  size: 20,
-                  color: colors.onSurfaceVariant,
-                ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    tooltip: 'orders.view'.tr(),
+                    onPressed: onView,
+                    icon: Icon(
+                      Icons.remove_red_eye_outlined,
+                      size: 20,
+                      color: colors.onSurfaceVariant,
+                    ),
+                  ),
+
+                  if (_canChangeStatus(order.status))
+                    IconButton(
+                      tooltip: 'orders.change_status'.tr(),
+                      onPressed: onChangeStatus,
+                      icon: Icon(
+                        Icons.swap_horiz_rounded,
+                        size: 21,
+                        color: colors.primary,
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  bool _canChangeStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'draft':
+      case 'submitted':
+        return true;
+
+      case 'received':
+      case 'cancelled':
+      default:
+        return false;
+    }
   }
 
   String _formatDate(String? value) {
@@ -220,7 +235,6 @@ class OrderRow extends StatelessWidget {
       return value;
     }
 
-    return DateFormat('yyyy-MM-dd\nHH:mm')
-        .format(date.toLocal());
+    return DateFormat('yyyy-MM-dd\nHH:mm').format(date.toLocal());
   }
 }

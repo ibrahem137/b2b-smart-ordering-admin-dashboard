@@ -17,11 +17,10 @@ class OrdersHeader extends StatelessWidget {
             children: [
               Text(
                 'orders.title'.tr(),
-                style: theme.textTheme.headlineSmall
-                    ?.copyWith(
-                      color: colors.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  color: colors.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 4),
               Text(

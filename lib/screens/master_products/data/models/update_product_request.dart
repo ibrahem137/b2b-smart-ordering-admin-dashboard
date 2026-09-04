@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 class UpdateProductRequest {
   final int id;
   final int supplierId;
@@ -7,6 +9,7 @@ class UpdateProductRequest {
   final double buyPrice;
   final int stockQuantity;
   final String status;
+  final MultipartFile? image;
 
   const UpdateProductRequest({
     required this.id,
@@ -17,5 +20,6 @@ class UpdateProductRequest {
     required this.buyPrice,
     required this.stockQuantity,
     required this.status,
+    this.image,
   });
 }

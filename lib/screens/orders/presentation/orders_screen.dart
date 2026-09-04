@@ -1,10 +1,12 @@
 import 'package:dashboard/core/di/injection.dart';
 import 'package:dashboard/screens/orders/data/models/order_model.dart';
+import 'package:dashboard/screens/orders/presentation/components/change_order_status_dialog.dart';
 import 'package:dashboard/screens/orders/presentation/components/orders_header.dart';
 import 'package:dashboard/screens/orders/presentation/components/orders_table.dart';
 import 'package:dashboard/screens/orders/presentation/components/orders_toolbar.dart';
 import 'package:dashboard/screens/orders/presentation/cubit/orders_cubit.dart';
 import 'package:dashboard/screens/orders/presentation/cubit/orders_state.dart';
+import 'package:dashboard/screens/orders/presentation/cubit/update_order_status_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +32,6 @@ class _OrdersView extends StatefulWidget {
 
 class _OrdersViewState extends State<_OrdersView> {
   String selectedFilter = 'all';
-
   String searchQuery = '';
 
   @override
@@ -72,9 +73,7 @@ class _OrdersViewState extends State<_OrdersView> {
               child: BlocBuilder<OrdersCubit, OrdersState>(
                 builder: (context, state) {
                   if (state is OrdersLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   }
 
                   if (state is OrdersFailure) {
@@ -82,9 +81,7 @@ class _OrdersViewState extends State<_OrdersView> {
                   }
 
                   if (state is OrdersSuccess) {
-                    final orders = _filterLocally(
-                      state.orders,
-                    );
+                    final orders = _filterLocally(state.orders);
 
                     if (orders.isEmpty) {
                       return _buildEmptyState(context);
@@ -94,6 +91,9 @@ class _OrdersViewState extends State<_OrdersView> {
                       orders: orders,
                       onView: (order) {
                         _showOrderDetails(context, order);
+                      },
+                      onChangeStatus: (order) {
+                        _showChangeStatusDialog(context, order);
                       },
                     );
                   }
@@ -143,8 +143,7 @@ class _OrdersViewState extends State<_OrdersView> {
           const SizedBox(height: 6),
 
           Text(
-            searchQuery.isNotEmpty ||
-                    selectedFilter != 'all'
+            searchQuery.isNotEmpty || selectedFilter != 'all'
                 ? 'orders.change_search_or_filter'.tr()
                 : 'orders.orders_empty_description'.tr(),
             textAlign: TextAlign.center,
@@ -157,10 +156,7 @@ class _OrdersViewState extends State<_OrdersView> {
     );
   }
 
-  Widget _buildFailure(
-    BuildContext context,
-    OrdersFailure state,
-  ) {
+  Widget _buildFailure(BuildContext context, OrdersFailure state) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -175,11 +171,7 @@ class _OrdersViewState extends State<_OrdersView> {
               color: colors.error.withValues(alpha: .10),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.error_outline,
-              size: 34,
-              color: colors.error,
-            ),
+            child: Icon(Icons.error_outline, size: 34, color: colors.error),
           ),
 
           const SizedBox(height: 16),
@@ -207,9 +199,7 @@ class _OrdersViewState extends State<_OrdersView> {
 
           FilledButton.icon(
             onPressed: () {
-              context.read<OrdersCubit>().getOrders(
-                status: _statusFromFilter(selectedFilter),
-              );
+              _reloadOrders();
             },
             icon: const Icon(Icons.refresh),
             label: Text('common.retry'.tr()),
@@ -219,11 +209,7 @@ class _OrdersViewState extends State<_OrdersView> {
     );
   }
 
-  Widget _detail(
-    BuildContext context,
-    String title,
-    String value,
-  ) {
+  Widget _detail(BuildContext context, String title, String value) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -268,8 +254,7 @@ class _OrdersViewState extends State<_OrdersView> {
 
       final store = order.store?.name.toLowerCase() ?? '';
 
-      final supplier =
-          order.supplier?.name.toLowerCase() ?? '';
+      final supplier = order.supplier?.name.toLowerCase() ?? '';
 
       final status = order.status.toLowerCase();
 
@@ -283,10 +268,35 @@ class _OrdersViewState extends State<_OrdersView> {
     }).toList();
   }
 
-  void _showOrderDetails(
+  void _reloadOrders() {
+    context.read<OrdersCubit>().getOrders(
+      status: _statusFromFilter(selectedFilter),
+    );
+  }
+
+  Future<void> _showChangeStatusDialog(
     BuildContext context,
     OrderModel order,
-  ) {
+  ) async {
+    final updated = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return BlocProvider(
+          create: (_) => getIt<UpdateOrderStatusCubit>(),
+          child: ChangeOrderStatusDialog(order: order),
+        );
+      },
+    );
+
+    if (!mounted || updated != true) {
+      return;
+    }
+
+    _reloadOrders();
+  }
+
+  void _showOrderDetails(BuildContext context, OrderModel order) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -306,9 +316,7 @@ class _OrdersViewState extends State<_OrdersView> {
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: colors.primary.withValues(
-                    alpha: .10,
-                  ),
+                  color: colors.primary.withValues(alpha: .10),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -323,11 +331,10 @@ class _OrdersViewState extends State<_OrdersView> {
               Expanded(
                 child: Text(
                   '${'orders.order'.tr()} #${order.id}',
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(
-                        color: colors.onSurface,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: colors.onSurface,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],
@@ -338,11 +345,7 @@ class _OrdersViewState extends State<_OrdersView> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _detail(
-                  context,
-                  'orders.store'.tr(),
-                  order.store?.name ?? '—',
-                ),
+                _detail(context, 'orders.store'.tr(), order.store?.name ?? '—'),
                 _detail(
                   context,
                   'orders.supplier'.tr(),
@@ -361,14 +364,12 @@ class _OrdersViewState extends State<_OrdersView> {
                 _detail(
                   context,
                   'orders.total_sell'.tr(),
-                  order.totalSell == null
-                      ? '—'
-                      : '\$${order.totalSell}',
+                  order.totalSell == null ? '—' : '\$${order.totalSell}',
                 ),
                 _detail(
                   context,
                   'orders.notes'.tr(),
-                  order.notes ?? '—',
+                  order.notes?.trim().isNotEmpty == true ? order.notes! : '—',
                 ),
               ],
             ),

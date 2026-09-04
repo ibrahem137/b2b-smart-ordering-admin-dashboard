@@ -3,11 +3,13 @@ import 'package:dashboard/core/networking/api_result.dart';
 import 'package:dashboard/screens/master_products/data/models/create_product_request.dart';
 import 'package:dashboard/screens/master_products/domain/repos/products_repository.dart';
 import 'package:dashboard/screens/master_products/presentation/cubit/product_action_state.dart';
+import 'package:dio/dio.dart';
 
 class CreateProductCubit extends Cubit<ProductActionState> {
   final ProductsRepository repository;
 
-  CreateProductCubit(this.repository) : super(const ProductActionInitial());
+  CreateProductCubit(this.repository)
+    : super(const ProductActionInitial());
 
   Future<void> createProduct({
     required int supplierId,
@@ -17,6 +19,7 @@ class CreateProductCubit extends Cubit<ProductActionState> {
     required double buyPrice,
     required int stockQuantity,
     required String status,
+    required MultipartFile image,
   }) async {
     emit(const ProductActionLoading());
 
@@ -31,15 +34,24 @@ class CreateProductCubit extends Cubit<ProductActionState> {
         buyPrice: buyPrice,
         stockQuantity: stockQuantity,
         status: status,
+        image: image,
       ),
     );
 
     result.when(
       success: (_) {
-        emit(const ProductActionSuccess('Product created successfully'));
+        emit(
+          const ProductActionSuccess(
+            'Product created successfully',
+          ),
+        );
       },
       failure: (error) {
-        emit(ProductActionFailure(error.message ?? 'Failed to create product'));
+        emit(
+          ProductActionFailure(
+            error.message ?? 'Failed to create product',
+          ),
+        );
       },
     );
   }

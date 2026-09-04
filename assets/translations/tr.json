@@ -11,7 +11,9 @@
     "supplier_products": "Tedarikçi Ürünleri",
     "orders": "Siparişler",
     "sales": "Satışlar",
-    "settings": "Ayarlar"
+    "settings": "Ayarlar",
+    "supplier_offers": "Tedarikçi Teklifleri",
+    "stores": "Mağazalar"
   },
   "common": {
     "page_not_found": "Sayfa Bulunamadı",
@@ -39,7 +41,11 @@
     "email": "E-posta",
     "phone": "Telefon",
     "address": "Adres",
-    "total": "Toplam"
+    "total": "Toplam",
+    "remove": "Kaldır",
+    "clear": "Temizle",
+    "optional": "İsteğe bağlı",
+    "save_changes": "Değişiklikleri kaydet"
   },
   "settings": {
     "title": "Ayarlar",
@@ -102,7 +108,8 @@
     "select_color": "Renk Seç",
     "selected_color": "Seçilen Renk",
     "upload_category_image": "Kategori Görseli Yükle",
-    "upload_image_hint": "Bu kategori için bir görsel seçin"
+    "upload_image_hint": "Bu kategori için bir görsel seçin",
+    "no_categories_found": "Kategori bulunamad?"
   },
   "dashboard": {
     "total_products": "Toplam Ürün",
@@ -193,7 +200,23 @@
     "select_supplier": "Tedarikçi seçin",
     "select_supplier_validation": "Lütfen bir tedarikçi seçin",
     "select_supplier_first": "Önce bir tedarikçi seçin",
-    "select_supplier_first_validation": "Lütfen önce bir tedarikçi seçin"
+    "select_supplier_first_validation": "Lütfen önce bir tedarikçi seçin",
+    "image_too_large": "Görsel boyutu çok büyük",
+    "image_required": "Ürün görseli gereklidir",
+    "product_image": "Ürün Görseli",
+    "image_read_error": "Seçilen görsel okunamadı",
+    "image_update_hint": "Mevcut görseli değiştirmek için yeni bir görsel seçin",
+    "invalid_image_format": "Geçersiz görsel formatı",
+    "change_image": "Görseli değiştir",
+    "remove_image": "Görseli kaldır",
+    "no_image": "Görsel yok",
+    "select_image": "Görsel seç",
+    "image": "Görsel",
+    "upload_product_image": "Ürün görseli yükle",
+    "image_upload_hint": "JPG, JPEG, PNG veya WEBP",
+    "no_products_found_period": "?r?n bulunamad?.",
+    "products_empty_description": "Hen?z g?r?nt?lenecek ?r?n yok.",
+    "unable_to_load_products": "?r?nler y?klenemedi"
   },
   "supplier_products": {
     "title": "Tedarikçi Ürünleri",
@@ -282,7 +305,16 @@
     "no_orders_found": "Sipariş bulunamadı",
     "no_orders_found_period": "Bu dönem için sipariş bulunamadı.",
     "orders_empty_description": "Siparişler oluşturulduktan sonra burada görünecek.",
-    "change_search_or_filter": "Aramanızı veya filtrenizi değiştirmeyi deneyin."
+    "change_search_or_filter": "Aramanızı veya filtrenizi değiştirmeyi deneyin.",
+    "new_status": "Yeni Durum",
+    "status_notes_hint": "Bu durum değişikliği hakkında bir not ekleyin...",
+    "select_new_status": "Yeni durum seçin",
+    "change_status": "Durumu Değiştir",
+    "notes_optional": "Notlar (İsteğe Bağlı)",
+    "update_status": "Durumu Güncelle",
+    "change_status_subtitle": "Siparişin mevcut durumunu güncelleyin.",
+    "updating_status": "Güncelleniyor...",
+    "current_status": "Mevcut Durum"
   },
   "sales": {
     "title": "Satışlar",
@@ -363,6 +395,133 @@
     },
     "errors": {
       "missing_supplier_id": "Tedarikçi kimliği eksik"
+    }
+  },
+  "stores": {
+    "details": {
+      "email": "E-posta",
+      "updated_at": "Güncellenme tarihi",
+      "phone": "Telefon",
+      "owner": "Sahip",
+      "created_at": "Oluşturulma tarihi",
+      "address": "Adres"
+    },
+    "columns": {
+      "email": "E-posta",
+      "owner": "Sahip",
+      "store": "Mağaza",
+      "phone": "Telefon"
+    },
+    "deactivate_store": "Mağazayı devre dışı bırak",
+    "deactivate": "Devre dışı bırak",
+    "total": "toplam mağaza",
+    "status": {
+      "inactive": "Pasif",
+      "active": "Aktif"
+    },
+    "activate": "Etkinleştir",
+    "no_stores_found": "Mağaza bulunamadı",
+    "all_statuses": "Tüm durumlar",
+    "title": "Mağazalar",
+    "search_hint": "Mağazalarda ara...",
+    "view_details": "Detayları görüntüle",
+    "subtitle": "Kayıtlı süpermarketleri ve hesap durumlarını yönetin",
+    "activate_confirmation": "Bu mağazayı etkinleştirmek istediğinizden emin misiniz?",
+    "deactivate_confirmation": "Bu mağazayı devre dışı bırakmak istediğinizden emin misiniz?",
+    "activate_store": "Mağazayı etkinleştir",
+    "fields": {
+      "search_country": "?lke ara",
+      "address": "Adres",
+      "email": "E-posta",
+      "image": "Ma?aza g?rseli",
+      "name": "Ma?aza ad?",
+      "owner_name": "Ma?aza sahibi",
+      "password": "?ifre",
+      "phone": "Telefon"
+    },
+    "validation": {
+      "name_required": "Ma?aza ad? zorunludur.",
+      "owner_required": "Ma?aza sahibinin ad? zorunludur.",
+      "invalid_phone": "L?tfen ge?erli bir cep telefonu numaras? girin.",
+      "email_required": "E-posta adresi zorunludur.",
+      "invalid_email": "L?tfen ge?erli bir e-posta adresi girin.",
+      "image_read_failed": "Se?ilen g?rsel okunamad?.",
+      "image_too_large": "G?rsel boyutu 5 MB'? ge?memelidir.",
+      "invalid_image": "JPG, JPEG, PNG veya WEBP g?rsel se?in.",
+      "password_min": "?ifre en az 8 karakter olmal?d?r.",
+      "password_required": "?ifre zorunludur.",
+      "required": "Bu alan zorunludur."
+    },
+    "add_store": "Ma?aza ekle",
+    "add_store_subtitle": "A?a??ya ma?aza bilgilerini girin.",
+    "choose_image": "Ma?aza g?rseli se?",
+    "delete_confirmation": "Bu ma?azay? silmek istedi?inizden emin misiniz?",
+    "delete_store": "Ma?azay? sil"
+  },
+  "supplier_offers": {
+    "columns": {
+      "expires_at": "Son geçerlilik tarihi",
+      "offer_price": "Teklif fiyatı",
+      "product": "Ürün",
+      "supplier": "Tedarikçi",
+      "stock": "Stok",
+      "status": "Durum"
+    },
+    "image_optional_hint": "İsteğe bağlı - JPG, JPEG, PNG veya WebP. Maksimum 5 MB.",
+    "offer_image": "Teklif görseli",
+    "current_image_kept": "Yeni bir görsel seçmezseniz mevcut görsel korunacaktır.",
+    "choose_replacement_image": "Yeni bir görsel seçmek için tıklayın",
+    "edit_subtitle": "Teklif bilgilerini güncelleyin.",
+    "expires_at": "Son geçerlilik tarihi",
+    "select_status": "Durum seç",
+    "add_offer": "Teklif ekle",
+    "status": {
+      "available": "Mevcut",
+      "unavailable": "Mevcut değil"
+    },
+    "supplier_fallback": "Tedarikçi ID: {id}",
+    "select_supplier_product": "Tedarikçi ürünü seç",
+    "choose_image": "Bir görsel seçmek için tıklayın",
+    "remove_replacement_image": "Yeni görseli kaldır",
+    "image_formats": "JPG, JPEG, PNG veya WebP - Maksimum 5 MB",
+    "remove_image": "Görseli kaldır",
+    "add_subtitle": "Bir tedarikçi ürünü için yeni teklif oluşturun.",
+    "no_supplier_products": "Tedarikçi ürünü bulunamadı.",
+    "current_image": "Mevcut görsel",
+    "offer_stock": "Teklif stoğu",
+    "validation": {
+      "invalid_price": "Geçerli bir fiyat girin.",
+      "price_required": "Teklif fiyatı zorunludur.",
+      "invalid_image_format": "JPG, JPEG, PNG veya WebP görsel seçin.",
+      "image_too_large": "Görsel boyutu 5 MB'ı geçmemelidir.",
+      "image_read_failed": "Seçilen görsel okunamadı.",
+      "negative_stock": "Stok negatif olamaz.",
+      "invalid_stock": "Geçerli bir stok miktarı girin.",
+      "negative_price": "Fiyat negatif olamaz.",
+      "invalid_image_type": "Yalnızca JPG, JPEG, PNG ve WebP görseller desteklenir.",
+      "invalid_offer_stock": "Geçerli bir stok miktarı girin.",
+      "supplier_product_required": "Bir tedarikçi ürünü seçin.",
+      "invalid_offer_price": "Geçerli bir teklif fiyatı girin.",
+      "offer_price_required": "Teklif fiyatı zorunludur.",
+      "negative_offer_stock": "Teklif stoğu negatif olamaz.",
+      "negative_offer_price": "Teklif fiyatı negatif olamaz.",
+      "select_supplier_product": "Bir tedarik?i ?r?n? se?in."
+    },
+    "add_title": "Tedarikçi teklifi ekle",
+    "subtitle": "Teklifleri, fiyatları, stokları ve son kullanma tarihlerini yönetin.",
+    "supplier_product_required": "Tedarikçi ürünü *",
+    "edit_title": "Tedarikçi teklifini düzenle",
+    "product_fallback": "Ürün ID: {id}",
+    "title": "Tedarikçi Teklifleri",
+    "offer_price_required": "Teklif fiyatı *",
+    "no_offers_found": "Tedarikçi teklifi bulunamadı.",
+    "fields": {
+      "expires_at": "Son geçerlilik tarihi",
+      "supplier_product": "Tedarikçi ürünü *",
+      "offer_image": "Teklif görseli",
+      "offer_price": "Teklif fiyatı *",
+      "offer_stock": "Teklif stoğu",
+      "status": "Durum"
     }
   }
 }

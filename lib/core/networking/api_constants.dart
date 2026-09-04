@@ -1,12 +1,13 @@
 class ApiConstants {
   static const String baseUrl = 'http://127.0.0.1:8000/api';
 
-  // Auth
-  static const String adminLogin = '/admin/login';
+  // ================= AUTH =================
 
+  static const String adminLogin = '/admin/login';
   static const String storeLogin = '/store/login';
-  // Dashboard
-  // Dashboard Stats
+
+  // ================= DASHBOARD =================
+
   static const String dashboardOverview = '/admin/stats/overview';
 
   static const String dashboardSalesTrend = '/admin/stats/sales-trend';
@@ -15,30 +16,45 @@ class ApiConstants {
 
   static const String dashboardLowStock = '/admin/stats/low-stock';
 
-  // Suppliers
+  // ================= SUPPLIERS =================
+
   static const String suppliers = '/admin/suppliers';
 
-  // Categories
+  // ================= CATEGORIES =================
+
   static const String categories = '/admin/categories';
 
-  // Master Products
+  // ================= MASTER PRODUCTS =================
+
   static const String products = '/admin/products';
 
-  // Supplier Products
+  // ================= SUPPLIER PRODUCTS =================
+
   static const String supplierProducts = '/admin/supplier-products';
 
-  // Orders
+  // ================= SUPPLIER OFFERS =================
+
+  static const String supplierOffers = '/admin/supplier-offers';
+
+  // ================= ADMIN STORES =================
+
+  static const String adminStores = '/admin/stores';
+
+  // ================= ORDERS =================
+
   static const String adminOrders = '/admin/orders';
-
   static const String storeOrders = '/store/orders';
-  // Sales
+
+  // ================= SALES =================
+
   static const String adminSales = '/admin/sales';
-
   static const String storeSales = '/store/sales';
-  // Store
-  static const String storeCatalog = '/store/catalog';
 
+  // ================= STORE =================
+
+  static const String storeCatalog = '/store/catalog';
   static const String storeOffers = '/store/offers';
   static const String storeInventory = '/store/inventory';
+
   ApiConstants._();
 }

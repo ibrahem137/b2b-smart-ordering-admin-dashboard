@@ -12,7 +12,9 @@ class ProductsRepositoryImpl implements ProductsRepository {
   ProductsRepositoryImpl(this.apiService);
 
   @override
-  Future<ApiResult<dynamic>> createProduct(CreateProductRequest request) async {
+  Future<ApiResult<dynamic>> createProduct(
+    CreateProductRequest request,
+  ) async {
     try {
       final response = await apiService.createProduct(
         request.supplierId,
@@ -22,11 +24,14 @@ class ProductsRepositoryImpl implements ProductsRepository {
         request.buyPrice,
         request.stockQuantity,
         request.status,
+        request.image,
       );
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -37,7 +42,9 @@ class ProductsRepositoryImpl implements ProductsRepository {
 
       return const ApiResult.success(null);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -59,12 +66,16 @@ class ProductsRepositoryImpl implements ProductsRepository {
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
   @override
-  Future<ApiResult<dynamic>> updateProduct(UpdateProductRequest request) async {
+  Future<ApiResult<dynamic>> updateProduct(
+    UpdateProductRequest request,
+  ) async {
     try {
       final response = await apiService.updateProduct(
         request.id,
@@ -76,11 +87,14 @@ class ProductsRepositoryImpl implements ProductsRepository {
         request.buyPrice,
         request.stockQuantity,
         request.status,
+        request.image,
       );
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 }

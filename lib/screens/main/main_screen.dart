@@ -5,6 +5,8 @@ import 'package:dashboard/screens/master_products/presentation/master_products_s
 import 'package:dashboard/screens/orders/presentation/orders_screen.dart';
 import 'package:dashboard/screens/sales/presentation/sales_screen.dart';
 import 'package:dashboard/screens/settings/presentation/settings_screen.dart';
+import 'package:dashboard/screens/stores/presentation/stores_screen.dart';
+import 'package:dashboard/screens/supplier_offers/presentation/supplier_offers_screen.dart';
 import 'package:dashboard/screens/supplier_products/presentation/supplier_products_screen.dart';
 import 'package:dashboard/screens/suppliers/presentation/suppliers_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -19,10 +21,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final _controller = SidebarXController(
-    selectedIndex: 0,
-    extended: true,
-  );
+  final _controller = SidebarXController(selectedIndex: 0, extended: true);
 
   final List<Widget> _screens = const [
     DashboardScreen(),
@@ -30,6 +29,8 @@ class _MainScreenState extends State<MainScreen> {
     CategoriesScreen(),
     MasterProductsScreen(),
     SupplierProductsScreen(),
+    SupplierOffersScreen(),
+    StoresScreen(),
     OrdersScreen(),
     SalesScreen(),
     SettingsScreen(),
@@ -78,11 +79,7 @@ class _MainScreenState extends State<MainScreen> {
 
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Divider(
-            height: 1,
-            thickness: 1,
-            color: colors.outlineVariant,
-          ),
+          child: Divider(height: 1, thickness: 1, color: colors.outlineVariant),
         ),
       ),
       body: Row(

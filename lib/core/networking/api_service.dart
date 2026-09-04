@@ -7,6 +7,9 @@ import 'package:dashboard/screens/dashboard/data/models/top_stores_response.dart
 import 'package:dashboard/screens/master_products/data/models/products_response.dart';
 import 'package:dashboard/screens/orders/data/models/orders_response.dart';
 import 'package:dashboard/screens/sales/data/models/sales_response.dart';
+import 'package:dashboard/screens/stores/data/models/store_response.dart';
+import 'package:dashboard/screens/stores/data/models/stores_response.dart';
+import 'package:dashboard/screens/supplier_offers/data/models/supplier_offers_response.dart';
 import 'package:dashboard/screens/supplier_products/data/models/supplier_products_response.dart';
 import 'package:dashboard/screens/suppliers/data/models/suppliers_response.dart';
 import 'package:dio/dio.dart';
@@ -46,6 +49,22 @@ abstract class ApiService {
     @Part(name: 'buy_price') double buyPrice,
     @Part(name: 'stock_quantity') int stockQuantity,
     @Part(name: 'status') String status,
+    @Part(name: 'image') MultipartFile image,
+  );
+
+  // ================= ADMIN STORES =================
+
+  @MultiPart()
+  @POST(ApiConstants.adminStores)
+  Future<StoreResponse> createStore(
+    @Part(name: 'name') String name,
+    @Part(name: 'owner_name') String ownerName,
+    @Part(name: 'phone') String phone,
+    @Part(name: 'email') String email,
+    @Part(name: 'password') String password,
+    @Part(name: 'address') String? address,
+    @Part(name: 'status') String status,
+    @Part(name: 'image') MultipartFile? image,
   );
 
   // ================= SUPPLIERS =================
@@ -58,6 +77,19 @@ abstract class ApiService {
     @Part(name: 'email') String? email,
     @Part(name: 'address') String? address,
     @Part(name: 'status') String status,
+  );
+
+  // ================= SUPPLIER OFFERS =================
+
+  @MultiPart()
+  @POST(ApiConstants.supplierOffers)
+  Future<dynamic> createSupplierOffer(
+    @Part(name: 'supplier_product_id') int supplierProductId,
+    @Part(name: 'offer_price') double offerPrice,
+    @Part(name: 'offer_stock') int? offerStock,
+    @Part(name: 'status') String? status,
+    @Part(name: 'expires_at') String? expiresAt,
+    @Part(name: 'image') MultipartFile? image,
   );
 
   // ================= SUPPLIER PRODUCTS =================
@@ -78,8 +110,14 @@ abstract class ApiService {
   @DELETE('${ApiConstants.products}/{id}')
   Future<void> deleteProduct(@Path('id') int id);
 
+  @DELETE('${ApiConstants.adminStores}/{id}')
+  Future<void> deleteStore(@Path('id') int id);
+
   @DELETE('${ApiConstants.suppliers}/{id}')
   Future<dynamic> deleteSupplier(@Path('id') int id);
+
+  @DELETE('${ApiConstants.supplierOffers}/{id}')
+  Future<void> deleteSupplierOffer(@Path('id') int id);
 
   @DELETE('${ApiConstants.supplierProducts}/{id}')
   Future<void> deleteSupplierProduct(@Path('id') int id);
@@ -90,10 +128,10 @@ abstract class ApiService {
     @Query('per_page') int perPage = 15,
   });
 
+  // ================= DASHBOARD =================
+
   @GET(ApiConstants.dashboardLowStock)
   Future<LowStockResponse> getDashboardLowStock();
-
-  // ================= DASHBOARD =================
 
   @GET(ApiConstants.dashboardOverview)
   Future<DashboardOverviewResponse> getDashboardOverview();
@@ -115,7 +153,6 @@ abstract class ApiService {
     @Query('to_date') String? toDate,
     @Query('per_page') int perPage = 15,
   });
-
   @GET(ApiConstants.products)
   Future<ProductsResponse> getProducts({
     @Query('supplier_id') int? supplierId,
@@ -137,8 +174,27 @@ abstract class ApiService {
     @Query('per_page') int perPage = 15,
   });
 
+  @GET('${ApiConstants.adminStores}/{id}')
+  Future<StoreResponse> getStore(@Path('id') int id);
+
+  @GET(ApiConstants.adminStores)
+  Future<StoresResponse> getStores({
+    @Query('status') String? status,
+    @Query('search') String? search,
+    @Query('per_page') int perPage = 15,
+  });
   @GET('${ApiConstants.suppliers}/{supplier}/categories')
   Future<dynamic> getSupplierCategories(@Path('supplier') int supplierId);
+
+  @GET('${ApiConstants.supplierOffers}/{id}')
+  Future<dynamic> getSupplierOffer(@Path('id') int id);
+
+  @GET(ApiConstants.supplierOffers)
+  Future<SupplierOffersResponse> getSupplierOffers({
+    @Query('supplier_product_id') int? supplierProductId,
+    @Query('status') String? status,
+    @Query('per_page') int perPage = 15,
+  });
 
   @GET(ApiConstants.supplierProducts)
   Future<SupplierProductsResponse> getSupplierProducts({
@@ -161,6 +217,12 @@ abstract class ApiService {
     @Body() Map<String, dynamic> body,
   );
 
+  @PUT('${ApiConstants.adminOrders}/{id}/status')
+  Future<dynamic> updateOrderStatus(
+    @Path('id') int id,
+    @Body() Map<String, dynamic> body,
+  );
+
   @MultiPart()
   @POST('${ApiConstants.products}/{id}')
   Future<dynamic> updateProduct(
@@ -173,6 +235,13 @@ abstract class ApiService {
     @Part(name: 'buy_price') double buyPrice,
     @Part(name: 'stock_quantity') int stockQuantity,
     @Part(name: 'status') String status,
+    @Part(name: 'image') MultipartFile? image,
+  );
+
+  @PUT('${ApiConstants.adminStores}/{id}/status')
+  Future<StoreResponse> updateStoreStatus(
+    @Path('id') int id,
+    @Body() Map<String, dynamic> body,
   );
 
   @MultiPart()
@@ -191,6 +260,19 @@ abstract class ApiService {
   Future<void> updateSupplierCategories(
     @Path('supplier') int supplierId,
     @Body() Map<String, dynamic> body,
+  );
+
+  @MultiPart()
+  @POST('${ApiConstants.supplierOffers}/{id}')
+  Future<dynamic> updateSupplierOffer(
+    @Path('id') int id,
+    @Part(name: '_method') String method,
+    @Part(name: 'supplier_product_id') int? supplierProductId,
+    @Part(name: 'offer_price') double? offerPrice,
+    @Part(name: 'offer_stock') int? offerStock,
+    @Part(name: 'status') String? status,
+    @Part(name: 'expires_at') String? expiresAt,
+    @Part(name: 'image') MultipartFile? image,
   );
 
   @MultiPart()

@@ -15,6 +15,7 @@ _SupplierProductModel _$SupplierProductModelFromJson(
   buyPrice: json['buy_price'] as String,
   stockQuantity: (json['stock_quantity'] as num).toInt(),
   status: json['status'] as String,
+  imageUrl: json['image_url'] as String?,
   createdAt: json['created_at'] as String?,
   updatedAt: json['updated_at'] as String?,
   supplier: json['supplier'] == null
@@ -34,6 +35,7 @@ Map<String, dynamic> _$SupplierProductModelToJson(
   'buy_price': instance.buyPrice,
   'stock_quantity': instance.stockQuantity,
   'status': instance.status,
+  'image_url': instance.imageUrl,
   'created_at': instance.createdAt,
   'updated_at': instance.updatedAt,
   'supplier': instance.supplier,

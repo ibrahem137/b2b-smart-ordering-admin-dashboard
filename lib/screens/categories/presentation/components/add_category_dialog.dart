@@ -20,12 +20,18 @@ class _AddCategoryDialogState
   final _nameController = TextEditingController();
 
   final List<Color> categoryColors = const [
+    Color(0xFF1E40AF),
     Color(0xFF3B82F6),
-    Color(0xFF10B981),
+    Color(0xFF16A34A),
     Color(0xFFF59E0B),
-    Color(0xFF8B5CF6),
-    Color(0xFFEF4444),
-    Color(0xFF06B6D4),
+    Color(0xFFDC2626),
+    Color(0xFF7C3AED),
+    Color(0xFFDB2777),
+    Color(0xFF0891B2),
+    Color(0xFF65A30D),
+    Color(0xFFEA580C),
+    Color(0xFF475569),
+    Color(0xFF0F766E),
   ];
 
   Color selectedColor = const Color(0xFF3B82F6);

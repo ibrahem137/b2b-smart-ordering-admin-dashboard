@@ -15,11 +15,83 @@ class ApiErrorHandler {
     );
   }
 
+  static String? _extractFirstErrorMessage(dynamic errors) {
+    if (errors == null) {
+      return null;
+    }
+
+    if (errors is Map) {
+      for (final value in errors.values) {
+        final message = _extractMessageFromValue(value);
+
+        if (message != null) {
+          return message;
+        }
+      }
+    }
+
+    return _extractMessageFromValue(errors);
+  }
+
+  static String? _extractMessageFromValue(dynamic value) {
+    if (value is String) {
+      final message = value.trim();
+
+      if (message.isNotEmpty) {
+        return message;
+      }
+    }
+
+    if (value is List) {
+      for (final item in value) {
+        final message = _extractMessageFromValue(item);
+
+        if (message != null) {
+          return message;
+        }
+      }
+    }
+
+    if (value is Map) {
+      for (final item in value.values) {
+        final message = _extractMessageFromValue(item);
+
+        if (message != null) {
+          return message;
+        }
+      }
+    }
+
+    return null;
+  }
+
   static ApiErrorModel _handleBadResponse(DioException error) {
     final data = error.response?.data;
 
-    if (data is Map<String, dynamic>) {
-      final parsedError = _tryParseApiError(data);
+    if (data is Map) {
+      final normalizedData = Map<String, dynamic>.from(data);
+
+      final validationMessage = _extractFirstErrorMessage(
+        normalizedData['errors'],
+      );
+
+      if (validationMessage != null) {
+        return ApiErrorModel(
+          message: validationMessage,
+          errors: normalizedData['errors'],
+        );
+      }
+
+      final message = normalizedData['message'];
+
+      if (message is String && message.trim().isNotEmpty) {
+        return ApiErrorModel(
+          message: message.trim(),
+          errors: normalizedData['errors'],
+        );
+      }
+
+      final parsedError = _tryParseApiError(normalizedData);
 
       if (parsedError != null) {
         return parsedError;

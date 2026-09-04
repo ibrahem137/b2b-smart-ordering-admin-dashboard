@@ -16,25 +16,16 @@ class OrderStatusChip extends StatelessWidget {
     final color = _statusColor(context, normalized);
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 6,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: color.withValues(alpha: .12),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(
-          color: color.withValues(alpha: .25),
-        ),
+        border: Border.all(color: color.withValues(alpha: .25)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            _statusIcon(normalized),
-            size: 14,
-            color: color,
-          ),
+          Icon(_statusIcon(normalized), size: 14, color: color),
           const SizedBox(width: 6),
           Text(
             _statusLabel(normalized),
@@ -53,8 +44,7 @@ class OrderStatusChip extends StatelessWidget {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
-    final dashboardColors = theme
-        .extension<DashboardColors>()!;
+    final dashboardColors = theme.extension<DashboardColors>()!;
 
     switch (status) {
       case 'draft':

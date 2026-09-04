@@ -11,7 +11,9 @@
     "supplier_products": "Supplier Products",
     "orders": "Orders",
     "sales": "Sales",
-    "settings": "Settings"
+    "settings": "Settings",
+    "supplier_offers": "Supplier Offers",
+    "stores": "Stores"
   },
   "common": {
     "page_not_found": "Page Not Found",
@@ -39,7 +41,11 @@
     "email": "Email",
     "phone": "Phone",
     "address": "Address",
-    "total": "Total"
+    "total": "Total",
+    "remove": "Remove",
+    "clear": "Clear",
+    "optional": "Optional",
+    "save_changes": "Save Changes"
   },
   "settings": {
     "title": "Settings",
@@ -102,7 +108,8 @@
     "select_color": "Select Color",
     "selected_color": "Selected Color",
     "upload_category_image": "Upload Category Image",
-    "upload_image_hint": "Choose an image for this category"
+    "upload_image_hint": "Choose an image for this category",
+    "no_categories_found": "No categories found"
   },
   "dashboard": {
     "total_products": "Total Products",
@@ -193,7 +200,23 @@
     "select_supplier": "Select supplier",
     "select_supplier_validation": "Please select a supplier",
     "select_supplier_first": "Select a supplier first",
-    "select_supplier_first_validation": "Please select a supplier first"
+    "select_supplier_first_validation": "Please select a supplier first",
+    "image_too_large": "Image size is too large",
+    "image_required": "Product image is required",
+    "product_image": "Product Image",
+    "image_read_error": "Could not read the selected image",
+    "image_update_hint": "Choose a new image to replace the current one",
+    "invalid_image_format": "Invalid image format",
+    "change_image": "Change Image",
+    "remove_image": "Remove Image",
+    "no_image": "No image",
+    "select_image": "Select Image",
+    "image": "Image",
+    "upload_product_image": "Upload Product Image",
+    "image_upload_hint": "JPG, JPEG, PNG or WEBP",
+    "no_products_found_period": "No products found.",
+    "products_empty_description": "There are no products to display yet.",
+    "unable_to_load_products": "Unable to load products"
   },
   "supplier_products": {
     "title": "Supplier Products",
@@ -282,7 +305,16 @@
     "no_orders_found": "No orders found",
     "no_orders_found_period": "No orders found for this period.",
     "orders_empty_description": "Orders will appear here once they are created.",
-    "change_search_or_filter": "Try changing your search or filter."
+    "change_search_or_filter": "Try changing your search or filter.",
+    "new_status": "New Status",
+    "status_notes_hint": "Add a note about this status change...",
+    "select_new_status": "Select new status",
+    "change_status": "Change Status",
+    "notes_optional": "Notes (Optional)",
+    "update_status": "Update Status",
+    "change_status_subtitle": "Update the current order status.",
+    "updating_status": "Updating...",
+    "current_status": "Current Status"
   },
   "sales": {
     "title": "Sales",
@@ -363,6 +395,133 @@
     },
     "errors": {
       "missing_supplier_id": "Supplier ID is missing"
+    }
+  },
+  "stores": {
+    "details": {
+      "email": "Email",
+      "updated_at": "Updated At",
+      "phone": "Phone",
+      "owner": "Owner",
+      "created_at": "Created At",
+      "address": "Address"
+    },
+    "columns": {
+      "email": "Email",
+      "owner": "Owner",
+      "store": "Store",
+      "phone": "Phone"
+    },
+    "deactivate_store": "Deactivate Store",
+    "deactivate": "Deactivate",
+    "total": "stores total",
+    "status": {
+      "inactive": "Inactive",
+      "active": "Active"
+    },
+    "activate": "Activate",
+    "no_stores_found": "No stores found",
+    "all_statuses": "All Statuses",
+    "title": "Stores",
+    "search_hint": "Search stores...",
+    "view_details": "View Details",
+    "subtitle": "Manage registered supermarkets and their account status",
+    "activate_confirmation": "Are you sure you want to activate this store?",
+    "deactivate_confirmation": "Are you sure you want to deactivate this store?",
+    "activate_store": "Activate Store",
+    "fields": {
+      "search_country": "Search country",
+      "address": "Address",
+      "email": "Email",
+      "image": "Store Image",
+      "name": "Store Name",
+      "owner_name": "Owner Name",
+      "password": "Password",
+      "phone": "Phone"
+    },
+    "validation": {
+      "name_required": "Store name is required.",
+      "owner_required": "Owner name is required.",
+      "invalid_phone": "Please enter a valid mobile phone number.",
+      "email_required": "Email address is required.",
+      "invalid_email": "Please enter a valid email address.",
+      "image_read_failed": "Unable to read the selected image.",
+      "image_too_large": "Image size must not exceed 5 MB.",
+      "invalid_image": "Please select a JPG, JPEG, PNG, or WEBP image.",
+      "password_min": "Password must be at least 8 characters.",
+      "password_required": "Password is required.",
+      "required": "This field is required."
+    },
+    "add_store": "Add Store",
+    "add_store_subtitle": "Enter the store information below.",
+    "choose_image": "Choose store image",
+    "delete_confirmation": "Are you sure you want to delete this store?",
+    "delete_store": "Delete Store"
+  },
+  "supplier_offers": {
+    "columns": {
+      "expires_at": "Expires At",
+      "offer_price": "Offer Price",
+      "product": "Product",
+      "supplier": "Supplier",
+      "stock": "Stock",
+      "status": "Status"
+    },
+    "image_optional_hint": "Optional - JPG, JPEG, PNG or WebP. Maximum 5 MB.",
+    "offer_image": "Offer Image",
+    "current_image_kept": "The current image will be kept unless you select a replacement.",
+    "choose_replacement_image": "Click to choose a replacement image",
+    "edit_subtitle": "Update the supplier offer information.",
+    "expires_at": "Expires At",
+    "select_status": "Select status",
+    "add_offer": "Add Offer",
+    "status": {
+      "available": "Available",
+      "unavailable": "Unavailable"
+    },
+    "supplier_fallback": "Supplier ID: {id}",
+    "select_supplier_product": "Select supplier product",
+    "choose_image": "Click to choose an image",
+    "remove_replacement_image": "Remove replacement image",
+    "image_formats": "JPG, JPEG, PNG or WebP - Maximum 5 MB",
+    "remove_image": "Remove image",
+    "add_subtitle": "Create a new offer for a supplier product.",
+    "no_supplier_products": "No supplier products found.",
+    "current_image": "Current image",
+    "offer_stock": "Offer Stock",
+    "validation": {
+      "invalid_price": "Please enter a valid price.",
+      "price_required": "Offer price is required.",
+      "invalid_image_format": "Please select a JPG, JPEG, PNG or WebP image.",
+      "image_too_large": "Image size must not exceed 5 MB.",
+      "image_read_failed": "Failed to read the selected image.",
+      "negative_stock": "Stock cannot be negative.",
+      "invalid_stock": "Please enter a valid stock quantity.",
+      "negative_price": "Price cannot be negative.",
+      "invalid_image_type": "Only JPG, JPEG, PNG and WebP images are supported.",
+      "invalid_offer_stock": "Enter a valid stock quantity.",
+      "supplier_product_required": "Please select a supplier product.",
+      "invalid_offer_price": "Enter a valid offer price.",
+      "offer_price_required": "Offer price is required.",
+      "negative_offer_stock": "Offer stock cannot be negative.",
+      "negative_offer_price": "Offer price cannot be negative.",
+      "select_supplier_product": "Please select a supplier product."
+    },
+    "add_title": "Add Supplier Offer",
+    "subtitle": "Manage supplier offers, prices, stock, and expiration dates.",
+    "supplier_product_required": "Supplier Product *",
+    "edit_title": "Edit Supplier Offer",
+    "product_fallback": "Product ID: {id}",
+    "title": "Supplier Offers",
+    "offer_price_required": "Offer Price *",
+    "no_offers_found": "No supplier offers found.",
+    "fields": {
+      "expires_at": "Expires At",
+      "supplier_product": "Supplier Product *",
+      "offer_image": "Offer Image",
+      "offer_price": "Offer Price *",
+      "offer_stock": "Offer Stock",
+      "status": "Status"
     }
   }
 }
