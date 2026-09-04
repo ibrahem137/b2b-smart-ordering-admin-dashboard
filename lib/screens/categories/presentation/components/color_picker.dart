@@ -15,57 +15,44 @@ class ColorPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Wrap(
-      spacing: 14,
-      runSpacing: 14,
+      spacing: 12,
+      runSpacing: 12,
       children: colors.map((color) {
-        final isSelected = color == selectedColor;
+        final isSelected = color.toARGB32() == selectedColor.toARGB32();
 
         return Tooltip(
           message: isSelected
               ? 'categories.selected_color'.tr()
               : 'categories.select_color'.tr(),
           child: InkWell(
-            onTap: () => onColorSelected(color),
-            customBorder: const CircleBorder(),
+            onTap: () {
+              onColorSelected(color);
+            },
+            borderRadius: BorderRadius.circular(12),
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              width: 46,
-              height: 46,
+              duration: const Duration(milliseconds: 180),
+              width: 48,
+              height: 48,
               decoration: BoxDecoration(
                 color: color,
-                shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: isSelected
-                      ? colorScheme.primary
+                      ? colorScheme.onSurface
                       : colorScheme.outlineVariant,
                   width: isSelected ? 3 : 1,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: color.withValues(alpha: .30),
-                    blurRadius: isSelected ? 10 : 6,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
               ),
-              child: AnimatedScale(
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeOut,
-                scale: isSelected ? 1 : 0,
-                child: Icon(
-                  Icons.check,
-                  color: _foregroundColorFor(
-                    color,
-                    colorScheme,
-                  ),
-                  size: 22,
-                ),
-              ),
+              child: isSelected
+                  ? Icon(
+                      Icons.check,
+                      size: 22,
+                      color: _foregroundColor(color, colorScheme),
+                    )
+                  : null,
             ),
           ),
         );
@@ -73,15 +60,8 @@ class ColorPicker extends StatelessWidget {
     );
   }
 
-  Color _foregroundColorFor(
-    Color background,
-    ColorScheme colorScheme,
-  ) {
-    final brightness = ThemeData.estimateBrightnessForColor(
-      background,
-    );
-
-    return brightness == Brightness.dark
+  Color _foregroundColor(Color background, ColorScheme colorScheme) {
+    return ThemeData.estimateBrightnessForColor(background) == Brightness.dark
         ? colorScheme.surface
         : colorScheme.onSurface;
   }

@@ -24,10 +24,24 @@ import 'package:dashboard/screens/master_products/presentation/cubit/update_prod
 import 'package:dashboard/screens/orders/data/repos/orders_repository_impl.dart';
 import 'package:dashboard/screens/orders/domain/repos/orders_repository.dart';
 import 'package:dashboard/screens/orders/presentation/cubit/orders_cubit.dart';
+import 'package:dashboard/screens/orders/presentation/cubit/update_order_status_cubit.dart';
 import 'package:dashboard/screens/sales/data/repos/sales_repository_impl.dart';
 import 'package:dashboard/screens/sales/domain/repos/sales_repository.dart';
 import 'package:dashboard/screens/sales/presentation/cubit/sales_cubit.dart';
 import 'package:dashboard/screens/settings/presentation/cubit/settings_cubit.dart';
+import 'package:dashboard/screens/stores/data/repos/stores_repository_impl.dart';
+import 'package:dashboard/screens/stores/domain/repos/stores_repository.dart';
+import 'package:dashboard/screens/stores/presentation/cubit/create_store_cubit.dart';
+import 'package:dashboard/screens/stores/presentation/cubit/delete_store_cubit.dart';
+import 'package:dashboard/screens/stores/presentation/cubit/store_details_cubit.dart';
+import 'package:dashboard/screens/stores/presentation/cubit/stores_cubit.dart';
+import 'package:dashboard/screens/stores/presentation/cubit/update_store_status_cubit.dart';
+import 'package:dashboard/screens/supplier_offers/data/repos/supplier_offers_repository_impl.dart';
+import 'package:dashboard/screens/supplier_offers/domain/repos/supplier_offers_repository.dart';
+import 'package:dashboard/screens/supplier_offers/presentation/cubit/create_supplier_offer_cubit.dart';
+import 'package:dashboard/screens/supplier_offers/presentation/cubit/delete_supplier_offer_cubit.dart';
+import 'package:dashboard/screens/supplier_offers/presentation/cubit/supplier_offers_cubit.dart';
+import 'package:dashboard/screens/supplier_offers/presentation/cubit/update_supplier_offer_cubit.dart';
 import 'package:dashboard/screens/supplier_products/data/repos/supplier_products_repository_impl.dart';
 import 'package:dashboard/screens/supplier_products/domain/repos/supplier_products_repository.dart';
 import 'package:dashboard/screens/supplier_products/presentation/cubit/create_supplier_product_cubit.dart';
@@ -189,6 +203,54 @@ Future<void> setupDependencies() async {
     () => DeleteSupplierProductCubit(getIt<SupplierProductsRepository>()),
   );
 
+  // ================= SUPPLIER OFFERS =================
+
+  getIt.registerLazySingleton<SupplierOffersRepository>(
+    () => SupplierOffersRepositoryImpl(getIt<ApiService>()),
+  );
+
+  getIt.registerFactory<SupplierOffersCubit>(
+    () => SupplierOffersCubit(getIt<SupplierOffersRepository>()),
+  );
+
+  getIt.registerFactory<CreateSupplierOfferCubit>(
+    () => CreateSupplierOfferCubit(getIt<SupplierOffersRepository>()),
+  );
+
+  getIt.registerFactory<UpdateSupplierOfferCubit>(
+    () => UpdateSupplierOfferCubit(getIt<SupplierOffersRepository>()),
+  );
+
+  getIt.registerFactory<DeleteSupplierOfferCubit>(
+    () => DeleteSupplierOfferCubit(getIt<SupplierOffersRepository>()),
+  );
+
+  // ================= STORES =================
+
+  getIt.registerLazySingleton<StoresRepository>(
+    () => StoresRepositoryImpl(getIt<ApiService>()),
+  );
+
+  getIt.registerFactory<StoresCubit>(
+    () => StoresCubit(getIt<StoresRepository>()),
+  );
+
+  getIt.registerFactory<StoreDetailsCubit>(
+    () => StoreDetailsCubit(getIt<StoresRepository>()),
+  );
+
+  getIt.registerFactory<UpdateStoreStatusCubit>(
+    () => UpdateStoreStatusCubit(getIt<StoresRepository>()),
+  );
+
+  getIt.registerFactory<CreateStoreCubit>(
+    () => CreateStoreCubit(getIt<StoresRepository>()),
+  );
+
+  getIt.registerFactory<DeleteStoreCubit>(
+    () => DeleteStoreCubit(getIt<StoresRepository>()),
+  );
+
   // ================= ORDERS =================
 
   getIt.registerLazySingleton<OrdersRepository>(
@@ -197,6 +259,10 @@ Future<void> setupDependencies() async {
 
   getIt.registerFactory<OrdersCubit>(
     () => OrdersCubit(getIt<OrdersRepository>()),
+  );
+
+  getIt.registerFactory<UpdateOrderStatusCubit>(
+    () => UpdateOrderStatusCubit(getIt<OrdersRepository>()),
   );
 
   // ================= SALES =================
@@ -212,5 +278,6 @@ Future<void> setupDependencies() async {
   getIt.registerFactory<SettingsCubit>(
     () => SettingsCubit(getIt<TokenStorage>(), getIt<AdminSession>()),
   );
+
   getIt.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
 }

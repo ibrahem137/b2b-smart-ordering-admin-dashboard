@@ -20,13 +20,7 @@ class OrdersToolbar extends StatelessWidget {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
-    const filters = [
-      'all',
-      'draft',
-      'submitted',
-      'received',
-      'cancelled',
-    ];
+    const filters = ['all', 'draft', 'submitted', 'received', 'cancelled'];
 
     return Row(
       children: [
@@ -38,37 +32,24 @@ class OrdersToolbar extends StatelessWidget {
             ),
             decoration: InputDecoration(
               hintText: 'orders.search_orders'.tr(),
-              hintStyle: theme.textTheme.bodyMedium
-                  ?.copyWith(
-                    color: colors.onSurfaceVariant,
-                  ),
-              prefixIcon: Icon(
-                Icons.search,
+              hintStyle: theme.textTheme.bodyMedium?.copyWith(
                 color: colors.onSurfaceVariant,
               ),
+              prefixIcon: Icon(Icons.search, color: colors.onSurfaceVariant),
               filled: true,
               fillColor: colors.surface,
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 16,
-              ),
+              contentPadding: const EdgeInsets.symmetric(vertical: 16),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: colors.outlineVariant,
-                ),
+                borderSide: BorderSide(color: colors.outlineVariant),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: colors.primary,
-                  width: 1.5,
-                ),
+                borderSide: BorderSide(color: colors.primary, width: 1.5),
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                  color: colors.outlineVariant,
-                ),
+                borderSide: BorderSide(color: colors.outlineVariant),
               ),
             ),
           ),
@@ -90,20 +71,14 @@ class OrdersToolbar extends StatelessWidget {
               },
               showCheckmark: false,
               side: BorderSide(
-                color: selected
-                    ? colors.primary
-                    : colors.outlineVariant,
+                color: selected ? colors.primary : colors.outlineVariant,
               ),
-              backgroundColor:
-                  colors.surfaceContainerHighest,
+              backgroundColor: colors.surfaceContainerHighest,
               selectedColor: colors.primary,
-              labelStyle: theme.textTheme.bodyMedium
-                  ?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: selected
-                        ? colors.onPrimary
-                        : colors.onSurfaceVariant,
-                  ),
+              labelStyle: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: selected ? colors.onPrimary : colors.onSurfaceVariant,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),

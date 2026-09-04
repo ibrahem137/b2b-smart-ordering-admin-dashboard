@@ -1,4 +1,5 @@
 import 'package:dashboard/screens/categories/data/models/category_model.dart';
+import 'package:dashboard/screens/categories/presentation/components/color_picker.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/category_action_state.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/update_category_cubit.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -8,47 +9,39 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class EditCategoryDialog extends StatefulWidget {
   final CategoryModel category;
 
-  const EditCategoryDialog({
-    super.key,
-    required this.category,
-  });
+  const EditCategoryDialog({super.key, required this.category});
 
   @override
-  State<EditCategoryDialog> createState() =>
-      _EditCategoryDialogState();
+  State<EditCategoryDialog> createState() => _EditCategoryDialogState();
 }
 
-class _EditCategoryDialogState
-    extends State<EditCategoryDialog> {
+class _EditCategoryDialogState extends State<EditCategoryDialog> {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _nameController;
 
-  late String _selectedColor;
+  late Color _selectedColor;
 
-  final List<String> _availableColors = const [
-    '#1E40AF',
-    '#3B82F6',
-    '#16A34A',
-    '#F59E0B',
-    '#DC2626',
-    '#7C3AED',
-    '#DB2777',
-    '#0891B2',
-    '#65A30D',
-    '#EA580C',
-    '#475569',
-    '#0F766E',
+  final List<Color> _availableColors = const [
+    Color(0xFF1E40AF),
+    Color(0xFF3B82F6),
+    Color(0xFF16A34A),
+    Color(0xFFF59E0B),
+    Color(0xFFDC2626),
+    Color(0xFF7C3AED),
+    Color(0xFFDB2777),
+    Color(0xFF0891B2),
+    Color(0xFF65A30D),
+    Color(0xFFEA580C),
+    Color(0xFF475569),
+    Color(0xFF0F766E),
   ];
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    return BlocConsumer<
-      UpdateCategoryCubit,
-      CategoryActionState
-    >(
+    return BlocConsumer<UpdateCategoryCubit, CategoryActionState>(
       listener: (context, state) {
         if (state is CategoryActionSuccess) {
           Navigator.pop(context, true);
@@ -83,8 +76,7 @@ class _EditCategoryDialogState
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildHeader(context),
 
@@ -119,17 +111,15 @@ class _EditCategoryDialogState
   void initState() {
     super.initState();
 
-    _nameController = TextEditingController(
-      text: widget.category.name,
-    );
+    _nameController = TextEditingController(text: widget.category.name);
 
-    _selectedColor = _normalizeColor(widget.category.color);
+    _selectedColor = _parseColor(
+      widget.category.color,
+      fallback: const Color(0xFF3B82F6),
+    );
   }
 
-  Widget _buildActions(
-    BuildContext context,
-    bool isLoading,
-  ) {
+  Widget _buildActions(BuildContext context, bool isLoading) {
     final colors = Theme.of(context).colorScheme;
 
     return Row(
@@ -151,9 +141,7 @@ class _EditCategoryDialogState
             ),
             child: Text(
               'common.cancel'.tr(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -191,11 +179,6 @@ class _EditCategoryDialogState
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
-    final selectedColor = _parseColor(
-      _selectedColor,
-      fallback: colors.primary,
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -218,96 +201,68 @@ class _EditCategoryDialogState
 
         const SizedBox(height: 18),
 
+        ColorPicker(
+          colors: _availableColors,
+          selectedColor: _selectedColor,
+          onColorSelected: (color) {
+            setState(() {
+              _selectedColor = color;
+            });
+          },
+        ),
+
+        const SizedBox(height: 20),
+
         Container(
           width: double.infinity,
-          height: 110,
+          padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: selectedColor,
-            borderRadius: BorderRadius.circular(14),
+            color: colors.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: colors.outlineVariant),
           ),
-          child: Center(
-            child: Icon(
-              Icons.category_outlined,
-              size: 42,
-              color: _foregroundColor(selectedColor),
-            ),
-          ),
-        ),
-
-        const SizedBox(height: 16),
-
-        Row(
-          children: [
-            Container(
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                color: selectedColor,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: colors.outlineVariant,
-                ),
-              ),
-            ),
-
-            const SizedBox(width: 8),
-
-            Text(
-              _selectedColor.toUpperCase(),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: colors.onSurfaceVariant,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 18),
-
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: _availableColors.map((colorHex) {
-            final color = _parseColor(
-              colorHex,
-              fallback: colors.primary,
-            );
-
-            final isSelected =
-                colorHex.toUpperCase() ==
-                _selectedColor.toUpperCase();
-
-            return InkWell(
-              onTap: () {
-                setState(() {
-                  _selectedColor = colorHex;
-                });
-              },
-              borderRadius: BorderRadius.circular(12),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 150),
-                width: 48,
-                height: 48,
+          child: Row(
+            children: [
+              Container(
+                width: 54,
+                height: 54,
                 decoration: BoxDecoration(
-                  color: color,
+                  color: _selectedColor,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isSelected
-                        ? colors.onSurface
-                        : colors.outlineVariant,
-                    width: isSelected ? 3 : 1,
-                  ),
                 ),
-                child: isSelected
-                    ? Icon(
-                        Icons.check,
-                        color: _foregroundColor(color),
-                        size: 22,
-                      )
-                    : null,
+                child: Icon(
+                  Icons.category_outlined,
+                  color: _foregroundColor(_selectedColor),
+                ),
               ),
-            );
-          }).toList(),
+
+              const SizedBox(width: 14),
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'categories.color_preview'.tr(),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+
+                    const SizedBox(height: 4),
+
+                    Text(
+                      _colorToHex(_selectedColor),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colors.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -326,11 +281,7 @@ class _EditCategoryDialogState
             color: colors.primary.withValues(alpha: .12),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(
-            Icons.edit_outlined,
-            color: colors.primary,
-            size: 24,
-          ),
+          child: Icon(Icons.edit_outlined, color: colors.primary, size: 24),
         ),
 
         const SizedBox(width: 16),
@@ -341,11 +292,10 @@ class _EditCategoryDialogState
             children: [
               Text(
                 'categories.edit_category'.tr(),
-                style: theme.textTheme.headlineSmall
-                    ?.copyWith(
-                      color: colors.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  color: colors.onSurface,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               const SizedBox(height: 4),
@@ -383,30 +333,15 @@ class _EditCategoryDialogState
     );
   }
 
+  String _colorToHex(Color color) {
+    return '#${color.toARGB32().toRadixString(16).substring(2).toUpperCase()}';
+  }
+
   Color _foregroundColor(Color background) {
-    return background.computeLuminance() > 0.5
-        ? Colors.black
-        : Colors.white;
+    return background.computeLuminance() > 0.5 ? Colors.black : Colors.white;
   }
 
-  String _normalizeColor(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return '#3B82F6';
-    }
-
-    var color = value.trim().toUpperCase();
-
-    if (!color.startsWith('#')) {
-      color = '#$color';
-    }
-
-    return color;
-  }
-
-  Color _parseColor(
-    String? value, {
-    required Color fallback,
-  }) {
+  Color _parseColor(String? value, {required Color fallback}) {
     if (value == null || value.trim().isEmpty) {
       return fallback;
     }
@@ -431,10 +366,17 @@ class _EditCategoryDialogState
       return;
     }
 
-    context.read<UpdateCategoryCubit>().updateCategory(
+    final colorHex = _colorToHex(_selectedColor);
+
+    debugPrint('========== UPDATE CATEGORY ==========');
+    debugPrint('ID: ${widget.category.id}');
+    debugPrint('NAME: ${_nameController.text.trim()}');
+    debugPrint('COLOR: $colorHex');
+
+    await context.read<UpdateCategoryCubit>().updateCategory(
       id: widget.category.id,
       name: _nameController.text.trim(),
-      color: _selectedColor,
+      color: colorHex,
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dashboard/screens/categories/presentation/cubit/categories_cubit.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/categories_state.dart';
 import 'package:dashboard/screens/master_products/data/models/master_product_model.dart';
@@ -6,7 +8,9 @@ import 'package:dashboard/screens/master_products/presentation/cubit/update_prod
 import 'package:dashboard/screens/suppliers/presentation/cubit/supplier_categories_cubit.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/suppliers_cubit.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/suppliers_state.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,6 +25,10 @@ class EditMasterProductDialog extends StatefulWidget {
 }
 
 class _EditMasterProductDialogState extends State<EditMasterProductDialog> {
+  static const int _maxImageSize = 5 * 1024 * 1024;
+
+  static const List<String> _allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _nameController;
@@ -31,6 +39,10 @@ class _EditMasterProductDialogState extends State<EditMasterProductDialog> {
   late int selectedSupplierId;
   late int selectedCategoryId;
   late String selectedStatus;
+
+  Uint8List? _newImageBytes;
+  String? _newImageFileName;
+  String? _imageError;
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +86,29 @@ class _EditMasterProductDialogState extends State<EditMasterProductDialog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildHeader(context),
+
                     const SizedBox(height: 30),
+
+                    _buildImageSection(),
+
+                    const SizedBox(height: 20),
+
                     _buildName(),
+
                     const SizedBox(height: 20),
+
                     _buildSupplier(),
+
                     const SizedBox(height: 20),
+
                     _buildCategory(),
+
                     const SizedBox(height: 20),
+
                     _buildDescription(),
+
                     const SizedBox(height: 20),
+
                     Row(
                       children: [
                         Expanded(child: _buildBuyPrice()),
@@ -90,9 +116,13 @@ class _EditMasterProductDialogState extends State<EditMasterProductDialog> {
                         Expanded(child: _buildStock()),
                       ],
                     ),
+
                     const SizedBox(height: 20),
+
                     _buildStatus(),
+
                     const SizedBox(height: 30),
+
                     _buildActions(context, isLoading),
                   ],
                 ),
@@ -277,6 +307,23 @@ class _EditMasterProductDialogState extends State<EditMasterProductDialog> {
     );
   }
 
+  Widget _buildExistingImage(String imageUrl) {
+    final colors = Theme.of(context).colorScheme;
+
+    return Image.network(
+      imageUrl,
+      width: double.infinity,
+      height: double.infinity,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stackTrace) {
+        return _buildImagePlaceholder(
+          icon: Icons.broken_image_outlined,
+          iconColor: colors.onSurfaceVariant,
+        );
+      },
+    );
+  }
+
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
@@ -289,11 +336,138 @@ class _EditMasterProductDialogState extends State<EditMasterProductDialog> {
           child: Icon(Icons.edit_outlined, color: colors.onPrimaryContainer),
         ),
         const SizedBox(width: 16),
+        Expanded(
+          child: Text(
+            'master_products.edit_product'.tr(),
+            style: theme.textTheme.headlineSmall?.copyWith(
+              color: colors.onSurface,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildImagePlaceholder({
+    IconData icon = Icons.image_outlined,
+    Color? iconColor,
+  }) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 44, color: iconColor ?? colors.onSurfaceVariant),
+          const SizedBox(height: 8),
+          Text(
+            'master_products.no_image'.tr(),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: colors.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImageSection() {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
+    final hasNewImage = _newImageBytes != null;
+
+    final existingImageUrl = widget.product.imageUrl?.trim();
+
+    final hasExistingImage =
+        existingImageUrl != null && existingImageUrl.isNotEmpty;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         Text(
-          'master_products.edit_product'.tr(),
-          style: theme.textTheme.headlineSmall?.copyWith(
+          'master_products.image'.tr(),
+          style: theme.textTheme.titleSmall?.copyWith(
             color: colors.onSurface,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        Container(
+          width: double.infinity,
+          height: 210,
+          decoration: BoxDecoration(
+            color: colors.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: _imageError != null ? colors.error : colors.outlineVariant,
+            ),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: hasNewImage
+              ? _buildNewImagePreview()
+              : hasExistingImage
+              ? _buildExistingImage(existingImageUrl)
+              : _buildImagePlaceholder(),
+        ),
+
+        const SizedBox(height: 12),
+
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: _pickImage,
+                icon: const Icon(Icons.upload_outlined),
+                label: Text(
+                  hasNewImage
+                      ? 'master_products.change_image'.tr()
+                      : 'master_products.select_image'.tr(),
+                ),
+              ),
+            ),
+
+            if (hasNewImage) ...[
+              const SizedBox(width: 10),
+              IconButton(
+                tooltip: 'common.remove'.tr(),
+                onPressed: _removeNewImage,
+                icon: const Icon(Icons.close),
+              ),
+            ],
+          ],
+        ),
+
+        if (_newImageFileName != null) ...[
+          const SizedBox(height: 8),
+          Text(
+            _newImageFileName!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: colors.onSurfaceVariant,
+            ),
+          ),
+        ],
+
+        if (_imageError != null) ...[
+          const SizedBox(height: 8),
+          Text(
+            _imageError!,
+            style: theme.textTheme.bodySmall?.copyWith(color: colors.error),
+          ),
+        ],
+
+        const SizedBox(height: 6),
+
+        Text(
+          'master_products.image_update_hint'.tr(),
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: colors.onSurfaceVariant,
           ),
         ),
       ],
@@ -310,6 +484,23 @@ class _EditMasterProductDialogState extends State<EditMasterProductDialog> {
         }
 
         return null;
+      },
+    );
+  }
+
+  Widget _buildNewImagePreview() {
+    final colors = Theme.of(context).colorScheme;
+
+    return Image.memory(
+      _newImageBytes!,
+      width: double.infinity,
+      height: double.infinity,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stackTrace) {
+        return _buildImagePlaceholder(
+          icon: Icons.broken_image_outlined,
+          iconColor: colors.error,
+        );
       },
     );
   }
@@ -449,6 +640,63 @@ class _EditMasterProductDialogState extends State<EditMasterProductDialog> {
     );
   }
 
+  Future<void> _pickImage() async {
+    final result = await FilePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: _allowedExtensions,
+      allowMultiple: false,
+      withData: true,
+    );
+
+    if (!mounted || result == null || result.files.isEmpty) {
+      return;
+    }
+
+    final file = result.files.single;
+
+    final extension = file.extension?.toLowerCase();
+
+    if (extension == null || !_allowedExtensions.contains(extension)) {
+      setState(() {
+        _imageError = 'master_products.invalid_image_format'.tr();
+      });
+
+      return;
+    }
+
+    if (file.size > _maxImageSize) {
+      setState(() {
+        _imageError = 'master_products.image_too_large'.tr();
+      });
+
+      return;
+    }
+
+    final bytes = file.bytes;
+
+    if (bytes == null || bytes.isEmpty) {
+      setState(() {
+        _imageError = 'master_products.image_read_error'.tr();
+      });
+
+      return;
+    }
+
+    setState(() {
+      _newImageBytes = bytes;
+      _newImageFileName = file.name;
+      _imageError = null;
+    });
+  }
+
+  void _removeNewImage() {
+    setState(() {
+      _newImageBytes = null;
+      _newImageFileName = null;
+      _imageError = null;
+    });
+  }
+
   void _save() {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -458,15 +706,32 @@ class _EditMasterProductDialogState extends State<EditMasterProductDialog> {
       return;
     }
 
+    if (_imageError != null) {
+      return;
+    }
+
+    MultipartFile? image;
+
+    if (_newImageBytes != null && _newImageFileName != null) {
+      image = MultipartFile.fromBytes(
+        _newImageBytes!,
+        filename: _newImageFileName!,
+      );
+    }
+
     context.read<UpdateProductCubit>().updateProduct(
       id: widget.product.id,
       supplierId: selectedSupplierId,
       categoryId: selectedCategoryId,
       name: _nameController.text.trim(),
       description: _descriptionController.text.trim(),
-      buyPrice: double.parse(_buyPriceController.text),
-      stockQuantity: int.parse(_stockController.text),
+      buyPrice: double.parse(_buyPriceController.text.trim()),
+      stockQuantity: int.parse(_stockController.text.trim()),
       status: selectedStatus,
+
+      // null = keep the current backend image.
+      // MultipartFile = replace it.
+      image: image,
     );
   }
 }

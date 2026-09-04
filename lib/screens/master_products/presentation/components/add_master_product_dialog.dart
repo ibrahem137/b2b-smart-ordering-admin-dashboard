@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dashboard/screens/categories/presentation/cubit/categories_cubit.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/categories_state.dart';
 import 'package:dashboard/screens/master_products/presentation/cubit/create_product_cubit.dart';
@@ -5,40 +7,45 @@ import 'package:dashboard/screens/master_products/presentation/cubit/product_act
 import 'package:dashboard/screens/suppliers/presentation/cubit/supplier_categories_cubit.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/suppliers_cubit.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/suppliers_state.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddMasterProductDialog extends StatefulWidget {
   const AddMasterProductDialog({super.key});
-
   @override
   State<AddMasterProductDialog> createState() => _AddMasterProductDialogState();
 }
 
 class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
+  static const int _maxImageSize = 5 * 1024 * 1024;
+  static const Set<String> _allowedImageExtensions = {
+    'jpg',
+    'jpeg',
+    'png',
+    'webp',
+  };
   final _formKey = GlobalKey<FormState>();
-
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _buyPriceController = TextEditingController();
   final _stockController = TextEditingController();
-
   int? selectedSupplierId;
   int? selectedCategoryId;
-
   String selectedStatus = 'available';
-
+  Uint8List? _imageBytes;
+  String? _imageFileName;
+  String? _imageError;
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-
     return BlocConsumer<CreateProductCubit, ProductActionState>(
       listener: (context, state) {
         if (state is ProductActionSuccess) {
           Navigator.pop(context, true);
         }
-
         if (state is ProductActionFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -53,7 +60,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
       },
       builder: (context, state) {
         final isLoading = state is ProductActionLoading;
-
         return Dialog(
           backgroundColor: colors.surface,
           surfaceTintColor: Colors.transparent,
@@ -72,23 +78,16 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
                   children: [
                     _buildHeader(context),
                     const SizedBox(height: 30),
-
                     _buildName(),
-
                     const SizedBox(height: 20),
-
+                    _buildProductImage(),
+                    const SizedBox(height: 20),
                     _buildSupplier(),
-
                     const SizedBox(height: 20),
-
                     _buildCategory(),
-
                     const SizedBox(height: 20),
-
                     _buildDescription(),
-
                     const SizedBox(height: 20),
-
                     Row(
                       children: [
                         Expanded(child: _buildBuyPrice()),
@@ -96,13 +95,9 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
                         Expanded(child: _buildStock()),
                       ],
                     ),
-
                     const SizedBox(height: 20),
-
                     _buildStatus(),
-
                     const SizedBox(height: 30),
-
                     _buildActions(context, isLoading),
                   ],
                 ),
@@ -120,13 +115,11 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
     _descriptionController.dispose();
     _buyPriceController.dispose();
     _stockController.dispose();
-
     super.dispose();
   }
 
   Widget _buildActions(BuildContext context, bool isLoading) {
     final colors = Theme.of(context).colorScheme;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -175,13 +168,10 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
         if (value == null || value.trim().isEmpty) {
           return 'master_products.buy_price_required'.tr();
         }
-
         final price = double.tryParse(value.trim());
-
         if (price == null || price < 0) {
           return 'master_products.invalid_price'.tr();
         }
-
         return null;
       },
     );
@@ -203,18 +193,15 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
           if (selectedSupplierId == null) {
             return 'master_products.select_supplier_first_validation'.tr();
           }
-
           return null;
         },
       );
     }
-
     return BlocBuilder<SupplierCategoriesCubit, SupplierCategoriesState>(
       builder: (context, supplierState) {
         if (supplierState is SupplierCategoriesLoading) {
           return _buildLoadingField(context, 'master_products.category'.tr());
         }
-
         if (supplierState is SupplierCategoriesFailure) {
           return _buildErrorField(
             context,
@@ -222,7 +209,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
             message: supplierState.message,
           );
         }
-
         if (supplierState is SupplierCategoriesSuccess) {
           return BlocBuilder<CategoriesCubit, CategoriesState>(
             builder: (context, categoriesState) {
@@ -232,7 +218,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
                   'master_products.category'.tr(),
                 );
               }
-
               if (categoriesState is CategoriesFailure) {
                 return _buildErrorField(
                   context,
@@ -240,22 +225,18 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
                   message: categoriesState.message,
                 );
               }
-
               if (categoriesState is CategoriesSuccess) {
                 final allowedCategories = categoriesState.categories.where((
                   category,
                 ) {
                   return supplierState.categoryIds.contains(category.id);
                 }).toList();
-
                 if (allowedCategories.isEmpty) {
                   return _buildEmptyCategoryField(context);
                 }
-
                 final categoryExists = allowedCategories.any(
                   (category) => category.id == selectedCategoryId,
                 );
-
                 return DropdownButtonFormField<int>(
                   initialValue: categoryExists ? selectedCategoryId : null,
                   isExpanded: true,
@@ -281,7 +262,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
                     if (value == null) {
                       return;
                     }
-
                     setState(() {
                       selectedCategoryId = value;
                     });
@@ -290,17 +270,14 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
                     if (value == null) {
                       return 'master_products.select_category_validation'.tr();
                     }
-
                     return null;
                   },
                 );
               }
-
               return const SizedBox.shrink();
             },
           );
         }
-
         return const SizedBox.shrink();
       },
     );
@@ -320,7 +297,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
 
   Widget _buildEmptyCategoryField(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-
     return InputDecorator(
       decoration: _decoration(context, 'master_products.category'.tr()),
       child: Row(
@@ -344,7 +320,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
     required String message,
   }) {
     final colors = Theme.of(context).colorScheme;
-
     return InputDecorator(
       decoration: _decoration(context, label).copyWith(
         enabledBorder: OutlineInputBorder(
@@ -367,7 +342,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-
     return Row(
       children: [
         CircleAvatar(
@@ -408,9 +382,63 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
     );
   }
 
+  Widget _buildImagePreview() {
+    final colors = Theme.of(context).colorScheme;
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Image.memory(_imageBytes!, fit: BoxFit.contain),
+          ),
+        ),
+        Positioned(
+          top: 8,
+          right: 8,
+          child: IconButton(
+            tooltip: 'master_products.remove_image'.tr(),
+            onPressed: _removeProductImage,
+            icon: const Icon(Icons.close),
+            style: IconButton.styleFrom(
+              backgroundColor: colors.surface,
+              foregroundColor: colors.onSurface,
+              side: BorderSide(color: colors.outlineVariant),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildImageUploadState() {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.cloud_upload_outlined, size: 36, color: colors.primary),
+        const SizedBox(height: 10),
+        Text(
+          'master_products.upload_product_image'.tr(),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: colors.onSurface,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'master_products.image_upload_hint'.tr(),
+          textAlign: TextAlign.center,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: colors.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildLoadingField(BuildContext context, String label) {
     final colors = Theme.of(context).colorScheme;
-
     return InputDecorator(
       decoration: _decoration(context, label),
       child: Row(
@@ -446,9 +474,57 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
         if (value == null || value.trim().isEmpty) {
           return 'master_products.product_name_required'.tr();
         }
-
         return null;
       },
+    );
+  }
+
+  Widget _buildProductImage() {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'master_products.product_image'.tr(),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: colors.onSurface,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 8),
+        InkWell(
+          onTap: _pickProductImage,
+          borderRadius: BorderRadius.circular(14),
+          child: Container(
+            width: double.infinity,
+            height: 170,
+            decoration: BoxDecoration(
+              color: colors.surfaceContainerLow,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: _imageError == null
+                    ? colors.outlineVariant
+                    : colors.error,
+                width: 1.5,
+              ),
+            ),
+            child: _imageBytes == null
+                ? _buildImageUploadState()
+                : _buildImagePreview(),
+          ),
+        ),
+        if (_imageError != null) ...[
+          const SizedBox(height: 6),
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: Text(
+              _imageError!,
+              style: theme.textTheme.bodySmall?.copyWith(color: colors.error),
+            ),
+          ),
+        ],
+      ],
     );
   }
 
@@ -476,7 +552,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
         if (value == null) {
           return;
         }
-
         setState(() {
           selectedStatus = value;
         });
@@ -498,13 +573,10 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
         if (value == null || value.trim().isEmpty) {
           return 'master_products.stock_required'.tr();
         }
-
         final stock = int.tryParse(value.trim());
-
         if (stock == null || stock < 0) {
           return 'master_products.invalid_stock'.tr();
         }
-
         return null;
       },
     );
@@ -516,7 +588,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
         if (state is SuppliersLoading) {
           return _buildLoadingField(context, 'master_products.supplier'.tr());
         }
-
         if (state is SuppliersFailure) {
           return _buildErrorField(
             context,
@@ -524,7 +595,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
             message: state.message,
           );
         }
-
         if (state is SuppliersSuccess) {
           return DropdownButtonFormField<int>(
             initialValue: selectedSupplierId,
@@ -549,12 +619,10 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
               if (value == null) {
                 return;
               }
-
               setState(() {
                 selectedSupplierId = value;
                 selectedCategoryId = null;
               });
-
               context.read<SupplierCategoriesCubit>().getSupplierCategories(
                 value,
               );
@@ -563,12 +631,10 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
               if (value == null) {
                 return 'master_products.select_supplier_validation'.tr();
               }
-
               return null;
             },
           );
         }
-
         return const SizedBox.shrink();
       },
     );
@@ -580,7 +646,6 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
     String? hintText,
   }) {
     final colors = Theme.of(context).colorScheme;
-
     return InputDecoration(
       labelText: label,
       hintText: hintText,
@@ -606,15 +671,82 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
     );
   }
 
+  Future<void> _pickProductImage() async {
+    final result = await FilePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: const ['jpg', 'jpeg', 'png', 'webp'],
+      allowMultiple: false,
+      withData: true,
+    );
+
+    if (result == null || result.files.isEmpty) {
+      return;
+    }
+
+    final file = result.files.single;
+    final bytes = file.bytes;
+    final extension = file.extension?.toLowerCase();
+
+    if (extension == null || !_allowedImageExtensions.contains(extension)) {
+      setState(() {
+        _imageBytes = null;
+        _imageFileName = null;
+        _imageError = 'master_products.invalid_image_format'.tr();
+      });
+      return;
+    }
+
+    if (file.size > _maxImageSize) {
+      setState(() {
+        _imageBytes = null;
+        _imageFileName = null;
+        _imageError = 'master_products.image_too_large'.tr();
+      });
+      return;
+    }
+
+    if (bytes == null) {
+      setState(() {
+        _imageBytes = null;
+        _imageFileName = null;
+        _imageError = 'master_products.image_read_error'.tr();
+      });
+      return;
+    }
+
+    setState(() {
+      _imageBytes = bytes;
+      _imageFileName = file.name;
+      _imageError = null;
+    });
+  }
+
+  void _removeProductImage() {
+    setState(() {
+      _imageBytes = null;
+      _imageFileName = null;
+      _imageError = 'master_products.image_required'.tr();
+    });
+  }
+
   void _save() {
-    if (!_formKey.currentState!.validate()) {
+    final isFormValid = _formKey.currentState!.validate();
+    if (_imageBytes == null || _imageFileName == null) {
+      setState(() {
+        _imageError = 'master_products.image_required'.tr();
+      });
+    }
+    if (!isFormValid ||
+        _imageBytes == null ||
+        _imageFileName == null ||
+        selectedSupplierId == null ||
+        selectedCategoryId == null) {
       return;
     }
-
-    if (selectedSupplierId == null || selectedCategoryId == null) {
-      return;
-    }
-
+    final image = MultipartFile.fromBytes(
+      _imageBytes!,
+      filename: _imageFileName!,
+    );
     context.read<CreateProductCubit>().createProduct(
       supplierId: selectedSupplierId!,
       categoryId: selectedCategoryId!,
@@ -623,6 +755,7 @@ class _AddMasterProductDialogState extends State<AddMasterProductDialog> {
       buyPrice: double.parse(_buyPriceController.text.trim()),
       stockQuantity: int.parse(_stockController.text.trim()),
       status: selectedStatus,
+      image: image,
     );
   }
 }

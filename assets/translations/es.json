@@ -11,7 +11,9 @@
     "supplier_products": "Productos de proveedores",
     "orders": "Pedidos",
     "sales": "Ventas",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "supplier_offers": "Ofertas de proveedores",
+    "stores": "Tiendas"
   },
   "common": {
     "page_not_found": "Página no encontrada",
@@ -39,7 +41,11 @@
     "email": "Correo electrónico",
     "phone": "Teléfono",
     "address": "Dirección",
-    "total": "Total"
+    "total": "Total",
+    "remove": "Eliminar",
+    "clear": "Limpiar",
+    "optional": "Opcional",
+    "save_changes": "Guardar cambios"
   },
   "settings": {
     "title": "Configuración",
@@ -102,7 +108,8 @@
     "select_color": "Seleccionar color",
     "selected_color": "Color seleccionado",
     "upload_category_image": "Subir imagen de categoría",
-    "upload_image_hint": "Elige una imagen para esta categoría"
+    "upload_image_hint": "Elige una imagen para esta categoría",
+    "no_categories_found": "No se encontraron categor?as"
   },
   "dashboard": {
     "total_products": "Productos totales",
@@ -193,7 +200,23 @@
     "select_supplier": "Seleccionar proveedor",
     "select_supplier_validation": "Selecciona un proveedor",
     "select_supplier_first": "Selecciona primero un proveedor",
-    "select_supplier_first_validation": "Selecciona primero un proveedor"
+    "select_supplier_first_validation": "Selecciona primero un proveedor",
+    "image_too_large": "La imagen es demasiado grande",
+    "image_required": "La imagen del producto es obligatoria",
+    "product_image": "Imagen del producto",
+    "image_read_error": "No se pudo leer la imagen seleccionada",
+    "image_update_hint": "Seleccione una nueva imagen para reemplazar la actual",
+    "invalid_image_format": "Formato de imagen no válido",
+    "change_image": "Cambiar imagen",
+    "remove_image": "Eliminar imagen",
+    "no_image": "Sin imagen",
+    "select_image": "Seleccionar imagen",
+    "image": "Imagen",
+    "upload_product_image": "Subir imagen del producto",
+    "image_upload_hint": "JPG, JPEG, PNG o WEBP",
+    "no_products_found_period": "No se encontraron productos.",
+    "products_empty_description": "Todav?a no hay productos para mostrar.",
+    "unable_to_load_products": "No se pudieron cargar los productos"
   },
   "supplier_products": {
     "title": "Productos de proveedores",
@@ -282,7 +305,16 @@
     "no_orders_found": "No se encontraron pedidos",
     "no_orders_found_period": "No se encontraron pedidos para este período.",
     "orders_empty_description": "Los pedidos aparecerán aquí cuando se creen.",
-    "change_search_or_filter": "Prueba a cambiar la búsqueda o el filtro."
+    "change_search_or_filter": "Prueba a cambiar la búsqueda o el filtro.",
+    "new_status": "Nuevo estado",
+    "status_notes_hint": "Añade una nota sobre este cambio de estado...",
+    "select_new_status": "Seleccionar nuevo estado",
+    "change_status": "Cambiar estado",
+    "notes_optional": "Notas (Opcional)",
+    "update_status": "Actualizar estado",
+    "change_status_subtitle": "Actualiza el estado actual del pedido.",
+    "updating_status": "Actualizando...",
+    "current_status": "Estado actual"
   },
   "sales": {
     "title": "Ventas",
@@ -363,6 +395,133 @@
     },
     "errors": {
       "missing_supplier_id": "Falta el ID del proveedor"
+    }
+  },
+  "stores": {
+    "details": {
+      "email": "Correo electrónico",
+      "updated_at": "Actualizado el",
+      "phone": "Teléfono",
+      "owner": "Propietario",
+      "created_at": "Creado el",
+      "address": "Dirección"
+    },
+    "columns": {
+      "email": "Correo electrónico",
+      "owner": "Propietario",
+      "store": "Tienda",
+      "phone": "Teléfono"
+    },
+    "deactivate_store": "Desactivar tienda",
+    "deactivate": "Desactivar",
+    "total": "tiendas en total",
+    "status": {
+      "inactive": "Inactiva",
+      "active": "Activa"
+    },
+    "activate": "Activar",
+    "no_stores_found": "No se encontraron tiendas",
+    "all_statuses": "Todos los estados",
+    "title": "Tiendas",
+    "search_hint": "Buscar tiendas...",
+    "view_details": "Ver detalles",
+    "subtitle": "Administre los supermercados registrados y el estado de sus cuentas",
+    "activate_confirmation": "¿Está seguro de que desea activar esta tienda?",
+    "deactivate_confirmation": "¿Está seguro de que desea desactivar esta tienda?",
+    "activate_store": "Activar tienda",
+    "fields": {
+      "search_country": "Buscar pa?s",
+      "address": "Direcci?n",
+      "email": "Correo electr?nico",
+      "image": "Imagen de la tienda",
+      "name": "Nombre de la tienda",
+      "owner_name": "Nombre del propietario",
+      "password": "Contrase?a",
+      "phone": "Tel?fono"
+    },
+    "validation": {
+      "name_required": "El nombre de la tienda es obligatorio.",
+      "owner_required": "El nombre del propietario es obligatorio.",
+      "invalid_phone": "Introduce un n?mero de tel?fono m?vil v?lido.",
+      "email_required": "El correo electr?nico es obligatorio.",
+      "invalid_email": "Introduce una direcci?n de correo electr?nico v?lida.",
+      "image_read_failed": "No se pudo leer la imagen seleccionada.",
+      "image_too_large": "La imagen no debe superar los 5 MB.",
+      "invalid_image": "Selecciona una imagen JPG, JPEG, PNG o WEBP.",
+      "password_min": "La contrase?a debe tener al menos 8 caracteres.",
+      "password_required": "La contrase?a es obligatoria.",
+      "required": "Este campo es obligatorio."
+    },
+    "add_store": "A?adir tienda",
+    "add_store_subtitle": "Introduce la informaci?n de la tienda.",
+    "choose_image": "Elegir imagen de la tienda",
+    "delete_confirmation": "?Seguro que deseas eliminar esta tienda?",
+    "delete_store": "Eliminar tienda"
+  },
+  "supplier_offers": {
+    "columns": {
+      "expires_at": "Vence el",
+      "offer_price": "Precio de oferta",
+      "product": "Producto",
+      "supplier": "Proveedor",
+      "stock": "Stock",
+      "status": "Estado"
+    },
+    "image_optional_hint": "Opcional - JPG, JPEG, PNG o WebP. Máximo 5 MB.",
+    "offer_image": "Imagen de la oferta",
+    "current_image_kept": "La imagen actual se conservará salvo que selecciones una nueva.",
+    "choose_replacement_image": "Haz clic para elegir una imagen de reemplazo",
+    "edit_subtitle": "Actualiza la información de la oferta.",
+    "expires_at": "Vence el",
+    "select_status": "Seleccionar estado",
+    "add_offer": "Añadir oferta",
+    "status": {
+      "available": "Disponible",
+      "unavailable": "No disponible"
+    },
+    "supplier_fallback": "ID del proveedor: {id}",
+    "select_supplier_product": "Seleccionar producto del proveedor",
+    "choose_image": "Haz clic para elegir una imagen",
+    "remove_replacement_image": "Eliminar imagen de reemplazo",
+    "image_formats": "JPG, JPEG, PNG o WebP - Máximo 5 MB",
+    "remove_image": "Eliminar imagen",
+    "add_subtitle": "Crea una nueva oferta para un producto del proveedor.",
+    "no_supplier_products": "No se encontraron productos de proveedores.",
+    "current_image": "Imagen actual",
+    "offer_stock": "Stock de la oferta",
+    "validation": {
+      "invalid_price": "Introduce un precio válido.",
+      "price_required": "El precio de oferta es obligatorio.",
+      "invalid_image_format": "Selecciona una imagen JPG, JPEG, PNG o WebP.",
+      "image_too_large": "La imagen no debe superar los 5 MB.",
+      "image_read_failed": "No se pudo leer la imagen seleccionada.",
+      "negative_stock": "El stock no puede ser negativo.",
+      "invalid_stock": "Introduce una cantidad de stock válida.",
+      "negative_price": "El precio no puede ser negativo.",
+      "invalid_image_type": "Solo se admiten imágenes JPG, JPEG, PNG y WebP.",
+      "invalid_offer_stock": "Introduce una cantidad de stock válida.",
+      "supplier_product_required": "Selecciona un producto del proveedor.",
+      "invalid_offer_price": "Introduce un precio de oferta válido.",
+      "offer_price_required": "El precio de oferta es obligatorio.",
+      "negative_offer_stock": "El stock de la oferta no puede ser negativo.",
+      "negative_offer_price": "El precio de oferta no puede ser negativo.",
+      "select_supplier_product": "Selecciona un producto del proveedor."
+    },
+    "add_title": "Añadir oferta de proveedor",
+    "subtitle": "Gestiona ofertas, precios, stock y fechas de vencimiento.",
+    "supplier_product_required": "Producto del proveedor *",
+    "edit_title": "Editar oferta de proveedor",
+    "product_fallback": "ID del producto: {id}",
+    "title": "Ofertas de proveedores",
+    "offer_price_required": "Precio de oferta *",
+    "no_offers_found": "No se encontraron ofertas.",
+    "fields": {
+      "expires_at": "Vence el",
+      "supplier_product": "Producto del proveedor *",
+      "offer_image": "Imagen de la oferta",
+      "offer_price": "Precio de oferta *",
+      "offer_stock": "Stock de la oferta",
+      "status": "Estado"
     }
   }
 }

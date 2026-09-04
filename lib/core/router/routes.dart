@@ -9,4 +9,6 @@ class Routes {
   static const String supplierProductsScreen = '/supplierproductsscreen';
   static const String loginScreen = '/login';
   static const String settings = '/settings';
+  static const String supplierOffersScreen = '/supplieroffersscreen';
+  static const String storesScreen = '/storesscreen';
 }

@@ -11,7 +11,9 @@
     "supplier_products": "Leveranciersproducten",
     "orders": "Bestellingen",
     "sales": "Verkopen",
-    "settings": "Instellingen"
+    "settings": "Instellingen",
+    "supplier_offers": "Leveranciersaanbiedingen",
+    "stores": "Winkels"
   },
   "common": {
     "page_not_found": "Pagina niet gevonden",
@@ -39,7 +41,11 @@
     "email": "E-mail",
     "phone": "Telefoon",
     "address": "Adres",
-    "total": "Totaal"
+    "total": "Totaal",
+    "remove": "Verwijderen",
+    "clear": "Wissen",
+    "optional": "Optioneel",
+    "save_changes": "Wijzigingen opslaan"
   },
   "settings": {
     "title": "Instellingen",
@@ -102,7 +108,8 @@
     "select_color": "Kleur selecteren",
     "selected_color": "Geselecteerde kleur",
     "upload_category_image": "Categorieafbeelding uploaden",
-    "upload_image_hint": "Kies een afbeelding voor deze categorie"
+    "upload_image_hint": "Kies een afbeelding voor deze categorie",
+    "no_categories_found": "Geen categorie?n gevonden"
   },
   "dashboard": {
     "total_products": "Totaal producten",
@@ -193,7 +200,23 @@
     "select_supplier": "Selecteer leverancier",
     "select_supplier_validation": "Selecteer een leverancier",
     "select_supplier_first": "Selecteer eerst een leverancier",
-    "select_supplier_first_validation": "Selecteer eerst een leverancier"
+    "select_supplier_first_validation": "Selecteer eerst een leverancier",
+    "image_too_large": "De afbeelding is te groot",
+    "image_required": "Een productafbeelding is vereist",
+    "product_image": "Productafbeelding",
+    "image_read_error": "De geselecteerde afbeelding kon niet worden gelezen",
+    "image_update_hint": "Kies een nieuwe afbeelding om de huidige te vervangen",
+    "invalid_image_format": "Ongeldig afbeeldingsformaat",
+    "change_image": "Afbeelding wijzigen",
+    "remove_image": "Afbeelding verwijderen",
+    "no_image": "Geen afbeelding",
+    "select_image": "Afbeelding selecteren",
+    "image": "Afbeelding",
+    "upload_product_image": "Productafbeelding uploaden",
+    "image_upload_hint": "JPG, JPEG, PNG of WEBP",
+    "no_products_found_period": "Geen producten gevonden.",
+    "products_empty_description": "Er zijn nog geen producten om weer te geven.",
+    "unable_to_load_products": "Producten konden niet worden geladen"
   },
   "supplier_products": {
     "title": "Leveranciersproducten",
@@ -282,7 +305,16 @@
     "no_orders_found": "Geen bestellingen gevonden",
     "no_orders_found_period": "Geen bestellingen gevonden voor deze periode.",
     "orders_empty_description": "Bestellingen verschijnen hier zodra ze zijn aangemaakt.",
-    "change_search_or_filter": "Probeer uw zoekopdracht of filter te wijzigen."
+    "change_search_or_filter": "Probeer uw zoekopdracht of filter te wijzigen.",
+    "new_status": "Nieuwe status",
+    "status_notes_hint": "Voeg een notitie toe over deze statuswijziging...",
+    "select_new_status": "Nieuwe status selecteren",
+    "change_status": "Status wijzigen",
+    "notes_optional": "Notities (Optioneel)",
+    "update_status": "Status bijwerken",
+    "change_status_subtitle": "Werk de huidige bestelstatus bij.",
+    "updating_status": "Bijwerken...",
+    "current_status": "Huidige status"
   },
   "sales": {
     "title": "Verkopen",
@@ -363,6 +395,133 @@
     },
     "errors": {
       "missing_supplier_id": "Leveranciers-ID ontbreekt"
+    }
+  },
+  "stores": {
+    "details": {
+      "email": "E-mail",
+      "updated_at": "Bijgewerkt op",
+      "phone": "Telefoon",
+      "owner": "Eigenaar",
+      "created_at": "Aangemaakt op",
+      "address": "Adres"
+    },
+    "columns": {
+      "email": "E-mail",
+      "owner": "Eigenaar",
+      "store": "Winkel",
+      "phone": "Telefoon"
+    },
+    "deactivate_store": "Winkel deactiveren",
+    "deactivate": "Deactiveren",
+    "total": "winkels totaal",
+    "status": {
+      "inactive": "Inactief",
+      "active": "Actief"
+    },
+    "activate": "Activeren",
+    "no_stores_found": "Geen winkels gevonden",
+    "all_statuses": "Alle statussen",
+    "title": "Winkels",
+    "search_hint": "Winkels zoeken...",
+    "view_details": "Details bekijken",
+    "subtitle": "Beheer geregistreerde supermarkten en hun accountstatus",
+    "activate_confirmation": "Weet u zeker dat u deze winkel wilt activeren?",
+    "deactivate_confirmation": "Weet u zeker dat u deze winkel wilt deactiveren?",
+    "activate_store": "Winkel activeren",
+    "fields": {
+      "search_country": "Land zoeken",
+      "address": "Adres",
+      "email": "E-mail",
+      "image": "Winkelafbeelding",
+      "name": "Winkelnaam",
+      "owner_name": "Naam eigenaar",
+      "password": "Wachtwoord",
+      "phone": "Telefoon"
+    },
+    "validation": {
+      "name_required": "De winkelnaam is verplicht.",
+      "owner_required": "De naam van de eigenaar is verplicht.",
+      "invalid_phone": "Voer een geldig mobiel telefoonnummer in.",
+      "email_required": "Het e-mailadres is verplicht.",
+      "invalid_email": "Voer een geldig e-mailadres in.",
+      "image_read_failed": "De geselecteerde afbeelding kon niet worden gelezen.",
+      "image_too_large": "De afbeelding mag niet groter zijn dan 5 MB.",
+      "invalid_image": "Selecteer een JPG-, JPEG-, PNG- of WEBP-afbeelding.",
+      "password_min": "Het wachtwoord moet minimaal 8 tekens bevatten.",
+      "password_required": "Wachtwoord is verplicht.",
+      "required": "Dit veld is verplicht."
+    },
+    "add_store": "Winkel toevoegen",
+    "add_store_subtitle": "Voer hieronder de winkelgegevens in.",
+    "choose_image": "Winkelafbeelding kiezen",
+    "delete_confirmation": "Weet u zeker dat u deze winkel wilt verwijderen?",
+    "delete_store": "Winkel verwijderen"
+  },
+  "supplier_offers": {
+    "columns": {
+      "expires_at": "Verloopt op",
+      "offer_price": "Aanbiedingsprijs",
+      "product": "Product",
+      "supplier": "Leverancier",
+      "stock": "Voorraad",
+      "status": "Status"
+    },
+    "image_optional_hint": "Optioneel - JPG, JPEG, PNG of WebP. Maximaal 5 MB.",
+    "offer_image": "Afbeelding van aanbieding",
+    "current_image_kept": "De huidige afbeelding blijft behouden tenzij u een vervangende afbeelding selecteert.",
+    "choose_replacement_image": "Klik om een vervangende afbeelding te kiezen",
+    "edit_subtitle": "Werk de informatie van de aanbieding bij.",
+    "expires_at": "Verloopt op",
+    "select_status": "Status selecteren",
+    "add_offer": "Aanbieding toevoegen",
+    "status": {
+      "available": "Beschikbaar",
+      "unavailable": "Niet beschikbaar"
+    },
+    "supplier_fallback": "Leveranciers-ID: {id}",
+    "select_supplier_product": "Leveranciersproduct selecteren",
+    "choose_image": "Klik om een afbeelding te kiezen",
+    "remove_replacement_image": "Vervangende afbeelding verwijderen",
+    "image_formats": "JPG, JPEG, PNG of WebP - Maximaal 5 MB",
+    "remove_image": "Afbeelding verwijderen",
+    "add_subtitle": "Maak een nieuwe aanbieding voor een leveranciersproduct.",
+    "no_supplier_products": "Geen leveranciersproducten gevonden.",
+    "current_image": "Huidige afbeelding",
+    "offer_stock": "Aanbiedingsvoorraad",
+    "validation": {
+      "invalid_price": "Voer een geldige prijs in.",
+      "price_required": "De aanbiedingsprijs is verplicht.",
+      "invalid_image_format": "Selecteer een JPG-, JPEG-, PNG- of WebP-afbeelding.",
+      "image_too_large": "De afbeelding mag niet groter zijn dan 5 MB.",
+      "image_read_failed": "De geselecteerde afbeelding kon niet worden gelezen.",
+      "negative_stock": "De voorraad mag niet negatief zijn.",
+      "invalid_stock": "Voer een geldige voorraadhoeveelheid in.",
+      "negative_price": "De prijs mag niet negatief zijn.",
+      "invalid_image_type": "Alleen JPG-, JPEG-, PNG- en WebP-afbeeldingen worden ondersteund.",
+      "invalid_offer_stock": "Voer een geldige voorraadhoeveelheid in.",
+      "supplier_product_required": "Selecteer een leveranciersproduct.",
+      "invalid_offer_price": "Voer een geldige aanbiedingsprijs in.",
+      "offer_price_required": "De aanbiedingsprijs is verplicht.",
+      "negative_offer_stock": "De aanbiedingsvoorraad mag niet negatief zijn.",
+      "negative_offer_price": "De aanbiedingsprijs mag niet negatief zijn.",
+      "select_supplier_product": "Selecteer een leveranciersproduct."
+    },
+    "add_title": "Leveranciersaanbieding toevoegen",
+    "subtitle": "Beheer aanbiedingen, prijzen, voorraad en vervaldatums.",
+    "supplier_product_required": "Leveranciersproduct *",
+    "edit_title": "Leveranciersaanbieding bewerken",
+    "product_fallback": "Product-ID: {id}",
+    "title": "Leveranciersaanbiedingen",
+    "offer_price_required": "Aanbiedingsprijs *",
+    "no_offers_found": "Geen leveranciersaanbiedingen gevonden.",
+    "fields": {
+      "expires_at": "Verloopt op",
+      "supplier_product": "Leveranciersproduct *",
+      "offer_image": "Afbeelding van aanbieding",
+      "offer_price": "Aanbiedingsprijs *",
+      "offer_stock": "Aanbiedingsvoorraad",
+      "status": "Status"
     }
   }
 }

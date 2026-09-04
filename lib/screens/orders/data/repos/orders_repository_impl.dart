@@ -32,4 +32,22 @@ class OrdersRepositoryImpl implements OrdersRepository {
       return ApiResult.failure(ApiErrorHandler.handle(error));
     }
   }
+
+  @override
+  Future<ApiResult<void>> updateOrderStatus({
+    required int id,
+    required String status,
+    String? notes,
+  }) async {
+    try {
+      await apiService.updateOrderStatus(id, {
+        'status': status,
+        if (notes != null && notes.trim().isNotEmpty) 'notes': notes.trim(),
+      });
+
+      return const ApiResult.success(null);
+    } catch (error) {
+      return ApiResult.failure(ApiErrorHandler.handle(error));
+    }
+  }
 }

@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 class CreateProductRequest {
   final int supplierId;
   final int categoryId;
@@ -6,6 +8,7 @@ class CreateProductRequest {
   final double buyPrice;
   final int stockQuantity;
   final String status;
+  final MultipartFile image;
 
   const CreateProductRequest({
     required this.supplierId,
@@ -15,5 +18,6 @@ class CreateProductRequest {
     required this.buyPrice,
     required this.stockQuantity,
     required this.status,
+    required this.image,
   });
 }

@@ -19,58 +19,44 @@ class SupplierProductRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme
-        .extension<DashboardColors>()!;
+    final dashboardColors = theme.extension<DashboardColors>()!;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 18,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       color: colors.surface,
       child: Row(
         children: [
-          /// Product
           Expanded(
             flex: 3,
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 18,
-                  backgroundColor: colors.primaryContainer,
-                  child: Icon(
-                    Icons.inventory_2_outlined,
-                    size: 18,
-                    color: colors.onPrimaryContainer,
-                  ),
+                _SupplierProductImage(
+                  imageUrl: product.imageUrl ?? product.product?.imageUrl,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         product.product?.name ??
-                            'supplier_products.unknown_product'
-                                .tr(),
+                            'supplier_products.unknown_product'.tr(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium
-                            ?.copyWith(
-                              color: colors.onSurface,
-                              fontWeight: FontWeight.w600,
-                            ),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: colors.onSurface,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'ID: ${product.productId}',
-                        style: theme.textTheme.bodySmall
-                            ?.copyWith(
-                              fontSize: 12,
-                              color:
-                                  colors.onSurfaceVariant,
-                            ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontSize: 12,
+                          color: colors.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
@@ -79,7 +65,6 @@ class SupplierProductRow extends StatelessWidget {
             ),
           ),
 
-          /// Supplier
           Expanded(
             flex: 3,
             child: Column(
@@ -87,30 +72,28 @@ class SupplierProductRow extends StatelessWidget {
               children: [
                 Text(
                   product.supplier?.name ??
-                      'supplier_products.unknown_supplier'
-                          .tr(),
+                      'supplier_products.unknown_supplier'.tr(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(
-                        color: colors.onSurface,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colors.onSurface,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'ID: ${product.supplierId}',
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(
-                        fontSize: 12,
-                        color: colors.onSurfaceVariant,
-                      ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontSize: 12,
+                    color: colors.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
           ),
 
-          /// Category
           Expanded(
             flex: 2,
             child: Text(
@@ -124,10 +107,11 @@ class SupplierProductRow extends StatelessWidget {
             ),
           ),
 
-          /// Buy Price
           Expanded(
             child: Text(
               '\$ ${product.buyPrice}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: dashboardColors.success,
                 fontWeight: FontWeight.w600,
@@ -135,10 +119,11 @@ class SupplierProductRow extends StatelessWidget {
             ),
           ),
 
-          /// Stock
           Expanded(
             child: Text(
               product.stockQuantity.toString(),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: colors.onSurface,
                 fontWeight: FontWeight.w500,
@@ -146,17 +131,14 @@ class SupplierProductRow extends StatelessWidget {
             ),
           ),
 
-          /// Status
-          Expanded(
-            flex: 2,
-            child: _StatusBadge(status: product.status),
-          ),
+          Expanded(flex: 2, child: _StatusBadge(status: product.status)),
 
-          /// Updated Date
           Expanded(
             flex: 2,
             child: Text(
               _formatDate(product.updatedAt),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: colors.onSurfaceVariant,
                 fontSize: 13,
@@ -164,7 +146,6 @@ class SupplierProductRow extends StatelessWidget {
             ),
           ),
 
-          /// Actions
           SizedBox(
             width: 90,
             child: Row(
@@ -222,8 +203,7 @@ class _StatusBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-    final dashboardColors = theme
-        .extension<DashboardColors>()!;
+    final dashboardColors = theme.extension<DashboardColors>()!;
 
     final normalized = status.toLowerCase();
 
@@ -233,9 +213,7 @@ class _StatusBadge extends StatelessWidget {
     switch (normalized) {
       case 'available':
         foreground = dashboardColors.success;
-        background = dashboardColors.success.withValues(
-          alpha: .10,
-        );
+        background = dashboardColors.success.withValues(alpha: .10);
         break;
 
       case 'archived':
@@ -256,10 +234,7 @@ class _StatusBadge extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 5,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
           color: background,
           borderRadius: BorderRadius.circular(10),
@@ -276,12 +251,16 @@ class _StatusBadge extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 6),
-            Text(
-              _label(normalized),
-              style: theme.textTheme.bodySmall?.copyWith(
-                fontSize: 12,
-                color: foreground,
-                fontWeight: FontWeight.w600,
+            Flexible(
+              child: Text(
+                _label(normalized),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontSize: 12,
+                  color: foreground,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
@@ -304,5 +283,68 @@ class _StatusBadge extends StatelessWidget {
       default:
         return status;
     }
+  }
+}
+
+class _SupplierProductImage extends StatelessWidget {
+  final String? imageUrl;
+
+  const _SupplierProductImage({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    final url = imageUrl?.trim();
+    final hasImage = url != null && url.isNotEmpty;
+
+    return Container(
+      width: 42,
+      height: 42,
+      decoration: BoxDecoration(
+        color: colors.primaryContainer,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: colors.outlineVariant),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: hasImage
+          ? Image.network(
+              url,
+              fit: BoxFit.cover,
+              webHtmlElementStrategy: WebHtmlElementStrategy.fallback,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+
+                return Center(
+                  child: SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: colors.primary,
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return _buildPlaceholder(context);
+              },
+            )
+          : _buildPlaceholder(context),
+    );
+  }
+
+  Widget _buildPlaceholder(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return Center(
+      child: Icon(
+        Icons.inventory_2_outlined,
+        size: 20,
+        color: colors.onPrimaryContainer,
+      ),
+    );
   }
 }

@@ -7,6 +7,8 @@ import 'package:dashboard/screens/master_products/presentation/master_products_s
 import 'package:dashboard/screens/orders/presentation/orders_screen.dart';
 import 'package:dashboard/screens/sales/presentation/sales_screen.dart';
 import 'package:dashboard/screens/settings/presentation/settings_screen.dart';
+import 'package:dashboard/screens/stores/presentation/stores_screen.dart';
+import 'package:dashboard/screens/supplier_offers/presentation/supplier_offers_screen.dart';
 import 'package:dashboard/screens/supplier_products/presentation/supplier_products_screen.dart';
 import 'package:dashboard/screens/suppliers/presentation/suppliers_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -16,52 +18,35 @@ class DashRouter {
   Route generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.mainScreen:
-        return MaterialPageRoute(
-          builder: (_) => const MainScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const MainScreen());
       case Routes.dashboardScreen:
-        return MaterialPageRoute(
-          builder: (_) => const DashboardScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const DashboardScreen());
       case Routes.settings:
-        return MaterialPageRoute(
-          builder: (_) => const SettingsScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case Routes.masterProductsScreen:
-        return MaterialPageRoute(
-          builder: (_) => const MasterProductsScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const MasterProductsScreen());
       case Routes.ordersScreen:
-        return MaterialPageRoute(
-          builder: (_) => const OrdersScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const OrdersScreen());
       case Routes.salesScreen:
-        return MaterialPageRoute(
-          builder: (_) => const SalesScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const SalesScreen());
       case Routes.suppliersScreen:
-        return MaterialPageRoute(
-          builder: (_) => const SuppliersScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const SuppliersScreen());
       case Routes.supplierProductsScreen:
         return MaterialPageRoute(
           builder: (_) => const SupplierProductsScreen(),
         );
+      case Routes.supplierOffersScreen:
+        return MaterialPageRoute(builder: (_) => const SupplierOffersScreen());
       case Routes.categoriesScreen:
-        return MaterialPageRoute(
-          builder: (_) => const CategoriesScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const CategoriesScreen());
       case Routes.loginScreen:
-        return MaterialPageRoute(
-          builder: (_) => const AdminLoginScreen(),
-        );
+        return MaterialPageRoute(builder: (_) => const AdminLoginScreen());
+      case Routes.storesScreen:
+        return MaterialPageRoute(builder: (_) => const StoresScreen());
       default:
         return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(
-              child: Text('common.page_not_found'.tr()),
-            ),
-          ),
+          builder: (_) =>
+              Scaffold(body: Center(child: Text('common.page_not_found'.tr()))),
         );
     }
   }

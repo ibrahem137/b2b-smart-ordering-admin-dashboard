@@ -9,4 +9,10 @@ abstract class OrdersRepository {
     String? fromDate,
     String? toDate,
   });
+
+  Future<ApiResult<void>> updateOrderStatus({
+    required int id,
+    required String status,
+    String? notes,
+  });
 }
