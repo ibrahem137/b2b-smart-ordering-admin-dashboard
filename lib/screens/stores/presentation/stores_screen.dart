@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:dashboard/core/di/injection.dart';
+import 'package:dashboard/core/widgets/dashboard_pagination.dart';
 import 'package:dashboard/screens/stores/data/models/store_model.dart';
 import 'package:dashboard/screens/stores/presentation/components/add_store_dialog.dart';
 import 'package:dashboard/screens/stores/presentation/components/change_store_status_dialog.dart';
@@ -47,7 +50,10 @@ class _DeleteStoreDialog extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: colors.error,
-                content: Text(message, style: TextStyle(color: colors.onError)),
+                content: Text(
+                  message,
+                  style: TextStyle(color: colors.onError),
+                ),
               ),
             );
 
@@ -62,7 +68,9 @@ class _DeleteStoreDialog extends StatelessWidget {
           backgroundColor: colors.surface,
           title: Text('stores.delete_store'.tr()),
           content: Text(
-            'stores.delete_confirmation'.tr(namedArgs: {'name': store.name}),
+            'stores.delete_confirmation'.tr(
+              namedArgs: {'name': store.name},
+            ),
           ),
           actions: [
             TextButton(
@@ -81,7 +89,9 @@ class _DeleteStoreDialog extends StatelessWidget {
               onPressed: isLoading
                   ? null
                   : () {
-                      context.read<DeleteStoreCubit>().deleteStore(store.id);
+                      context
+                          .read<DeleteStoreCubit>()
+                          .deleteStore(store.id);
                     },
               child: isLoading
                   ? SizedBox(
@@ -105,7 +115,10 @@ class _StoresErrorView extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;
 
-  const _StoresErrorView({required this.message, required this.onRetry});
+  const _StoresErrorView({
+    required this.message,
+    required this.onRetry,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -116,12 +129,18 @@ class _StoresErrorView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.error_outline, size: 48, color: colors.error),
+          Icon(
+            Icons.error_outline,
+            size: 48,
+            color: colors.error,
+          ),
           const SizedBox(height: 12),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(color: colors.error),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: colors.error,
+            ),
           ),
           const SizedBox(height: 16),
           OutlinedButton.icon(
@@ -145,6 +164,8 @@ class _StoresView extends StatefulWidget {
 class _StoresViewState extends State<_StoresView> {
   String _search = '';
   String? _status;
+
+  Timer? _searchDebounce;
 
   @override
   Widget build(BuildContext context) {
@@ -172,14 +193,17 @@ class _StoresViewState extends State<_StoresView> {
                     context: context,
                     builder: (_) {
                       return BlocProvider(
-                        create: (_) => getIt<CreateStoreCubit>(),
+                        create: (_) =>
+                            getIt<CreateStoreCubit>(),
                         child: const AddStoreDialog(),
                       );
                     },
                   );
 
                   if (created == true && context.mounted) {
-                    _loadStores();
+                    await context
+                        .read<StoresCubit>()
+                        .refreshCurrentPage();
                   }
                 },
               );
@@ -190,18 +214,21 @@ class _StoresViewState extends State<_StoresView> {
 
           StoresToolbar(
             selectedStatus: _status,
-            onSearchChanged: (value) {
-              _search = value;
-              _loadStores();
-            },
+            onSearchChanged: _onSearchChanged,
             onStatusChanged: (value) {
               setState(() {
                 _status = value;
               });
 
-              _loadStores();
+              context.read<StoresCubit>().filterByStatus(
+                value,
+              );
             },
-            onRefresh: _loadStores,
+            onRefresh: () {
+              context
+                  .read<StoresCubit>()
+                  .refreshCurrentPage();
+            },
           ),
 
           const SizedBox(height: 20),
@@ -210,59 +237,38 @@ class _StoresViewState extends State<_StoresView> {
             child: BlocBuilder<StoresCubit, StoresState>(
               builder: (context, state) {
                 return switch (state) {
-                  StoresInitial() || StoresLoading() => Center(
-                    child: CircularProgressIndicator(color: colors.primary),
+                  StoresInitial() ||
+                  StoresLoading() => Center(
+                    child: CircularProgressIndicator(
+                      color: colors.primary,
+                    ),
                   ),
 
-                  StoresSuccess(:final stores) => StoresTable(
-                    stores: stores,
+                  StoresSuccess(
+                    :final stores,
+                    :final currentPage,
+                    :final lastPage,
+                    :final perPage,
+                    :final total,
+                  ) =>
+                    _buildSuccessState(
+                      context,
+                      stores: stores,
+                      currentPage: currentPage,
+                      lastPage: lastPage,
+                      perPage: perPage,
+                      total: total,
+                    ),
 
-                    onView: (StoreModel store) {
-                      showDialog<void>(
-                        context: context,
-                        builder: (_) {
-                          return StoreDetailsDialog(store: store);
-                        },
-                      );
-                    },
-
-                    onToggleStatus: (StoreModel store) async {
-                      final changed = await showDialog<bool>(
-                        context: context,
-                        builder: (_) {
-                          return BlocProvider(
-                            create: (_) => getIt<UpdateStoreStatusCubit>(),
-                            child: ChangeStoreStatusDialog(store: store),
-                          );
-                        },
-                      );
-
-                      if (changed == true && context.mounted) {
-                        _loadStores();
-                      }
-                    },
-
-                    onDelete: (StoreModel store) async {
-                      final deleted = await showDialog<bool>(
-                        context: context,
-                        builder: (_) {
-                          return BlocProvider(
-                            create: (_) => getIt<DeleteStoreCubit>(),
-                            child: _DeleteStoreDialog(store: store),
-                          );
-                        },
-                      );
-
-                      if (deleted == true && context.mounted) {
-                        _loadStores();
-                      }
-                    },
-                  ),
-
-                  StoresFailure(:final message) => _StoresErrorView(
-                    message: message,
-                    onRetry: _loadStores,
-                  ),
+                  StoresFailure(:final message) =>
+                    _StoresErrorView(
+                      message: message,
+                      onRetry: () {
+                        context
+                            .read<StoresCubit>()
+                            .refreshCurrentPage();
+                      },
+                    ),
                 };
               },
             ),
@@ -272,10 +278,115 @@ class _StoresViewState extends State<_StoresView> {
     );
   }
 
-  void _loadStores() {
-    context.read<StoresCubit>().getStores(
-      search: _search.trim().isEmpty ? null : _search.trim(),
-      status: _status,
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    super.dispose();
+  }
+
+  Widget _buildSuccessState(
+    BuildContext context, {
+    required List<StoreModel> stores,
+    required int currentPage,
+    required int lastPage,
+    required int perPage,
+    required int total,
+  }) {
+    final from = stores.isEmpty
+        ? 0
+        : ((currentPage - 1) * perPage) + 1;
+
+    final calculatedTo = stores.isEmpty
+        ? 0
+        : from + stores.length - 1;
+
+    final to = calculatedTo > total ? total : calculatedTo;
+
+    return Column(
+      children: [
+        Expanded(
+          child: StoresTable(
+            stores: stores,
+            onView: (StoreModel store) {
+              showDialog<void>(
+                context: context,
+                builder: (_) {
+                  return StoreDetailsDialog(store: store);
+                },
+              );
+            },
+            onToggleStatus: (StoreModel store) async {
+              final changed = await showDialog<bool>(
+                context: context,
+                builder: (_) {
+                  return BlocProvider(
+                    create: (_) =>
+                        getIt<UpdateStoreStatusCubit>(),
+                    child: ChangeStoreStatusDialog(
+                      store: store,
+                    ),
+                  );
+                },
+              );
+
+              if (changed == true && context.mounted) {
+                await context
+                    .read<StoresCubit>()
+                    .refreshCurrentPage();
+              }
+            },
+            onDelete: (StoreModel store) async {
+              final deleted = await showDialog<bool>(
+                context: context,
+                builder: (_) {
+                  return BlocProvider(
+                    create: (_) =>
+                        getIt<DeleteStoreCubit>(),
+                    child: _DeleteStoreDialog(store: store),
+                  );
+                },
+              );
+
+              if (deleted == true && context.mounted) {
+                await context
+                    .read<StoresCubit>()
+                    .refreshAfterDelete();
+              }
+            },
+          ),
+        ),
+
+        DashboardPagination(
+          currentPage: currentPage,
+          lastPage: lastPage,
+          from: from,
+          to: to,
+          total: total,
+          onPrevious: () {
+            context.read<StoresCubit>().previousPage();
+          },
+          onNext: () {
+            context.read<StoresCubit>().nextPage();
+          },
+        ),
+      ],
+    );
+  }
+
+  void _onSearchChanged(String value) {
+    _search = value;
+
+    _searchDebounce?.cancel();
+
+    _searchDebounce = Timer(
+      const Duration(milliseconds: 450),
+      () {
+        if (!mounted) {
+          return;
+        }
+
+        context.read<StoresCubit>().searchStores(_search);
+      },
     );
   }
 }

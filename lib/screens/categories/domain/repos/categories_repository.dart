@@ -4,9 +4,19 @@ import 'package:dashboard/screens/categories/data/models/create_category_request
 import 'package:dashboard/screens/categories/data/models/update_category_request.dart';
 
 abstract class CategoriesRepository {
-  Future<ApiResult<dynamic>> createCategory(CreateCategoryRequest request);
+  Future<ApiResult<dynamic>> createCategory(
+    CreateCategoryRequest request,
+  );
 
   Future<ApiResult<void>> deleteCategory(int id);
-  Future<ApiResult<CategoriesResponse>> getCategories({String? search});
-  Future<ApiResult<dynamic>> updateCategory(UpdateCategoryRequest request);
+
+  Future<ApiResult<CategoriesResponse>> getCategories({
+    String? search,
+    int page = 1,
+    int perPage = 15,
+  });
+
+  Future<ApiResult<dynamic>> updateCategory(
+    UpdateCategoryRequest request,
+  );
 }

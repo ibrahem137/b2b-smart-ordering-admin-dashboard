@@ -126,13 +126,13 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String message)?  failure,TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<SupplierOfferModel> offers)?  success,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String message)?  failure,TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<SupplierOfferModel> offers,  int currentPage,  int lastPage,  int perPage,  int total)?  success,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case SupplierOffersFailure() when failure != null:
 return failure(_that.message);case SupplierOffersInitial() when initial != null:
 return initial();case SupplierOffersLoading() when loading != null:
 return loading();case SupplierOffersSuccess() when success != null:
-return success(_that.offers);case _:
+return success(_that.offers,_that.currentPage,_that.lastPage,_that.perPage,_that.total);case _:
   return orElse();
 
 }
@@ -150,13 +150,13 @@ return success(_that.offers);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String message)  failure,required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<SupplierOfferModel> offers)  success,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String message)  failure,required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<SupplierOfferModel> offers,  int currentPage,  int lastPage,  int perPage,  int total)  success,}) {final _that = this;
 switch (_that) {
 case SupplierOffersFailure():
 return failure(_that.message);case SupplierOffersInitial():
 return initial();case SupplierOffersLoading():
 return loading();case SupplierOffersSuccess():
-return success(_that.offers);}
+return success(_that.offers,_that.currentPage,_that.lastPage,_that.perPage,_that.total);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -170,13 +170,13 @@ return success(_that.offers);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String message)?  failure,TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<SupplierOfferModel> offers)?  success,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String message)?  failure,TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<SupplierOfferModel> offers,  int currentPage,  int lastPage,  int perPage,  int total)?  success,}) {final _that = this;
 switch (_that) {
 case SupplierOffersFailure() when failure != null:
 return failure(_that.message);case SupplierOffersInitial() when initial != null:
 return initial();case SupplierOffersLoading() when loading != null:
 return loading();case SupplierOffersSuccess() when success != null:
-return success(_that.offers);case _:
+return success(_that.offers,_that.currentPage,_that.lastPage,_that.perPage,_that.total);case _:
   return null;
 
 }
@@ -320,7 +320,7 @@ String toString() {
 
 
 class SupplierOffersSuccess implements SupplierOffersState {
-  const SupplierOffersSuccess( List<SupplierOfferModel> offers): _offers = offers;
+  const SupplierOffersSuccess({required  List<SupplierOfferModel> offers, required this.currentPage, required this.lastPage, required this.perPage, required this.total}): _offers = offers;
   
 
  final  List<SupplierOfferModel> _offers;
@@ -330,6 +330,10 @@ class SupplierOffersSuccess implements SupplierOffersState {
   return EqualUnmodifiableListView(_offers);
 }
 
+ final  int currentPage;
+ final  int lastPage;
+ final  int perPage;
+ final  int total;
 
 /// Create a copy of SupplierOffersState
 /// with the given fields replaced by the non-null parameter values.
@@ -341,18 +345,18 @@ $SupplierOffersSuccessCopyWith<SupplierOffersSuccess> get copyWith => _$Supplier
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is SupplierOffersSuccess&&const DeepCollectionEquality().equals(other.offers, _offers));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is SupplierOffersSuccess&&const DeepCollectionEquality().equals(other.offers, _offers)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.lastPage, lastPage) || other.lastPage == lastPage)&&(identical(other.perPage, perPage) || other.perPage == perPage)&&(identical(other.total, total) || other.total == total));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_offers));
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_offers),currentPage,lastPage,perPage,total);
 }
 
 @override
 String toString() {
-    return 'SupplierOffersState.success(offers: $offers)';
+    return 'SupplierOffersState.success(offers: $offers, currentPage: $currentPage, lastPage: $lastPage, perPage: $perPage, total: $total)';
 }
 
 
@@ -363,7 +367,7 @@ abstract mixin class $SupplierOffersSuccessCopyWith<$Res> implements $SupplierOf
   factory $SupplierOffersSuccessCopyWith(SupplierOffersSuccess value, $Res Function(SupplierOffersSuccess) _then) = _$SupplierOffersSuccessCopyWithImpl;
 @useResult
 $Res call({
- List<SupplierOfferModel> offers
+ List<SupplierOfferModel> offers, int currentPage, int lastPage, int perPage, int total
 });
 
 
@@ -380,10 +384,14 @@ class _$SupplierOffersSuccessCopyWithImpl<$Res>
 
 /// Create a copy of SupplierOffersState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? offers = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? offers = null,Object? currentPage = null,Object? lastPage = null,Object? perPage = null,Object? total = null,}) {
   return _then(SupplierOffersSuccess(
-null == offers ? _self._offers : offers // ignore: cast_nullable_to_non_nullable
-as List<SupplierOfferModel>,
+offers: null == offers ? _self._offers : offers // ignore: cast_nullable_to_non_nullable
+as List<SupplierOfferModel>,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
+as int,lastPage: null == lastPage ? _self.lastPage : lastPage // ignore: cast_nullable_to_non_nullable
+as int,perPage: null == perPage ? _self.perPage : perPage // ignore: cast_nullable_to_non_nullable
+as int,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

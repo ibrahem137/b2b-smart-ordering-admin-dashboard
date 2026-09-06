@@ -7,7 +7,8 @@ import 'package:dashboard/screens/suppliers/data/models/update_supplier_request.
 import 'package:dashboard/screens/suppliers/domain/repos/suppliers_repository.dart';
 import 'package:flutter/foundation.dart';
 
-class SuppliersRepositoryImpl implements SuppliersRepository {
+class SuppliersRepositoryImpl
+    implements SuppliersRepository {
   final ApiService apiService;
 
   SuppliersRepositoryImpl(this.apiService);
@@ -27,7 +28,9 @@ class SuppliersRepositoryImpl implements SuppliersRepository {
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -38,14 +41,19 @@ class SuppliersRepositoryImpl implements SuppliersRepository {
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
   @override
-  Future<ApiResult<List<int>>> getSupplierCategoryIds(int supplierId) async {
+  Future<ApiResult<List<int>>> getSupplierCategoryIds(
+    int supplierId,
+  ) async {
     try {
-      final response = await apiService.getSupplierCategories(supplierId);
+      final response = await apiService
+          .getSupplierCategories(supplierId);
 
       debugPrint('SUPPLIER CATEGORIES RESPONSE: $response');
 
@@ -71,7 +79,9 @@ class SuppliersRepositoryImpl implements SuppliersRepository {
     } catch (error) {
       debugPrint('GET SUPPLIER CATEGORIES ERROR: $error');
 
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -79,17 +89,22 @@ class SuppliersRepositoryImpl implements SuppliersRepository {
   Future<ApiResult<SuppliersResponse>> getSuppliers({
     String? search,
     String? status,
+    int page = 1,
+    int perPage = 15,
   }) async {
     try {
       final response = await apiService.getSuppliers(
         search: search,
         status: status,
-        perPage: 15,
+        page: page,
+        perPage: perPage,
       );
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -131,7 +146,9 @@ class SuppliersRepositoryImpl implements SuppliersRepository {
     } catch (error) {
       debugPrint('UPDATE ERROR: $error');
 
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -141,15 +158,22 @@ class SuppliersRepositoryImpl implements SuppliersRepository {
     required List<int> categoryIds,
   }) async {
     try {
-      debugPrint('========== SYNC SUPPLIER CATEGORIES ==========');
+      debugPrint(
+        '========== SYNC SUPPLIER CATEGORIES ==========',
+      );
       debugPrint('SUPPLIER ID: $supplierId');
       debugPrint('CATEGORY IDS: $categoryIds');
 
-      final body = <String, dynamic>{'category_ids': categoryIds};
+      final body = <String, dynamic>{
+        'category_ids': categoryIds,
+      };
 
       debugPrint('BODY: $body');
 
-      await apiService.updateSupplierCategories(supplierId, body);
+      await apiService.updateSupplierCategories(
+        supplierId,
+        body,
+      );
 
       debugPrint('SUPPLIER CATEGORIES SYNC SUCCESS');
 
@@ -157,7 +181,9 @@ class SuppliersRepositoryImpl implements SuppliersRepository {
     } catch (error) {
       debugPrint('SYNC CATEGORIES ERROR: $error');
 
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 }

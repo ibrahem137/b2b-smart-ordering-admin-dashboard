@@ -5,7 +5,8 @@ part 'stores_state.freezed.dart';
 
 @freezed
 sealed class StoresState with _$StoresState {
-  const factory StoresState.failure(String message) = StoresFailure;
+  const factory StoresState.failure(String message) =
+      StoresFailure;
 
   const factory StoresState.initial() = StoresInitial;
 
@@ -13,6 +14,9 @@ sealed class StoresState with _$StoresState {
 
   const factory StoresState.success({
     required List<StoreModel> stores,
+    required int currentPage,
+    required int lastPage,
+    required int perPage,
     required int total,
   }) = StoresSuccess;
 }

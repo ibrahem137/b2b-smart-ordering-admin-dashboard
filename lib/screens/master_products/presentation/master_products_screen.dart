@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:dashboard/core/di/injection.dart';
+import 'package:dashboard/core/widgets/dashboard_pagination.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/categories_cubit.dart';
 import 'package:dashboard/screens/master_products/data/models/master_product_model.dart';
 import 'package:dashboard/screens/master_products/presentation/components/add_master_product_dialog.dart';
@@ -148,8 +151,17 @@ class _DeleteProductDialog extends StatelessWidget {
   }
 }
 
-class _MasterProductsView extends StatelessWidget {
+class _MasterProductsView extends StatefulWidget {
   const _MasterProductsView();
+
+  @override
+  State<_MasterProductsView> createState() =>
+      _MasterProductsViewState();
+}
+
+class _MasterProductsViewState
+    extends State<_MasterProductsView> {
+  Timer? _searchDebounce;
 
   @override
   Widget build(BuildContext context) {
@@ -170,17 +182,16 @@ class _MasterProductsView extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 24),
+
                 MasterProductsToolbar(
                   totalProducts: state is ProductsSuccess
-                      ? state.products.length
+                      ? state.total
                       : 0,
-                  onSearch: (value) {
-                    context
-                        .read<ProductsCubit>()
-                        .getProducts(search: value.trim());
-                  },
+                  onSearch: _onSearchChanged,
                 ),
+
                 const SizedBox(height: 24),
+
                 Expanded(
                   child: _buildContent(context, state),
                 ),
@@ -190,6 +201,12 @@ class _MasterProductsView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    super.dispose();
   }
 
   Widget _buildContent(
@@ -246,7 +263,9 @@ class _MasterProductsView extends StatelessWidget {
             const SizedBox(height: 20),
             FilledButton.icon(
               onPressed: () {
-                context.read<ProductsCubit>().getProducts();
+                context
+                    .read<ProductsCubit>()
+                    .refreshCurrentPage();
               },
               icon: const Icon(Icons.refresh),
               label: Text('common.retry'.tr()),
@@ -261,29 +280,52 @@ class _MasterProductsView extends StatelessWidget {
         return _buildEmptyState(context);
       }
 
-      return MasterProductsTable(
-        products: state.products,
-        onEdit: (product) async {
-          await _openEditProduct(context, product);
-        },
-        onDelete: (product) async {
-          final deleted = await showDialog<bool>(
-            context: context,
-            barrierDismissible: false,
-            builder: (_) {
-              return BlocProvider<DeleteProductCubit>(
-                create: (_) => getIt<DeleteProductCubit>(),
-                child: _DeleteProductDialog(
-                  product: product,
-                ),
-              );
-            },
-          );
+      return Column(
+        children: [
+          Expanded(
+            child: MasterProductsTable(
+              products: state.products,
+              onEdit: (product) async {
+                await _openEditProduct(context, product);
+              },
+              onDelete: (product) async {
+                final deleted = await showDialog<bool>(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) {
+                    return BlocProvider<DeleteProductCubit>(
+                      create: (_) =>
+                          getIt<DeleteProductCubit>(),
+                      child: _DeleteProductDialog(
+                        product: product,
+                      ),
+                    );
+                  },
+                );
 
-          if (deleted == true && context.mounted) {
-            context.read<ProductsCubit>().getProducts();
-          }
-        },
+                if (deleted == true && context.mounted) {
+                  await context
+                      .read<ProductsCubit>()
+                      .refreshAfterDelete();
+                }
+              },
+            ),
+          ),
+
+          DashboardPagination(
+            currentPage: state.currentPage,
+            lastPage: state.lastPage,
+            from: state.from,
+            to: state.to,
+            total: state.total,
+            onPrevious: () {
+              context.read<ProductsCubit>().previousPage();
+            },
+            onNext: () {
+              context.read<ProductsCubit>().nextPage();
+            },
+          ),
+        ],
       );
     }
 
@@ -333,6 +375,21 @@ class _MasterProductsView extends StatelessWidget {
     );
   }
 
+  void _onSearchChanged(String value) {
+    _searchDebounce?.cancel();
+
+    _searchDebounce = Timer(
+      const Duration(milliseconds: 450),
+      () {
+        if (!mounted) {
+          return;
+        }
+
+        context.read<ProductsCubit>().searchProducts(value);
+      },
+    );
+  }
+
   Future<void> _openAddProduct(BuildContext context) async {
     final created = await showDialog<bool>(
       context: context,
@@ -362,7 +419,9 @@ class _MasterProductsView extends StatelessWidget {
     );
 
     if (created == true && context.mounted) {
-      context.read<ProductsCubit>().getProducts();
+      await context
+          .read<ProductsCubit>()
+          .refreshCurrentPage();
     }
   }
 
@@ -401,7 +460,9 @@ class _MasterProductsView extends StatelessWidget {
     );
 
     if (updated == true && context.mounted) {
-      context.read<ProductsCubit>().getProducts();
+      await context
+          .read<ProductsCubit>()
+          .refreshCurrentPage();
     }
   }
 }

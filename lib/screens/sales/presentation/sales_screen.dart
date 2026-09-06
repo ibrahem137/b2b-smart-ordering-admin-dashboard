@@ -1,4 +1,5 @@
 import 'package:dashboard/core/di/injection.dart';
+import 'package:dashboard/core/widgets/dashboard_pagination.dart';
 import 'package:dashboard/screens/sales/data/models/sale_model.dart';
 import 'package:dashboard/screens/sales/presentation/components/sales_header.dart';
 import 'package:dashboard/screens/sales/presentation/components/sales_summary_cards.dart';
@@ -57,14 +58,17 @@ class _SalesViewState extends State<_SalesView> {
 
               final filteredSales = _filterSales(sales);
 
-              final totalRevenue = sales.fold<double>(
+              // These two values currently represent the loaded page only.
+              // The API pagination response does not provide global
+              // revenue/profit aggregates.
+              final pageRevenue = sales.fold<double>(
                 0.0,
                 (sum, sale) =>
                     sum +
                     (double.tryParse(sale.total) ?? 0.0),
               );
 
-              final totalProfit = sales.fold<double>(
+              final pageProfit = sales.fold<double>(
                 0.0,
                 (sum, sale) =>
                     sum +
@@ -80,9 +84,9 @@ class _SalesViewState extends State<_SalesView> {
                   const SizedBox(height: 24),
 
                   SalesSummaryCards(
-                    totalRevenue: totalRevenue,
-                    totalSales: sales.length,
-                    totalProfit: totalProfit,
+                    totalRevenue: pageRevenue,
+                    totalSales: state.total,
+                    totalProfit: pageProfit,
                   ),
 
                   const SizedBox(height: 24),
@@ -98,11 +102,40 @@ class _SalesViewState extends State<_SalesView> {
                   const SizedBox(height: 24),
 
                   Expanded(
-                    child: SalesTable(
-                      sales: filteredSales,
-                      onView: (sale) {
-                        _showSaleDetails(context, sale);
-                      },
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: filteredSales.isEmpty
+                              ? _buildEmptyState(context)
+                              : SalesTable(
+                                  sales: filteredSales,
+                                  onView: (sale) {
+                                    _showSaleDetails(
+                                      context,
+                                      sale,
+                                    );
+                                  },
+                                ),
+                        ),
+
+                        DashboardPagination(
+                          currentPage: state.currentPage,
+                          lastPage: state.lastPage,
+                          from: state.from,
+                          to: state.to,
+                          total: state.total,
+                          onPrevious: () {
+                            context
+                                .read<SalesCubit>()
+                                .previousPage();
+                          },
+                          onNext: () {
+                            context
+                                .read<SalesCubit>()
+                                .nextPage();
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -112,6 +145,51 @@ class _SalesViewState extends State<_SalesView> {
             return const SizedBox.shrink();
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+              color: colors.primary.withValues(alpha: .10),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.point_of_sale_outlined,
+              color: colors.primary,
+              size: 36,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'sales.no_sales_found'.tr(),
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: colors.onSurface,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            searchQuery.isNotEmpty
+                ? 'sales.change_search'.tr()
+                : 'sales.sales_empty_description'.tr(),
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: colors.onSurfaceVariant,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -140,9 +218,7 @@ class _SalesViewState extends State<_SalesView> {
               color: colors.error,
             ),
           ),
-
           const SizedBox(height: 16),
-
           Text(
             'sales.unable_to_load_sales'.tr(),
             textAlign: TextAlign.center,
@@ -151,9 +227,7 @@ class _SalesViewState extends State<_SalesView> {
               fontWeight: FontWeight.w600,
             ),
           ),
-
           const SizedBox(height: 6),
-
           Text(
             state.message,
             textAlign: TextAlign.center,
@@ -161,12 +235,12 @@ class _SalesViewState extends State<_SalesView> {
               color: colors.onSurfaceVariant,
             ),
           ),
-
           const SizedBox(height: 20),
-
           FilledButton.icon(
             onPressed: () {
-              context.read<SalesCubit>().getSales();
+              context
+                  .read<SalesCubit>()
+                  .refreshCurrentPage();
             },
             icon: const Icon(Icons.refresh),
             label: Text('common.retry'.tr()),
@@ -182,7 +256,6 @@ class _SalesViewState extends State<_SalesView> {
   ) {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
-
     final normalized = status.toLowerCase();
 
     Color statusColor;
@@ -318,9 +391,7 @@ class _SalesViewState extends State<_SalesView> {
                   size: 22,
                 ),
               ),
-
               const SizedBox(width: 12),
-
               Expanded(
                 child: Text(
                   '${'sales.sale'.tr()} #${sale.id}',
@@ -344,13 +415,11 @@ class _SalesViewState extends State<_SalesView> {
                   'sales.store'.tr(),
                   sale.store?.name ?? '—',
                 ),
-
                 _detail(
                   context,
                   'sales.customer'.tr(),
                   sale.customer?.name ?? '—',
                 ),
-
                 Padding(
                   padding: const EdgeInsets.only(
                     bottom: 12,
@@ -370,7 +439,6 @@ class _SalesViewState extends State<_SalesView> {
                               ),
                         ),
                       ),
-
                       _buildStatusChip(
                         context,
                         sale.status,
@@ -378,31 +446,26 @@ class _SalesViewState extends State<_SalesView> {
                     ],
                   ),
                 ),
-
                 _detail(
                   context,
                   'common.total'.tr(),
                   '\$${sale.total}',
                 ),
-
                 _detail(
                   context,
                   'sales.cost'.tr(),
                   '\$${sale.totalCost}',
                 ),
-
                 _detail(
                   context,
                   'sales.profit'.tr(),
                   '\$${sale.profit}',
                 ),
-
                 _detail(
                   context,
                   'sales.paid'.tr(),
                   '\$${sale.paidAmount}',
                 ),
-
                 _detail(
                   context,
                   'sales.notes'.tr(),

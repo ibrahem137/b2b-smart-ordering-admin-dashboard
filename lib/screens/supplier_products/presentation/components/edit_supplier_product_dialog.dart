@@ -1,57 +1,56 @@
 import 'package:dashboard/screens/master_products/presentation/cubit/products_cubit.dart';
 import 'package:dashboard/screens/master_products/presentation/cubit/products_state.dart';
+import 'package:dashboard/screens/supplier_products/data/models/supplier_product_model.dart';
 import 'package:dashboard/screens/supplier_products/presentation/components/custom_dropdown.dart';
-import 'package:dashboard/screens/supplier_products/presentation/cubit/create_supplier_product_cubit.dart';
 import 'package:dashboard/screens/supplier_products/presentation/cubit/supplier_product_action_state.dart';
+import 'package:dashboard/screens/supplier_products/presentation/cubit/update_supplier_product_cubit.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/suppliers_cubit.dart';
 import 'package:dashboard/screens/suppliers/presentation/cubit/suppliers_state.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddSupplierOfferDialog extends StatefulWidget {
-  const AddSupplierOfferDialog({super.key});
+class EditSupplierProductDialog extends StatefulWidget {
+  final SupplierProductModel offer;
+
+  const EditSupplierProductDialog({
+    super.key,
+    required this.offer,
+  });
 
   @override
-  State<AddSupplierOfferDialog> createState() =>
-      _AddSupplierOfferDialogState();
+  State<EditSupplierProductDialog> createState() =>
+      _EditSupplierProductDialogState();
 }
 
-class _AddSupplierOfferDialogState
-    extends State<AddSupplierOfferDialog> {
+class _EditSupplierProductDialogState
+    extends State<EditSupplierProductDialog> {
   final _formKey = GlobalKey<FormState>();
 
-  final _priceController = TextEditingController();
+  late final TextEditingController _priceController;
 
-  final _stockController = TextEditingController(text: '0');
+  late final TextEditingController _stockController;
 
-  int? selectedProductId;
+  late int selectedSupplierId;
 
-  int? selectedSupplierId;
+  late int selectedProductId;
 
-  String selectedStatus = 'available';
+  late String selectedStatus;
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
     return BlocConsumer<
-      CreateSupplierProductCubit,
+      UpdateSupplierProductCubit,
       SupplierProductActionState
     >(
       listener: (context, state) {
         if (state is SupplierProductActionSuccess) {
-          debugPrint('SUPPLIER OFFER CREATED SUCCESSFULLY');
-
           Navigator.pop(context, true);
         }
 
         if (state is SupplierProductActionFailure) {
-          debugPrint(
-            'CREATE SUPPLIER OFFER FAILED: '
-            '${state.message}',
-          );
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: colors.error,
@@ -87,23 +86,23 @@ class _AddSupplierOfferDialogState
 
                     const SizedBox(height: 30),
 
-                    _buildProductField(),
+                    _buildProduct(),
 
                     const SizedBox(height: 18),
 
-                    _buildSupplierField(),
+                    _buildSupplier(),
 
                     const SizedBox(height: 18),
 
-                    _buildPriceField(),
+                    _buildPrice(),
 
                     const SizedBox(height: 18),
 
-                    _buildStockField(),
+                    _buildStock(),
 
                     const SizedBox(height: 18),
 
-                    _buildStatusField(),
+                    _buildStatus(),
 
                     const SizedBox(height: 32),
 
@@ -126,67 +125,23 @@ class _AddSupplierOfferDialogState
     super.dispose();
   }
 
-  void saveOffer() {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+  @override
+  void initState() {
+    super.initState();
 
-    if (selectedProductId == null ||
-        selectedSupplierId == null) {
-      final colors = Theme.of(context).colorScheme;
+    selectedSupplierId = widget.offer.supplierId;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: colors.error,
-          content: Text(
-            'supplier_products.validation.select_product_and_supplier'
-                .tr(),
-            style: TextStyle(
-              color: colors.onError,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      );
+    selectedProductId = widget.offer.productId;
 
-      return;
-    }
+    selectedStatus = widget.offer.status;
 
-    final buyPrice = double.tryParse(
-      _priceController.text.trim(),
+    _priceController = TextEditingController(
+      text: widget.offer.buyPrice,
     );
 
-    final stockQuantity = int.tryParse(
-      _stockController.text.trim(),
+    _stockController = TextEditingController(
+      text: widget.offer.stockQuantity.toString(),
     );
-
-    if (buyPrice == null || stockQuantity == null) {
-      return;
-    }
-
-    debugPrint(
-      '========== CREATE SUPPLIER OFFER ==========',
-    );
-
-    debugPrint('SUPPLIER ID: $selectedSupplierId');
-
-    debugPrint('PRODUCT ID: $selectedProductId');
-
-    debugPrint('BUY PRICE: $buyPrice');
-
-    debugPrint('STOCK: $stockQuantity');
-
-    debugPrint('STATUS: $selectedStatus');
-
-    context
-        .read<CreateSupplierProductCubit>()
-        .createSupplierProduct(
-          supplierId: selectedSupplierId!,
-          productId: selectedProductId!,
-          buyPrice: buyPrice,
-          stockQuantity: stockQuantity,
-          status: selectedStatus,
-        );
   }
 
   Widget _buildActions(
@@ -199,25 +154,17 @@ class _AddSupplierOfferDialogState
       children: [
         Expanded(
           child: OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.all(20),
-              side: BorderSide(color: colors.primary),
-              foregroundColor: colors.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
             onPressed: isLoading
                 ? null
                 : () {
                     Navigator.pop(context);
                   },
-            child: Text(
-              'common.cancel'.tr(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.all(20),
+              side: BorderSide(color: colors.primary),
+              foregroundColor: colors.primary,
             ),
+            child: Text('common.cancel'.tr()),
           ),
         ),
 
@@ -225,15 +172,12 @@ class _AddSupplierOfferDialogState
 
         Expanded(
           child: FilledButton(
+            onPressed: isLoading ? null : _save,
             style: FilledButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
               padding: const EdgeInsets.all(20),
               backgroundColor: colors.primary,
               foregroundColor: colors.onPrimary,
             ),
-            onPressed: isLoading ? null : saveOffer,
             child: isLoading
                 ? SizedBox(
                     width: 18,
@@ -244,7 +188,7 @@ class _AddSupplierOfferDialogState
                     ),
                   )
                 : Text(
-                    'supplier_products.actions.add_offer'
+                    'supplier_products.actions.save_changes'
                         .tr(),
                   ),
           ),
@@ -263,7 +207,7 @@ class _AddSupplierOfferDialogState
           radius: 24,
           backgroundColor: colors.primary,
           child: Icon(
-            Icons.production_quantity_limits_outlined,
+            Icons.edit_outlined,
             color: colors.onPrimary,
           ),
         ),
@@ -275,7 +219,7 @@ class _AddSupplierOfferDialogState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'supplier_products.add_dialog.title'.tr(),
+                'supplier_products.edit_dialog.title'.tr(),
                 style: theme.textTheme.headlineSmall
                     ?.copyWith(
                       fontSize: 22,
@@ -287,7 +231,7 @@ class _AddSupplierOfferDialogState
               const SizedBox(height: 4),
 
               Text(
-                'supplier_products.add_dialog.subtitle'
+                'supplier_products.edit_dialog.subtitle'
                     .tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colors.onSurfaceVariant,
@@ -300,7 +244,7 @@ class _AddSupplierOfferDialogState
     );
   }
 
-  Widget _buildPriceField() {
+  Widget _buildPrice() {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -324,17 +268,11 @@ class _AddSupplierOfferDialogState
               const TextInputType.numberWithOptions(
                 decimal: true,
               ),
-          decoration: _inputDecoration(
-            context,
-            hint: '0.00',
-          ),
+          decoration: _inputDecoration(context, '0.00'),
           validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return 'supplier_products.validation.required'
-                  .tr();
-            }
-
-            final price = double.tryParse(value.trim());
+            final price = double.tryParse(
+              value?.trim() ?? '',
+            );
 
             if (price == null) {
               return 'supplier_products.validation.invalid_price'
@@ -353,7 +291,7 @@ class _AddSupplierOfferDialogState
     );
   }
 
-  Widget _buildProductField() {
+  Widget _buildProduct() {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -379,38 +317,13 @@ class _AddSupplierOfferDialogState
             }
 
             if (state is ProductsFailure) {
-              return Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    state.message,
-                    style: TextStyle(color: colors.error),
-                  ),
-                  TextButton.icon(
-                    onPressed: () {
-                      context
-                          .read<ProductsCubit>()
-                          .getProducts();
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: Text('common.retry'.tr()),
-                  ),
-                ],
+              return Text(
+                state.message,
+                style: TextStyle(color: colors.error),
               );
             }
 
             if (state is ProductsSuccess) {
-              if (state.products.isEmpty) {
-                return Text(
-                  'supplier_products.empty.no_products'
-                      .tr(),
-                  style: TextStyle(
-                    color: colors.onSurfaceVariant,
-                  ),
-                );
-              }
-
               return CustomDropdown<int>(
                 hint:
                     'supplier_products.hints.select_product'
@@ -425,6 +338,10 @@ class _AddSupplierOfferDialogState
                     )
                     .toList(),
                 onChanged: (value) {
+                  if (value == null) {
+                    return;
+                  }
+
                   setState(() {
                     selectedProductId = value;
                   });
@@ -447,7 +364,7 @@ class _AddSupplierOfferDialogState
     );
   }
 
-  Widget _buildStatusField() {
+  Widget _buildStatus() {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -502,7 +419,7 @@ class _AddSupplierOfferDialogState
     );
   }
 
-  Widget _buildStockField() {
+  Widget _buildStock() {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -523,14 +440,9 @@ class _AddSupplierOfferDialogState
         TextFormField(
           controller: _stockController,
           keyboardType: TextInputType.number,
-          decoration: _inputDecoration(context, hint: '0'),
+          decoration: _inputDecoration(context, '0'),
           validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return 'supplier_products.validation.required'
-                  .tr();
-            }
-
-            final stock = int.tryParse(value.trim());
+            final stock = int.tryParse(value?.trim() ?? '');
 
             if (stock == null) {
               return 'supplier_products.validation.invalid_stock'
@@ -549,7 +461,7 @@ class _AddSupplierOfferDialogState
     );
   }
 
-  Widget _buildSupplierField() {
+  Widget _buildSupplier() {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
@@ -575,38 +487,13 @@ class _AddSupplierOfferDialogState
             }
 
             if (state is SuppliersFailure) {
-              return Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    state.message,
-                    style: TextStyle(color: colors.error),
-                  ),
-                  TextButton.icon(
-                    onPressed: () {
-                      context
-                          .read<SuppliersCubit>()
-                          .getSuppliers();
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: Text('common.retry'.tr()),
-                  ),
-                ],
+              return Text(
+                state.message,
+                style: TextStyle(color: colors.error),
               );
             }
 
             if (state is SuppliersSuccess) {
-              if (state.suppliers.isEmpty) {
-                return Text(
-                  'supplier_products.empty.no_suppliers'
-                      .tr(),
-                  style: TextStyle(
-                    color: colors.onSurfaceVariant,
-                  ),
-                );
-              }
-
               return CustomDropdown<int>(
                 hint: 'supplier_products.hints.select_supplier'
                     .tr(),
@@ -620,6 +507,10 @@ class _AddSupplierOfferDialogState
                     )
                     .toList(),
                 onChanged: (value) {
+                  if (value == null) {
+                    return;
+                  }
+
                   setState(() {
                     selectedSupplierId = value;
                   });
@@ -643,30 +534,71 @@ class _AddSupplierOfferDialogState
   }
 
   InputDecoration _inputDecoration(
-    BuildContext context, {
-    required String hint,
-  }) {
+    BuildContext context,
+    String hint,
+  ) {
     final colors = Theme.of(context).colorScheme;
 
     return InputDecoration(
       hintText: hint,
-      focusedBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(8),
-        ),
-        borderSide: BorderSide(color: colors.primary),
+      filled: true,
+      fillColor: colors.surface,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(8),
-        ),
+        borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(
           color: colors.outlineVariant,
         ),
       ),
-      border: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(
+          color: colors.primary,
+          width: 1.5,
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: colors.error),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(
+          color: colors.error,
+          width: 1.5,
+        ),
       ),
     );
+  }
+
+  void _save() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    final price = double.tryParse(
+      _priceController.text.trim(),
+    );
+
+    final stock = int.tryParse(
+      _stockController.text.trim(),
+    );
+
+    if (price == null || stock == null) {
+      return;
+    }
+
+    context
+        .read<UpdateSupplierProductCubit>()
+        .updateSupplierProduct(
+          id: widget.offer.id,
+          supplierId: selectedSupplierId,
+          productId: selectedProductId,
+          buyPrice: price,
+          stockQuantity: stock,
+          status: selectedStatus,
+        );
   }
 }

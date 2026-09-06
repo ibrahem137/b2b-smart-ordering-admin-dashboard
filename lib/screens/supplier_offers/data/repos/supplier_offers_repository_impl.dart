@@ -6,7 +6,8 @@ import 'package:dashboard/screens/supplier_offers/data/models/supplier_offers_re
 import 'package:dashboard/screens/supplier_offers/data/models/update_supplier_offer_request.dart';
 import 'package:dashboard/screens/supplier_offers/domain/repos/supplier_offers_repository.dart';
 
-class SupplierOffersRepositoryImpl implements SupplierOffersRepository {
+class SupplierOffersRepositoryImpl
+    implements SupplierOffersRepository {
   final ApiService apiService;
 
   SupplierOffersRepositoryImpl(this.apiService);
@@ -27,36 +28,48 @@ class SupplierOffersRepositoryImpl implements SupplierOffersRepository {
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
   @override
-  Future<ApiResult<void>> deleteSupplierOffer(int id) async {
+  Future<ApiResult<void>> deleteSupplierOffer(
+    int id,
+  ) async {
     try {
       await apiService.deleteSupplierOffer(id);
 
       return const ApiResult.success(null);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
   @override
-  Future<ApiResult<SupplierOffersResponse>> getSupplierOffers({
+  Future<ApiResult<SupplierOffersResponse>>
+  getSupplierOffers({
     int? supplierProductId,
     String? status,
+    int page = 1,
+    int perPage = 15,
   }) async {
     try {
       final response = await apiService.getSupplierOffers(
         supplierProductId: supplierProductId,
         status: status,
-        perPage: 15,
+        page: page,
+        perPage: perPage,
       );
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -78,7 +91,9 @@ class SupplierOffersRepositoryImpl implements SupplierOffersRepository {
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 }

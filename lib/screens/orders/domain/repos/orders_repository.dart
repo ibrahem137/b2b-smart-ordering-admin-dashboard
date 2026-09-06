@@ -8,6 +8,8 @@ abstract class OrdersRepository {
     String? status,
     String? fromDate,
     String? toDate,
+    int page = 1,
+    int perPage = 15,
   });
 
   Future<ApiResult<void>> updateOrderStatus({

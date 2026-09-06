@@ -16,6 +16,8 @@ class SalesRepositoryImpl implements SalesRepository {
     String? status,
     String? fromDate,
     String? toDate,
+    int page = 1,
+    int perPage = 15,
   }) async {
     try {
       final response = await apiService.getSales(
@@ -24,12 +26,15 @@ class SalesRepositoryImpl implements SalesRepository {
         status: status,
         fromDate: fromDate,
         toDate: toDate,
-        perPage: 15,
+        page: page,
+        perPage: perPage,
       );
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 }

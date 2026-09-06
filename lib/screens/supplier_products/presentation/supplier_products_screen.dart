@@ -1,7 +1,8 @@
 import 'package:dashboard/core/di/injection.dart';
+import 'package:dashboard/core/widgets/dashboard_pagination.dart';
 import 'package:dashboard/screens/master_products/presentation/cubit/products_cubit.dart';
 import 'package:dashboard/screens/supplier_products/data/models/supplier_product_model.dart';
-import 'package:dashboard/screens/supplier_products/presentation/components/edit_supplier_offer_dialog.dart';
+import 'package:dashboard/screens/supplier_products/presentation/components/edit_supplier_product_dialog.dart';
 import 'package:dashboard/screens/supplier_products/presentation/components/supplier_products_header.dart';
 import 'package:dashboard/screens/supplier_products/presentation/components/supplier_products_table.dart';
 import 'package:dashboard/screens/supplier_products/presentation/components/supplier_products_toolbar.dart';
@@ -21,7 +22,9 @@ class SupplierProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SupplierProductsCubit>(
-      create: (_) => getIt<SupplierProductsCubit>()..getSupplierProducts(),
+      create: (_) =>
+          getIt<SupplierProductsCubit>()
+            ..getSupplierProducts(),
       child: const _SupplierProductsView(),
     );
   }
@@ -37,7 +40,10 @@ class _DeleteSupplierOfferDialog extends StatelessWidget {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
 
-    return BlocConsumer<DeleteSupplierProductCubit, SupplierProductActionState>(
+    return BlocConsumer<
+      DeleteSupplierProductCubit,
+      SupplierProductActionState
+    >(
       listener: (context, state) {
         if (state is SupplierProductActionSuccess) {
           Navigator.pop(context, true);
@@ -56,10 +62,12 @@ class _DeleteSupplierOfferDialog extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final isLoading = state is SupplierProductActionLoading;
+        final isLoading =
+            state is SupplierProductActionLoading;
 
         final productName =
-            offer.product?.name ?? 'supplier_products.this_offer'.tr();
+            offer.product?.name ??
+            'supplier_products.this_offer'.tr();
 
         return AlertDialog(
           backgroundColor: colors.surface,
@@ -74,7 +82,9 @@ class _DeleteSupplierOfferDialog extends StatelessWidget {
                 width: 42,
                 height: 42,
                 decoration: BoxDecoration(
-                  color: colors.error.withValues(alpha: .10),
+                  color: colors.error.withValues(
+                    alpha: .10,
+                  ),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
@@ -87,10 +97,11 @@ class _DeleteSupplierOfferDialog extends StatelessWidget {
               Expanded(
                 child: Text(
                   'supplier_products.delete_offer'.tr(),
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: colors.onSurface,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: theme.textTheme.titleLarge
+                      ?.copyWith(
+                        color: colors.onSurface,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
             ],
@@ -117,7 +128,9 @@ class _DeleteSupplierOfferDialog extends StatelessWidget {
                   ? null
                   : () {
                       context
-                          .read<DeleteSupplierProductCubit>()
+                          .read<
+                            DeleteSupplierProductCubit
+                          >()
                           .deleteSupplierProduct(offer.id);
                     },
               style: FilledButton.styleFrom(
@@ -146,10 +159,12 @@ class _SupplierProductsView extends StatefulWidget {
   const _SupplierProductsView();
 
   @override
-  State<_SupplierProductsView> createState() => _SupplierProductsViewState();
+  State<_SupplierProductsView> createState() =>
+      _SupplierProductsViewState();
 }
 
-class _SupplierProductsViewState extends State<_SupplierProductsView> {
+class _SupplierProductsViewState
+    extends State<_SupplierProductsView> {
   String _selectedFilter = 'all';
   String _searchQuery = '';
 
@@ -165,7 +180,7 @@ class _SupplierProductsViewState extends State<_SupplierProductsView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SupplierProductsHeader(),
+            const SupplierProductsHeader(),
 
             const SizedBox(height: 24),
 
@@ -184,55 +199,85 @@ class _SupplierProductsViewState extends State<_SupplierProductsView> {
             const SizedBox(height: 24),
 
             Expanded(
-              child: BlocBuilder<SupplierProductsCubit, SupplierProductsState>(
-                builder: (context, state) {
-                  if (state is SupplierProductsLoading) {
-                    return Center(
-                      child: CircularProgressIndicator(color: colors.primary),
-                    );
-                  }
-
-                  if (state is SupplierProductsFailure) {
-                    return _buildFailureState(context, state);
-                  }
-
-                  if (state is SupplierProductsSuccess) {
-                    final filteredProducts = _filterLocally(
-                      state.supplierProducts,
-                    );
-
-                    return SupplierProductsTable(
-                      products: filteredProducts,
-                      onEdit: (product) async {
-                        await _openEditOfferDialog(context, product);
-                      },
-                      onDelete: (product) async {
-                        final deleted = await showDialog<bool>(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (_) {
-                            return BlocProvider<DeleteSupplierProductCubit>(
-                              create: (_) =>
-                                  getIt<DeleteSupplierProductCubit>(),
-                              child: _DeleteSupplierOfferDialog(offer: product),
-                            );
-                          },
+              child:
+                  BlocBuilder<
+                    SupplierProductsCubit,
+                    SupplierProductsState
+                  >(
+                    builder: (context, state) {
+                      if (state
+                          is SupplierProductsLoading) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: colors.primary,
+                          ),
                         );
+                      }
 
-                        if (deleted == true && context.mounted) {
-                          context
-                              .read<SupplierProductsCubit>()
-                              .getSupplierProducts(
-                                status: _statusFromFilter(_selectedFilter),
-                              );
-                        }
-                      },
-                    );
-                  }
+                      if (state
+                          is SupplierProductsFailure) {
+                        return _buildFailureState(
+                          context,
+                          state,
+                        );
+                      }
 
-                  return const SizedBox.shrink();
-                },
-              ),
+                      if (state
+                          is SupplierProductsSuccess) {
+                        final filteredProducts =
+                            _filterLocally(
+                              state.supplierProducts,
+                            );
+
+                        return Column(
+                          children: [
+                            Expanded(
+                              child: SupplierProductsTable(
+                                products: filteredProducts,
+                                onEdit: (product) async {
+                                  await _openEditOfferDialog(
+                                    context,
+                                    product,
+                                  );
+                                },
+                                onDelete: (product) async {
+                                  await _openDeleteOfferDialog(
+                                    context,
+                                    product,
+                                  );
+                                },
+                              ),
+                            ),
+
+                            DashboardPagination(
+                              currentPage:
+                                  state.currentPage,
+                              lastPage: state.lastPage,
+                              from: state.from,
+                              to: state.to,
+                              total: state.total,
+                              onPrevious: () {
+                                context
+                                    .read<
+                                      SupplierProductsCubit
+                                    >()
+                                    .previousPage();
+                              },
+                              onNext: () {
+                                context
+                                    .read<
+                                      SupplierProductsCubit
+                                    >()
+                                    .nextPage();
+                              },
+                            ),
+                          ],
+                        );
+                      }
+
+                      return const SizedBox.shrink();
+                    },
+                  ),
             ),
           ],
         ),
@@ -258,11 +303,13 @@ class _SupplierProductsViewState extends State<_SupplierProductsView> {
               color: colors.error.withValues(alpha: .10),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.error_outline, size: 34, color: colors.error),
+            child: Icon(
+              Icons.error_outline,
+              size: 34,
+              color: colors.error,
+            ),
           ),
-
           const SizedBox(height: 16),
-
           Text(
             'supplier_products.unable_to_load'.tr(),
             textAlign: TextAlign.center,
@@ -271,9 +318,7 @@ class _SupplierProductsViewState extends State<_SupplierProductsView> {
               fontWeight: FontWeight.w600,
             ),
           ),
-
           const SizedBox(height: 6),
-
           Text(
             state.message,
             textAlign: TextAlign.center,
@@ -281,14 +326,12 @@ class _SupplierProductsViewState extends State<_SupplierProductsView> {
               color: colors.onSurfaceVariant,
             ),
           ),
-
           const SizedBox(height: 20),
-
           FilledButton.icon(
             onPressed: () {
-              context.read<SupplierProductsCubit>().getSupplierProducts(
-                status: _statusFromFilter(_selectedFilter),
-              );
+              context
+                  .read<SupplierProductsCubit>()
+                  .refreshCurrentPage();
             },
             icon: const Icon(Icons.refresh),
             label: Text('common.retry'.tr()),
@@ -308,11 +351,14 @@ class _SupplierProductsViewState extends State<_SupplierProductsView> {
     final query = _searchQuery.toLowerCase();
 
     return products.where((offer) {
-      final productName = offer.product?.name.toLowerCase() ?? '';
+      final productName =
+          offer.product?.name.toLowerCase() ?? '';
 
-      final supplierName = offer.supplier?.name.toLowerCase() ?? '';
+      final supplierName =
+          offer.supplier?.name.toLowerCase() ?? '';
 
-      final categoryName = offer.product?.category?.name.toLowerCase() ?? '';
+      final categoryName =
+          offer.product?.category?.name.toLowerCase() ?? '';
 
       return productName.contains(query) ||
           supplierName.contains(query) ||
@@ -320,14 +366,40 @@ class _SupplierProductsViewState extends State<_SupplierProductsView> {
     }).toList();
   }
 
-  void _onFilterChanged(BuildContext context, String value) {
+  void _onFilterChanged(
+    BuildContext context,
+    String value,
+  ) {
     setState(() {
       _selectedFilter = value;
     });
 
-    context.read<SupplierProductsCubit>().getSupplierProducts(
-      status: _statusFromFilter(value),
+    context.read<SupplierProductsCubit>().filterByStatus(
+      _statusFromFilter(value),
     );
+  }
+
+  Future<void> _openDeleteOfferDialog(
+    BuildContext context,
+    SupplierProductModel product,
+  ) async {
+    final deleted = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return BlocProvider<DeleteSupplierProductCubit>(
+          create: (_) =>
+              getIt<DeleteSupplierProductCubit>(),
+          child: _DeleteSupplierOfferDialog(offer: product),
+        );
+      },
+    );
+
+    if (deleted == true && context.mounted) {
+      await context
+          .read<SupplierProductsCubit>()
+          .refreshAfterDelete();
+    }
   }
 
   Future<void> _openEditOfferDialog(
@@ -341,24 +413,27 @@ class _SupplierProductsViewState extends State<_SupplierProductsView> {
         return MultiBlocProvider(
           providers: [
             BlocProvider<UpdateSupplierProductCubit>(
-              create: (_) => getIt<UpdateSupplierProductCubit>(),
+              create: (_) =>
+                  getIt<UpdateSupplierProductCubit>(),
             ),
             BlocProvider<SuppliersCubit>(
-              create: (_) => getIt<SuppliersCubit>()..getSuppliers(),
+              create: (_) =>
+                  getIt<SuppliersCubit>()..getSuppliers(),
             ),
             BlocProvider<ProductsCubit>(
-              create: (_) => getIt<ProductsCubit>()..getProducts(),
+              create: (_) =>
+                  getIt<ProductsCubit>()..getProducts(),
             ),
           ],
-          child: EditSupplierOfferDialog(offer: offer),
+          child: EditSupplierProductDialog(offer: offer),
         );
       },
     );
 
     if (updated == true && context.mounted) {
-      context.read<SupplierProductsCubit>().getSupplierProducts(
-        status: _statusFromFilter(_selectedFilter),
-      );
+      await context
+          .read<SupplierProductsCubit>()
+          .refreshCurrentPage();
     }
   }
 

@@ -54,6 +54,8 @@ class ProductsRepositoryImpl implements ProductsRepository {
     int? categoryId,
     String? status,
     String? search,
+    int page = 1,
+    int perPage = 15,
   }) async {
     try {
       final response = await apiService.getProducts(
@@ -61,7 +63,8 @@ class ProductsRepositoryImpl implements ProductsRepository {
         categoryId: categoryId,
         status: status,
         search: search,
-        perPage: 15,
+        page: page,
+        perPage: perPage,
       );
 
       return ApiResult.success(response);

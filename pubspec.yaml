@@ -28,7 +28,7 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   # UI
-  flutter_screenutil: ^5.9.3
+
   easy_localization: ^3.0.7
   google_fonts: ^8.2.0
   sidebarx: ^0.17.2
@@ -37,8 +37,7 @@ dependencies:
   email_validator: ^3.0.0
   phone_form_field: ^10.0.18
 
-  # Routing
-  go_router: ^17.3.0
+
 
   # State Management
   flutter_bloc: ^8.1.3
