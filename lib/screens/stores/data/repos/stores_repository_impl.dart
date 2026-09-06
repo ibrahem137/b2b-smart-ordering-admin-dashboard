@@ -12,7 +12,9 @@ class StoresRepositoryImpl implements StoresRepository {
   StoresRepositoryImpl(this.apiService);
 
   @override
-  Future<ApiResult<StoreModel>> createStore(CreateStoreRequest request) async {
+  Future<ApiResult<StoreModel>> createStore(
+    CreateStoreRequest request,
+  ) async {
     try {
       final response = await apiService.createStore(
         request.name,
@@ -27,7 +29,9 @@ class StoresRepositoryImpl implements StoresRepository {
 
       return ApiResult.success(response.data);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -38,7 +42,9 @@ class StoresRepositoryImpl implements StoresRepository {
 
       return const ApiResult.success(null);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -49,7 +55,9 @@ class StoresRepositoryImpl implements StoresRepository {
 
       return ApiResult.success(response.data);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -57,17 +65,22 @@ class StoresRepositoryImpl implements StoresRepository {
   Future<ApiResult<StoresResponse>> getStores({
     String? status,
     String? search,
+    int page = 1,
+    int perPage = 15,
   }) async {
     try {
       final response = await apiService.getStores(
         status: status,
         search: search,
-        perPage: 15,
+        page: page,
+        perPage: perPage,
       );
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -77,13 +90,16 @@ class StoresRepositoryImpl implements StoresRepository {
     required String status,
   }) async {
     try {
-      final response = await apiService.updateStoreStatus(id, {
-        'status': status,
-      });
+      final response = await apiService.updateStoreStatus(
+        id,
+        {'status': status},
+      );
 
       return ApiResult.success(response.data);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 }

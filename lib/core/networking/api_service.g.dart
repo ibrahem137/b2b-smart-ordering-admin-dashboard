@@ -425,11 +425,13 @@ class _ApiService implements ApiService {
   @override
   Future<CategoriesResponse> getCategories({
     String? search,
+    int page = 1,
     int perPage = 15,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'search': search,
+      r'page': page,
       r'per_page': perPage,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -571,6 +573,7 @@ class _ApiService implements ApiService {
     String? status,
     String? fromDate,
     String? toDate,
+    int page = 1,
     int perPage = 15,
   }) async {
     final _extra = <String, dynamic>{};
@@ -580,6 +583,7 @@ class _ApiService implements ApiService {
       r'status': status,
       r'from_date': fromDate,
       r'to_date': toDate,
+      r'page': page,
       r'per_page': perPage,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -612,6 +616,7 @@ class _ApiService implements ApiService {
     int? categoryId,
     String? status,
     String? search,
+    int page = 1,
     int perPage = 15,
   }) async {
     final _extra = <String, dynamic>{};
@@ -620,6 +625,7 @@ class _ApiService implements ApiService {
       r'category_id': categoryId,
       r'status': status,
       r'search': search,
+      r'page': page,
       r'per_page': perPage,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -653,6 +659,7 @@ class _ApiService implements ApiService {
     String? status,
     String? fromDate,
     String? toDate,
+    int page = 1,
     int perPage = 15,
   }) async {
     final _extra = <String, dynamic>{};
@@ -662,6 +669,7 @@ class _ApiService implements ApiService {
       r'status': status,
       r'from_date': fromDate,
       r'to_date': toDate,
+      r'page': page,
       r'per_page': perPage,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -719,12 +727,14 @@ class _ApiService implements ApiService {
   Future<StoresResponse> getStores({
     String? status,
     String? search,
+    int page = 1,
     int perPage = 15,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'status': status,
       r'search': search,
+      r'page': page,
       r'per_page': perPage,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -797,12 +807,14 @@ class _ApiService implements ApiService {
   Future<SupplierOffersResponse> getSupplierOffers({
     int? supplierProductId,
     String? status,
+    int page = 1,
     int perPage = 15,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'supplier_product_id': supplierProductId,
       r'status': status,
+      r'page': page,
       r'per_page': perPage,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -834,6 +846,7 @@ class _ApiService implements ApiService {
     int? supplierId,
     int? productId,
     String? status,
+    int page = 1,
     int perPage = 15,
   }) async {
     final _extra = <String, dynamic>{};
@@ -841,6 +854,7 @@ class _ApiService implements ApiService {
       r'supplier_id': supplierId,
       r'product_id': productId,
       r'status': status,
+      r'page': page,
       r'per_page': perPage,
     };
     queryParameters.removeWhere((k, v) => v == null);
@@ -871,12 +885,14 @@ class _ApiService implements ApiService {
   Future<SuppliersResponse> getSuppliers({
     String? search,
     String? status,
+    int page = 1,
     int perPage = 15,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'search': search,
       r'status': status,
+      r'page': page,
       r'per_page': perPage,
     };
     queryParameters.removeWhere((k, v) => v == null);

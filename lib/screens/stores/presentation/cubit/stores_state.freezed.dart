@@ -126,13 +126,13 @@ return success(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String message)?  failure,TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<StoreModel> stores,  int total)?  success,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String message)?  failure,TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<StoreModel> stores,  int currentPage,  int lastPage,  int perPage,  int total)?  success,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case StoresFailure() when failure != null:
 return failure(_that.message);case StoresInitial() when initial != null:
 return initial();case StoresLoading() when loading != null:
 return loading();case StoresSuccess() when success != null:
-return success(_that.stores,_that.total);case _:
+return success(_that.stores,_that.currentPage,_that.lastPage,_that.perPage,_that.total);case _:
   return orElse();
 
 }
@@ -150,13 +150,13 @@ return success(_that.stores,_that.total);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String message)  failure,required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<StoreModel> stores,  int total)  success,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String message)  failure,required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<StoreModel> stores,  int currentPage,  int lastPage,  int perPage,  int total)  success,}) {final _that = this;
 switch (_that) {
 case StoresFailure():
 return failure(_that.message);case StoresInitial():
 return initial();case StoresLoading():
 return loading();case StoresSuccess():
-return success(_that.stores,_that.total);}
+return success(_that.stores,_that.currentPage,_that.lastPage,_that.perPage,_that.total);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -170,13 +170,13 @@ return success(_that.stores,_that.total);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String message)?  failure,TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<StoreModel> stores,  int total)?  success,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String message)?  failure,TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<StoreModel> stores,  int currentPage,  int lastPage,  int perPage,  int total)?  success,}) {final _that = this;
 switch (_that) {
 case StoresFailure() when failure != null:
 return failure(_that.message);case StoresInitial() when initial != null:
 return initial();case StoresLoading() when loading != null:
 return loading();case StoresSuccess() when success != null:
-return success(_that.stores,_that.total);case _:
+return success(_that.stores,_that.currentPage,_that.lastPage,_that.perPage,_that.total);case _:
   return null;
 
 }
@@ -320,7 +320,7 @@ String toString() {
 
 
 class StoresSuccess implements StoresState {
-  const StoresSuccess({required  List<StoreModel> stores, required this.total}): _stores = stores;
+  const StoresSuccess({required  List<StoreModel> stores, required this.currentPage, required this.lastPage, required this.perPage, required this.total}): _stores = stores;
   
 
  final  List<StoreModel> _stores;
@@ -330,6 +330,9 @@ class StoresSuccess implements StoresState {
   return EqualUnmodifiableListView(_stores);
 }
 
+ final  int currentPage;
+ final  int lastPage;
+ final  int perPage;
  final  int total;
 
 /// Create a copy of StoresState
@@ -342,18 +345,18 @@ $StoresSuccessCopyWith<StoresSuccess> get copyWith => _$StoresSuccessCopyWithImp
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is StoresSuccess&&const DeepCollectionEquality().equals(other.stores, _stores)&&(identical(other.total, total) || other.total == total));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is StoresSuccess&&const DeepCollectionEquality().equals(other.stores, _stores)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.lastPage, lastPage) || other.lastPage == lastPage)&&(identical(other.perPage, perPage) || other.perPage == perPage)&&(identical(other.total, total) || other.total == total));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_stores),total);
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_stores),currentPage,lastPage,perPage,total);
 }
 
 @override
 String toString() {
-    return 'StoresState.success(stores: $stores, total: $total)';
+    return 'StoresState.success(stores: $stores, currentPage: $currentPage, lastPage: $lastPage, perPage: $perPage, total: $total)';
 }
 
 
@@ -364,7 +367,7 @@ abstract mixin class $StoresSuccessCopyWith<$Res> implements $StoresStateCopyWit
   factory $StoresSuccessCopyWith(StoresSuccess value, $Res Function(StoresSuccess) _then) = _$StoresSuccessCopyWithImpl;
 @useResult
 $Res call({
- List<StoreModel> stores, int total
+ List<StoreModel> stores, int currentPage, int lastPage, int perPage, int total
 });
 
 
@@ -381,10 +384,13 @@ class _$StoresSuccessCopyWithImpl<$Res>
 
 /// Create a copy of StoresState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? stores = null,Object? total = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? stores = null,Object? currentPage = null,Object? lastPage = null,Object? perPage = null,Object? total = null,}) {
   return _then(StoresSuccess(
 stores: null == stores ? _self._stores : stores // ignore: cast_nullable_to_non_nullable
-as List<StoreModel>,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
+as List<StoreModel>,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
+as int,lastPage: null == lastPage ? _self.lastPage : lastPage // ignore: cast_nullable_to_non_nullable
+as int,perPage: null == perPage ? _self.perPage : perPage // ignore: cast_nullable_to_non_nullable
+as int,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }

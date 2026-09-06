@@ -1,4 +1,5 @@
 import 'package:dashboard/core/di/injection.dart';
+import 'package:dashboard/core/widgets/dashboard_pagination.dart';
 import 'package:dashboard/screens/categories/data/models/category_model.dart';
 import 'package:dashboard/screens/categories/presentation/components/add_category_dialog.dart';
 import 'package:dashboard/screens/categories/presentation/components/categories_grid.dart';
@@ -82,63 +83,44 @@ class _CategoriesView extends StatelessWidget {
                       );
                     }
 
-                    return CategoriesGrid(
-                      categories: state.categories,
-                      onEdit: (category) async {
-                        final updated =
-                            await showDialog<bool>(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (_) {
-                                return BlocProvider<
-                                  UpdateCategoryCubit
-                                >(
-                                  create: (_) =>
-                                      getIt<
-                                        UpdateCategoryCubit
-                                      >(),
-                                  child: EditCategoryDialog(
-                                    category: category,
-                                  ),
-                                );
-                              },
-                            );
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: CategoriesGrid(
+                            categories: state.categories,
+                            onEdit: (category) async {
+                              await _openEditCategoryDialog(
+                                context,
+                                category,
+                              );
+                            },
+                            onDelete: (category) async {
+                              await _openDeleteCategoryDialog(
+                                context,
+                                category,
+                              );
+                            },
+                          ),
+                        ),
 
-                        if (updated == true &&
-                            context.mounted) {
-                          context
-                              .read<CategoriesCubit>()
-                              .getCategories();
-                        }
-                      },
-                      onDelete: (category) async {
-                        final deleted =
-                            await showDialog<bool>(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (_) {
-                                return BlocProvider<
-                                  DeleteCategoryCubit
-                                >(
-                                  create: (_) =>
-                                      getIt<
-                                        DeleteCategoryCubit
-                                      >(),
-                                  child:
-                                      _DeleteCategoryDialog(
-                                        category: category,
-                                      ),
-                                );
-                              },
-                            );
-
-                        if (deleted == true &&
-                            context.mounted) {
-                          context
-                              .read<CategoriesCubit>()
-                              .getCategories();
-                        }
-                      },
+                        DashboardPagination(
+                          currentPage: state.currentPage,
+                          lastPage: state.lastPage,
+                          from: state.from,
+                          to: state.to,
+                          total: state.total,
+                          onPrevious: () {
+                            context
+                                .read<CategoriesCubit>()
+                                .previousPage();
+                          },
+                          onNext: () {
+                            context
+                                .read<CategoriesCubit>()
+                                .nextPage();
+                          },
+                        ),
+                      ],
                     );
                   }
 
@@ -168,9 +150,7 @@ class _CategoriesView extends StatelessWidget {
             color: colors.error,
             size: 40,
           ),
-
           const SizedBox(height: 12),
-
           Text(
             state.message,
             textAlign: TextAlign.center,
@@ -178,14 +158,12 @@ class _CategoriesView extends StatelessWidget {
               color: colors.onSurfaceVariant,
             ),
           ),
-
           const SizedBox(height: 16),
-
           FilledButton.icon(
             onPressed: () {
               context
                   .read<CategoriesCubit>()
-                  .getCategories();
+                  .refreshCurrentPage();
             },
             icon: const Icon(Icons.refresh),
             label: Text('common.retry'.tr()),
@@ -210,7 +188,53 @@ class _CategoriesView extends StatelessWidget {
     );
 
     if (created == true && context.mounted) {
-      context.read<CategoriesCubit>().getCategories();
+      await context
+          .read<CategoriesCubit>()
+          .refreshCurrentPage();
+    }
+  }
+
+  Future<void> _openDeleteCategoryDialog(
+    BuildContext context,
+    CategoryModel category,
+  ) async {
+    final deleted = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return BlocProvider<DeleteCategoryCubit>(
+          create: (_) => getIt<DeleteCategoryCubit>(),
+          child: _DeleteCategoryDialog(category: category),
+        );
+      },
+    );
+
+    if (deleted == true && context.mounted) {
+      await context
+          .read<CategoriesCubit>()
+          .refreshAfterDelete();
+    }
+  }
+
+  Future<void> _openEditCategoryDialog(
+    BuildContext context,
+    CategoryModel category,
+  ) async {
+    final updated = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return BlocProvider<UpdateCategoryCubit>(
+          create: (_) => getIt<UpdateCategoryCubit>(),
+          child: EditCategoryDialog(category: category),
+        );
+      },
+    );
+
+    if (updated == true && context.mounted) {
+      await context
+          .read<CategoriesCubit>()
+          .refreshCurrentPage();
     }
   }
 }

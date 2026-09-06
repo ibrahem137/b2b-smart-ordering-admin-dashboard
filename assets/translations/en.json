@@ -234,8 +234,8 @@
       "subtitle": "Create a new supplier product offering."
     },
     "edit_dialog": {
-      "title": "Edit Supplier Offer",
-      "subtitle": "Update supplier product offering."
+      "title": "Edit Supplier Product",
+      "subtitle": "Update supplier product details."
     },
     "fields": {
       "product_required": "Product *",

@@ -10,9 +10,12 @@ abstract class SupplierOffersRepository {
 
   Future<ApiResult<void>> deleteSupplierOffer(int id);
 
-  Future<ApiResult<SupplierOffersResponse>> getSupplierOffers({
+  Future<ApiResult<SupplierOffersResponse>>
+  getSupplierOffers({
     int? supplierProductId,
     String? status,
+    int page = 1,
+    int perPage = 15,
   });
 
   Future<ApiResult<dynamic>> updateSupplierOffer(

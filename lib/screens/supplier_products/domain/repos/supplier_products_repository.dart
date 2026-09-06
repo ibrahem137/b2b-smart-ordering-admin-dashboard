@@ -7,11 +7,16 @@ abstract class SupplierProductsRepository {
   Future<ApiResult<dynamic>> createSupplierProduct(
     CreateSupplierProductRequest request,
   );
+
   Future<ApiResult<void>> deleteSupplierProduct(int id);
-  Future<ApiResult<SupplierProductsResponse>> getSupplierProducts({
+
+  Future<ApiResult<SupplierProductsResponse>>
+  getSupplierProducts({
     int? supplierId,
     int? productId,
     String? status,
+    int page = 1,
+    int perPage = 15,
   });
 
   Future<ApiResult<dynamic>> updateSupplierProduct(

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:dashboard/core/di/injection.dart';
+import 'package:dashboard/core/widgets/dashboard_pagination.dart';
 import 'package:dashboard/screens/categories/presentation/cubit/categories_cubit.dart';
 import 'package:dashboard/screens/suppliers/data/models/supplier_model.dart';
 import 'package:dashboard/screens/suppliers/presentation/components/add_supplier_dialog.dart';
@@ -116,6 +119,8 @@ class _SuppliersViewState extends State<_SuppliersView> {
   final TextEditingController _searchController =
       TextEditingController();
 
+  Timer? _searchDebounce;
+
   int _activeCount = 0;
   int _inactiveCount = 0;
 
@@ -148,6 +153,10 @@ class _SuppliersViewState extends State<_SuppliersView> {
                       )
                       .length;
 
+                  if (!mounted) {
+                    return;
+                  }
+
                   setState(() {
                     _activeCount = activeCount;
                     _inactiveCount =
@@ -160,59 +169,78 @@ class _SuppliersViewState extends State<_SuppliersView> {
                 searchController: _searchController,
                 activeSuppliers: _activeCount,
                 inactiveSuppliers: _inactiveCount,
-                onSearchChanged: (value) {
-                  context
-                      .read<SuppliersCubit>()
-                      .getSuppliers(search: value.trim());
-                },
+                onSearchChanged: _onSearchChanged,
               ),
             ),
 
             const SizedBox(height: 24),
 
             Expanded(
-              child:
-                  BlocBuilder<
-                    SuppliersCubit,
-                    SuppliersState
-                  >(
-                    builder: (context, state) {
-                      if (state is SuppliersLoading) {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: colors.primary,
+              child: BlocBuilder<SuppliersCubit, SuppliersState>(
+                builder: (context, state) {
+                  if (state is SuppliersLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: colors.primary,
+                      ),
+                    );
+                  }
+
+                  if (state is SuppliersFailure) {
+                    return _buildFailureState(
+                      context,
+                      state,
+                    );
+                  }
+
+                  if (state is SuppliersSuccess) {
+                    if (state.suppliers.isEmpty) {
+                      return _buildEmptyState(context);
+                    }
+
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: SuppliersTable(
+                            suppliers: state.suppliers,
+                            onEdit: (supplier) async {
+                              await _openEditSupplierDialog(
+                                context,
+                                supplier,
+                              );
+                            },
+                            onDelete: (supplier) async {
+                              await _openDeleteSupplierDialog(
+                                context,
+                                supplier,
+                              );
+                            },
                           ),
-                        );
-                      }
-
-                      if (state is SuppliersFailure) {
-                        return _buildFailureState(
-                          context,
-                          state,
-                        );
-                      }
-
-                      if (state is SuppliersSuccess) {
-                        return SuppliersTable(
-                          suppliers: state.suppliers,
-                          onEdit: (supplier) async {
-                            await _openEditSupplierDialog(
-                              context,
-                              supplier,
-                            );
+                        ),
+                        DashboardPagination(
+                          currentPage: state.currentPage,
+                          lastPage: state.lastPage,
+                          from: state.from,
+                          to: state.to,
+                          total: state.total,
+                          onPrevious: () {
+                            context
+                                .read<SuppliersCubit>()
+                                .previousPage();
                           },
-                          onDelete: (supplier) async {
-                            await _openDeleteSupplierDialog(
-                              context,
-                              supplier,
-                            );
+                          onNext: () {
+                            context
+                                .read<SuppliersCubit>()
+                                .nextPage();
                           },
-                        );
-                      }
+                        ),
+                      ],
+                    );
+                  }
 
-                      return const SizedBox.shrink();
-                    },
-                  ),
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
           ],
         ),
@@ -222,8 +250,43 @@ class _SuppliersViewState extends State<_SuppliersView> {
 
   @override
   void dispose() {
+    _searchDebounce?.cancel();
     _searchController.dispose();
     super.dispose();
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+              color: colors.primary.withValues(alpha: .10),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.local_shipping_outlined,
+              color: colors.primary,
+              size: 36,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'No suppliers found',
+            style: theme.textTheme.titleMedium?.copyWith(
+              color: colors.onSurface,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildFailureState(
@@ -242,9 +305,7 @@ class _SuppliersViewState extends State<_SuppliersView> {
             color: colors.error,
             size: 40,
           ),
-
           const SizedBox(height: 12),
-
           Text(
             state.message,
             textAlign: TextAlign.center,
@@ -252,20 +313,35 @@ class _SuppliersViewState extends State<_SuppliersView> {
               color: colors.onSurfaceVariant,
             ),
           ),
-
           const SizedBox(height: 16),
-
           FilledButton.icon(
             onPressed: () {
-              context.read<SuppliersCubit>().getSuppliers(
-                search: _searchController.text.trim(),
-              );
+              context
+                  .read<SuppliersCubit>()
+                  .refreshCurrentPage();
             },
             icon: const Icon(Icons.refresh),
             label: Text('common.retry'.tr()),
           ),
         ],
       ),
+    );
+  }
+
+  void _onSearchChanged(String value) {
+    _searchDebounce?.cancel();
+
+    _searchDebounce = Timer(
+      const Duration(milliseconds: 450),
+      () {
+        if (!mounted) {
+          return;
+        }
+
+        context.read<SuppliersCubit>().searchSuppliers(
+          value,
+        );
+      },
     );
   }
 
@@ -296,7 +372,9 @@ class _SuppliersViewState extends State<_SuppliersView> {
     );
 
     if (created == true && context.mounted) {
-      _refreshSuppliers(context);
+      await context
+          .read<SuppliersCubit>()
+          .refreshCurrentPage();
     }
   }
 
@@ -316,7 +394,9 @@ class _SuppliersViewState extends State<_SuppliersView> {
     );
 
     if (deleted == true && context.mounted) {
-      _refreshSuppliers(context);
+      await context
+          .read<SuppliersCubit>()
+          .refreshAfterDelete();
     }
   }
 
@@ -353,13 +433,9 @@ class _SuppliersViewState extends State<_SuppliersView> {
     );
 
     if (updated == true && context.mounted) {
-      _refreshSuppliers(context);
+      await context
+          .read<SuppliersCubit>()
+          .refreshCurrentPage();
     }
-  }
-
-  void _refreshSuppliers(BuildContext context) {
-    context.read<SuppliersCubit>().getSuppliers(
-      search: _searchController.text.trim(),
-    );
   }
 }

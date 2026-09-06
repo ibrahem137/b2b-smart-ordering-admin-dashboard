@@ -7,7 +7,8 @@ import 'package:dashboard/screens/categories/data/models/update_category_request
 import 'package:dashboard/screens/categories/domain/repos/categories_repository.dart';
 import 'package:flutter/foundation.dart';
 
-class CategoriesRepositoryImpl implements CategoriesRepository {
+class CategoriesRepositoryImpl
+    implements CategoriesRepository {
   final ApiService apiService;
 
   CategoriesRepositoryImpl(this.apiService);
@@ -32,7 +33,9 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
     } catch (error) {
       debugPrint('CREATE CATEGORY ERROR: $error');
 
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -48,21 +51,30 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
     } catch (error) {
       debugPrint('DELETE CATEGORY ERROR: $error');
 
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
   @override
-  Future<ApiResult<CategoriesResponse>> getCategories({String? search}) async {
+  Future<ApiResult<CategoriesResponse>> getCategories({
+    String? search,
+    int page = 1,
+    int perPage = 15,
+  }) async {
     try {
       final response = await apiService.getCategories(
         search: search,
-        perPage: 15,
+        page: page,
+        perPage: perPage,
       );
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -76,10 +88,13 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
       debugPrint('NAME: ${request.name}');
       debugPrint('COLOR: ${request.color}');
 
-      final response = await apiService.updateCategory(request.id, {
-        if (request.name != null) 'name': request.name,
-        if (request.color != null) 'color': request.color,
-      });
+      final response = await apiService.updateCategory(
+        request.id,
+        {
+          if (request.name != null) 'name': request.name,
+          if (request.color != null) 'color': request.color,
+        },
+      );
 
       debugPrint('UPDATE CATEGORY RESPONSE: $response');
 
@@ -87,7 +102,9 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
     } catch (error) {
       debugPrint('UPDATE CATEGORY ERROR: $error');
 
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 }

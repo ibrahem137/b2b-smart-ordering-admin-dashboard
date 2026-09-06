@@ -8,5 +8,7 @@ abstract class SalesRepository {
     String? status,
     String? fromDate,
     String? toDate,
+    int page = 1,
+    int perPage = 15,
   });
 }

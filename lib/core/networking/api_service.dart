@@ -21,7 +21,8 @@ part 'api_service.g.dart';
 
 @RestApi()
 abstract class ApiService {
-  factory ApiService(Dio dio, {String? baseUrl}) = _ApiService;
+  factory ApiService(Dio dio, {String? baseUrl}) =
+      _ApiService;
 
   // ================= AUTH =================
 
@@ -35,7 +36,9 @@ abstract class ApiService {
   // ================= CATEGORIES =================
 
   @POST(ApiConstants.categories)
-  Future<dynamic> createCategory(@Body() Map<String, dynamic> body);
+  Future<dynamic> createCategory(
+    @Body() Map<String, dynamic> body,
+  );
 
   // ================= MASTER PRODUCTS =================
 
@@ -84,7 +87,8 @@ abstract class ApiService {
   @MultiPart()
   @POST(ApiConstants.supplierOffers)
   Future<dynamic> createSupplierOffer(
-    @Part(name: 'supplier_product_id') int supplierProductId,
+    @Part(name: 'supplier_product_id')
+    int supplierProductId,
     @Part(name: 'offer_price') double offerPrice,
     @Part(name: 'offer_stock') int? offerStock,
     @Part(name: 'status') String? status,
@@ -125,9 +129,9 @@ abstract class ApiService {
   @GET(ApiConstants.categories)
   Future<CategoriesResponse> getCategories({
     @Query('search') String? search,
+    @Query('page') int page = 1,
     @Query('per_page') int perPage = 15,
   });
-
   // ================= DASHBOARD =================
 
   @GET(ApiConstants.dashboardLowStock)
@@ -151,6 +155,7 @@ abstract class ApiService {
     @Query('status') String? status,
     @Query('from_date') String? fromDate,
     @Query('to_date') String? toDate,
+    @Query('page') int page = 1,
     @Query('per_page') int perPage = 15,
   });
   @GET(ApiConstants.products)
@@ -159,6 +164,7 @@ abstract class ApiService {
     @Query('category_id') int? categoryId,
     @Query('status') String? status,
     @Query('search') String? search,
+    @Query('page') int page = 1,
     @Query('per_page') int perPage = 15,
   });
 
@@ -171,6 +177,7 @@ abstract class ApiService {
     @Query('status') String? status,
     @Query('from_date') String? fromDate,
     @Query('to_date') String? toDate,
+    @Query('page') int page = 1,
     @Query('per_page') int perPage = 15,
   });
 
@@ -181,10 +188,13 @@ abstract class ApiService {
   Future<StoresResponse> getStores({
     @Query('status') String? status,
     @Query('search') String? search,
+    @Query('page') int page = 1,
     @Query('per_page') int perPage = 15,
   });
   @GET('${ApiConstants.suppliers}/{supplier}/categories')
-  Future<dynamic> getSupplierCategories(@Path('supplier') int supplierId);
+  Future<dynamic> getSupplierCategories(
+    @Path('supplier') int supplierId,
+  );
 
   @GET('${ApiConstants.supplierOffers}/{id}')
   Future<dynamic> getSupplierOffer(@Path('id') int id);
@@ -193,6 +203,7 @@ abstract class ApiService {
   Future<SupplierOffersResponse> getSupplierOffers({
     @Query('supplier_product_id') int? supplierProductId,
     @Query('status') String? status,
+    @Query('page') int page = 1,
     @Query('per_page') int perPage = 15,
   });
 
@@ -201,6 +212,7 @@ abstract class ApiService {
     @Query('supplier_id') int? supplierId,
     @Query('product_id') int? productId,
     @Query('status') String? status,
+    @Query('page') int page = 1,
     @Query('per_page') int perPage = 15,
   });
 
@@ -208,6 +220,7 @@ abstract class ApiService {
   Future<SuppliersResponse> getSuppliers({
     @Query('search') String? search,
     @Query('status') String? status,
+    @Query('page') int page = 1,
     @Query('per_page') int perPage = 15,
   });
 
@@ -267,7 +280,8 @@ abstract class ApiService {
   Future<dynamic> updateSupplierOffer(
     @Path('id') int id,
     @Part(name: '_method') String method,
-    @Part(name: 'supplier_product_id') int? supplierProductId,
+    @Part(name: 'supplier_product_id')
+    int? supplierProductId,
     @Part(name: 'offer_price') double? offerPrice,
     @Part(name: 'offer_stock') int? offerStock,
     @Part(name: 'status') String? status,

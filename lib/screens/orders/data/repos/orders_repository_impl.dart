@@ -16,6 +16,8 @@ class OrdersRepositoryImpl implements OrdersRepository {
     String? status,
     String? fromDate,
     String? toDate,
+    int page = 1,
+    int perPage = 15,
   }) async {
     try {
       final response = await apiService.getOrders(
@@ -24,12 +26,15 @@ class OrdersRepositoryImpl implements OrdersRepository {
         status: status,
         fromDate: fromDate,
         toDate: toDate,
-        perPage: 15,
+        page: page,
+        perPage: perPage,
       );
 
       return ApiResult.success(response);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 
@@ -42,12 +47,15 @@ class OrdersRepositoryImpl implements OrdersRepository {
     try {
       await apiService.updateOrderStatus(id, {
         'status': status,
-        if (notes != null && notes.trim().isNotEmpty) 'notes': notes.trim(),
+        if (notes != null && notes.trim().isNotEmpty)
+          'notes': notes.trim(),
       });
 
       return const ApiResult.success(null);
     } catch (error) {
-      return ApiResult.failure(ApiErrorHandler.handle(error));
+      return ApiResult.failure(
+        ApiErrorHandler.handle(error),
+      );
     }
   }
 }
