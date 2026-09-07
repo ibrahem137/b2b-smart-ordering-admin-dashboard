@@ -171,57 +171,75 @@ flutter analyze
 
 ### Admin Login
 
-<p align="center">
-  <img src="docs/screenshots/login.jpg" width="800" alt="Admin Login">
-</p>
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/login_dark.png" alt="Admin Login Dark Mode"> | <img src="docs/screenshots/login_light.png" alt="Admin Login Light Mode"> |
 
 ### Dashboard
 
 | Dark Mode | Light Mode |
 | --- | --- |
-| <img src="docs/screenshots/dashboard_dark.jpg" alt="Dashboard Dark Mode"> | <img src="docs/screenshots/dashboard_light.jpg" alt="Dashboard Light Mode"> |
+| <img src="docs/screenshots/dashboard_dark.png" alt="Dashboard Dark Mode"> | <img src="docs/screenshots/dashboard_light.png" alt="Dashboard Light Mode"> |
 
 ### Suppliers Management
 
 | Dark Mode | Light Mode |
 | --- | --- |
-| <img src="docs/screenshots/suppliers_dark.jpg" alt="Suppliers Dark Mode"> | <img src="docs/screenshots/suppliers_light.jpg" alt="Suppliers Light Mode"> |
+| <img src="docs/screenshots/suppliers_dark.png" alt="Suppliers Dark Mode"> | <img src="docs/screenshots/suppliers_light.png" alt="Suppliers Light Mode"> |
 
 ### Add Supplier
 
 | Dark Mode | Light Mode |
 | --- | --- |
-| <img src="docs/screenshots/add_supplier_dark.jpg" alt="Add Supplier Dark Mode"> | <img src="docs/screenshots/add_supplier_light.jpg" alt="Add Supplier Light Mode"> |
+| <img src="docs/screenshots/add_supplier_dialog_dark.png" alt="Add Supplier Dialog Dark Mode"> | <img src="docs/screenshots/add_supplier_dialog_light.png" alt="Add Supplier Dialog Light Mode"> |
 
 ### Categories Management
 
 | Dark Mode | Light Mode |
 | --- | --- |
-| <img src="docs/screenshots/categories_dark.jpg" alt="Categories Dark Mode"> | <img src="docs/screenshots/categories_light.jpg" alt="Categories Light Mode"> |
+| <img src="docs/screenshots/categories_dark.png" alt="Categories Dark Mode"> | <img src="docs/screenshots/categories_light.png" alt="Categories Light Mode"> |
 
 ### Master Products
 
 | Dark Mode | Light Mode |
 | --- | --- |
-| <img src="docs/screenshots/master_products_dark.jpg" alt="Master Products Dark Mode"> | <img src="docs/screenshots/master_products_light.jpg" alt="Master Products Light Mode"> |
+| <img src="docs/screenshots/master_products_dark.png" alt="Master Products Dark Mode"> | <img src="docs/screenshots/master_products_light.png" alt="Master Products Light Mode"> |
 
 ### Supplier Products
 
 | Dark Mode | Light Mode |
 | --- | --- |
-| <img src="docs/screenshots/supplier_products_dark.jpg" alt="Supplier Products Dark Mode"> | <img src="docs/screenshots/supplier_products_light.jpg" alt="Supplier Products Light Mode"> |
+| <img src="docs/screenshots/supplier_products_dark.png" alt="Supplier Products Dark Mode"> | <img src="docs/screenshots/supplier_products_light.png" alt="Supplier Products Light Mode"> |
+
+### Supplier Offers
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/supplier_offers_dark.png" alt="Supplier Offers Dark Mode"> | <img src="docs/screenshots/supplier_offers_light.png" alt="Supplier Offers Light Mode"> |
+
+### Stores Management
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/stores_dark.png" alt="Stores Dark Mode"> | <img src="docs/screenshots/stores_light.png" alt="Stores Light Mode"> |
 
 ### Purchase Orders
 
 | Dark Mode | Light Mode |
 | --- | --- |
-| <img src="docs/screenshots/orders_dark.jpg" alt="Purchase Orders Dark Mode"> | <img src="docs/screenshots/orders_light.jpg" alt="Purchase Orders Light Mode"> |
+| <img src="docs/screenshots/orders_dark.png" alt="Purchase Orders Dark Mode"> | <img src="docs/screenshots/orders_light.png" alt="Purchase Orders Light Mode"> |
 
 ### Sales Management
 
 | Dark Mode | Light Mode |
 | --- | --- |
-| <img src="docs/screenshots/sales_dark.jpg" alt="Sales Dark Mode"> | <img src="docs/screenshots/sales_light.jpg" alt="Sales Light Mode"> |
+| <img src="docs/screenshots/sales_dark.png" alt="Sales Dark Mode"> | <img src="docs/screenshots/sales_light.png" alt="Sales Light Mode"> |
+
+### Settings
+
+| Dark Mode | Light Mode |
+| --- | --- |
+| <img src="docs/screenshots/settings_dark.png" alt="Settings Dark Mode"> | <img src="docs/screenshots/settings_light.png" alt="Settings Light Mode"> |
 
 ## Related Repository
 
