@@ -8,13 +8,17 @@ class ApiConstants {
 
   // ================= DASHBOARD =================
 
-  static const String dashboardOverview = '/admin/stats/overview';
+  static const String dashboardOverview =
+      '/admin/stats/overview';
 
-  static const String dashboardSalesTrend = '/admin/stats/sales-trend';
+  static const String dashboardSalesTrend =
+      '/admin/stats/sales-trend';
 
-  static const String dashboardTopStores = '/admin/stats/top-stores';
+  static const String dashboardTopStores =
+      '/admin/stats/top-stores';
 
-  static const String dashboardLowStock = '/admin/stats/low-stock';
+  static const String dashboardLowStock =
+      '/admin/stats/low-stock';
 
   // ================= SUPPLIERS =================
 
@@ -30,11 +34,13 @@ class ApiConstants {
 
   // ================= SUPPLIER PRODUCTS =================
 
-  static const String supplierProducts = '/admin/supplier-products';
+  static const String supplierProducts =
+      '/admin/supplier-products';
 
   // ================= SUPPLIER OFFERS =================
 
-  static const String supplierOffers = '/admin/supplier-offers';
+  static const String supplierOffers =
+      '/admin/supplier-offers';
 
   // ================= ADMIN STORES =================
 
